@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Product</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div><h2>Manage User</h2></div>
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Tên sản phẫm</th>
+                    <th>Số lượng</th>
+                    <th>Hình ảnh</th>
+                    <th>Giảm giá</th>
+                    <th>Đơn giá</th>
+                    <th>Mô tả</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="pro : ${listProduct}">
+                <tr>
+                    <td>[[${pro.product_id}]]</td>
+                    <td>[[${pro.product_name}]]</td>
+                    <td>[[${pro.quantity}]]</td>
+                    <td>[[${pro.product_image}]]</td>
+                    <td>[[${pro.discount}]]</td>
+                    <td>[[${pro.unit_price}]]</td>
+                    <td>[[${pro.description_product}]]</td>
+                    <td>[[${pro.}]]</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
