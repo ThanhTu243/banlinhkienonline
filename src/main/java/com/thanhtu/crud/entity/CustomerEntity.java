@@ -1,5 +1,6 @@
 package com.thanhtu.crud.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,16 +21,13 @@ public class CustomerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
     private Integer customer_id;
-    private String gmailCustomer;
-    private String passwordCustomer;
+    private String userCustomer;
     private String fullnameCustomer;
+    private String address;
+    private String gmailCustomer;
     private String phonenumberCustomer;
-    private String activationCode;
-    private String passwordresetCode;
-    private Integer activeCustomer;
+    private String isDelete;
 
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
 
     @OneToMany(mappedBy = "customerEntity",cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -38,6 +36,7 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customerEntity",cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<OrdersEntity> ordersEntities;
+
 
 
 }

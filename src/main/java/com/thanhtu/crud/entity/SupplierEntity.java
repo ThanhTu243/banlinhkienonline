@@ -16,6 +16,7 @@ public class SupplierEntity {
     @Column(name = "supplier_id")
     private Integer supplier_id;
     private String supplierName;
+    private String isDelete;
 
     @OneToMany(mappedBy = "supplierEntity",cascade = CascadeType.ALL)
     @JsonManagedReference

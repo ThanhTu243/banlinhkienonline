@@ -1,6 +1,9 @@
 package com.thanhtu.crud.model.mapper;
 
-import com.thanhtu.crud.model.request.auth.admin.AuthenticationAdminResponse;
+import com.thanhtu.crud.entity.AccountsEntity;
+import com.thanhtu.crud.model.dto.AccountsDto;
+import com.thanhtu.crud.model.request.RegistrationRequest;
+import com.thanhtu.crud.model.request.auth.AuthenticationResponse;
 import com.thanhtu.crud.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,13 +15,33 @@ import java.util.Map;
 public class AuthenticationMapper {
     private final AuthenticationService authenticationService;
 
-    public AuthenticationAdminResponse login(String username) {
+    public AuthenticationResponse login(String username) {
         Map<String, String> resultMap = authenticationService.login(username);
-        AuthenticationAdminResponse response = new AuthenticationAdminResponse();
-        response.setUserAdmin(resultMap.get("username"));
+        AuthenticationResponse response = new AuthenticationResponse();
+        response.setUsername(resultMap.get("username"));
         response.setToken(resultMap.get("token"));
-        response.setRole(resultMap.get("role"));
+        response.setUserRole(resultMap.get("userRole"));
         return response;
     }
 
+
+    public void registerUser(RegistrationRequest request) {
+        authenticationService.registerUser(request);
+    }
+
+    public boolean activateUser(String code) {
+        return authenticationService.activateUser(code);
+    }
+
+    public boolean sendPasswordResetCode(String email) {
+        return authenticationService.sendPasswordResetCode(email);
+    }
+
+    public AccountsEntity findByPasswordResetCode(String code) {
+        return authenticationService.findByPasswordResetCode(code);
+    }
+
+    public String passwordReset(String email, String password) {
+        return authenticationService.passwordReset(email, password);
+    }
 }

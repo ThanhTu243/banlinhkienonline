@@ -1,4 +1,4 @@
-package com.thanhtu.crud.controller;
+package com.thanhtu.crud.controller.admin;
 
 import com.thanhtu.crud.model.dto.AdminsDto;
 import com.thanhtu.crud.model.dto.ShipperDto;
@@ -54,7 +54,7 @@ public class ShipperManagementController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteShipper(@PathVariable("id") Integer id)
     {
-        ShipperDto shipperDto=shipperService.deleteShipper(id);
+        shipperService.deleteShipper(id);
         return new ResponseEntity<>("Xóa thành công",HttpStatus.OK);
     }
 }

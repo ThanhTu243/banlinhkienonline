@@ -1,5 +1,6 @@
 package com.thanhtu.crud.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +14,9 @@ public class AdminsEntity {
     @Column(name = "admin_id")
     private Integer admin_id;
     private String userAdmin;
-    private String passwordAdmin;
     private String fullnameAdmin;
     private String gmailAdmin;
+    private String isDelete;
+
+
 }

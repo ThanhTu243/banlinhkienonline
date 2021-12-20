@@ -6,10 +6,7 @@ import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.mapper.DeliveryMapper;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
-import com.thanhtu.crud.model.request.OrdersAssignRequest;
-import com.thanhtu.crud.model.request.OrdersStatusRequest;
-import com.thanhtu.crud.model.request.OrdersUpdateRequest;
-import com.thanhtu.crud.model.request.OrdersUpdateStatusRequest;
+import com.thanhtu.crud.model.request.*;
 import com.thanhtu.crud.repository.DeliveryRepository;
 import com.thanhtu.crud.repository.OrdersRepository;
 import com.thanhtu.crud.repository.ShipperRepository;
@@ -17,6 +14,7 @@ import com.thanhtu.crud.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -68,5 +66,10 @@ public class OrdersService_imp implements OrdersService {
             ShipperEntity shipperEntity=shipperRepo.findById(ordersAssignRequest.getShipperId()).orElseThrow(()-> new NotFoundException("Không tồn tại shipper với id: "+ordersAssignRequest.getShipperId()));
             deliveryRepo.save(DeliveryMapper.toDeliveryEntity(ordersAssignRequest,shipperEntity,ordersEntity));
         }
+    }
+
+    @Override
+    public List<OrdersEntity> statics(RequestDate requestDate) {
+        return orderRepo.findOrdersEntityByCreateDate(Timestamp.valueOf(requestDate.getFrom()));
     }
 }

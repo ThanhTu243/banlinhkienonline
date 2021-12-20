@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -24,9 +25,10 @@ public class OrdersEntity {
     private String address;
     private String phoneNumber;
     @Column(columnDefinition = "Date")
-    private String createDate;
+    private Timestamp createDate;
     private Integer totalAmount;
     private String statusOrder;
+    private String isDelete;
 
 
     @OneToMany(mappedBy = "ordersEntity",cascade = CascadeType.ALL)

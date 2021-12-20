@@ -1,4 +1,4 @@
-package com.thanhtu.crud.controller;
+package com.thanhtu.crud.controller.admin;
 import com.thanhtu.crud.model.dto.AdminsDto;
 import com.thanhtu.crud.model.request.AdminsRequest;
 import com.thanhtu.crud.service.AdminsService;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-//@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/admin")
 public class AdminsManagementController {
     @Autowired

@@ -1,6 +1,5 @@
 package com.thanhtu.crud.security;
 
-import com.thanhtu.crud.service.AdminsService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
+
     @Qualifier("userDetailsServiceImpl") @Lazy
     private final UserDetailsService userDetailsService;
 
@@ -52,7 +52,6 @@ public class JwtProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
-
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
@@ -74,4 +73,5 @@ public class JwtProvider {
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader(authorizationHeader);
     }
+
 }

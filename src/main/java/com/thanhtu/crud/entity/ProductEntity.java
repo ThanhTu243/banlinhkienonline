@@ -25,6 +25,7 @@ public class ProductEntity {
     private Integer discount;
     private Integer unitPrice;
     private String descriptionProduct;
+    private String isDelete;
     @ManyToOne
     @JoinColumn (name = "category_id", nullable = false,referencedColumnName = "category_id")
     @JsonBackReference

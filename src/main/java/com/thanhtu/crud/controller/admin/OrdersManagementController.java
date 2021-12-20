@@ -1,4 +1,4 @@
-package com.thanhtu.crud.controller;
+package com.thanhtu.crud.controller.admin;
 import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.model.dto.OrdersDetailDto;
@@ -90,6 +90,12 @@ public class OrdersManagementController {
     public ResponseEntity<?> detailOrders(@PathVariable("id") Integer id)
     {
         List<OrdersDetailDto> list=orderDetaiService.detailOrders(id);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+    @GetMapping("/statics")
+    public ResponseEntity<?> statics(@RequestBody RequestDate requestDate)
+    {
+        List<OrdersEntity> list=ordersService.statics(requestDate);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 }

@@ -21,6 +21,7 @@ public class CategoryEntity {
     private Integer category_id;
 
     private String categoryName;
+    private String isDelete;
 
     @OneToMany(mappedBy = "categoryEntity",cascade = CascadeType.ALL)
     @JsonManagedReference

@@ -15,11 +15,11 @@ import javax.validation.constraints.Size;
 public class LoginRequest {
     @NotNull(message = "Nhập tên đăng nhập của quản trị viên")
     @NotEmpty(message = "Nhập tên đăng nhập của quản trị viên")
-    private String userAdmin;
+    private String username;
 
     @NotNull(message = "Nhập tên mật khẩu của quản trị viên")
     @NotEmpty(message = "Nhập tên mật khẩu của quản trị viên")
     @Size(min = 4,max = 20,message = "Nhập mật khẩu từ 4 đến 20 ký tự")
     @Pattern(regexp = "[^ ]+",message = "Không nhập dấu cách")
-    private String passwordAdmin;
+    private String password;
 }

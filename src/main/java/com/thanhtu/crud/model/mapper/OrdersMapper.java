@@ -13,7 +13,7 @@ public class OrdersMapper {
         tmp.setPhoneNumber(ordersEntity.getPhoneNumber());
         tmp.setTotalAmount(ordersEntity.getTotalAmount());
         tmp.setAddress(ordersEntity.getAddress());
-        tmp.setCreateDate(ordersEntity.getCreateDate());
+        tmp.setCreateDate(ordersEntity.getCreateDate().toString());
         tmp.setStatusOrder(ordersEntity.getStatusOrder());
         tmp.setCustomerFKDto(CustomerMapper.toCustomerFKDto(ordersEntity.getCustomerEntity()));
         return tmp;
@@ -30,7 +30,7 @@ public class OrdersMapper {
         tmp.setOrderId(ordersEntity.getOrder_id());
         tmp.setAddress(ordersEntity.getAddress());
         tmp.setPhoneNumber(ordersEntity.getPhoneNumber());
-        tmp.setCreateDate(ordersEntity.getCreateDate());
+        tmp.setCreateDate(ordersEntity.getCreateDate().toString());
         tmp.setTotalAmount(ordersEntity.getTotalAmount());
         tmp.setStatusOrder(ordersEntity.getStatusOrder());
         return tmp;

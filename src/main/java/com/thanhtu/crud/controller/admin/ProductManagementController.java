@@ -1,4 +1,4 @@
-package com.thanhtu.crud.controller;
+package com.thanhtu.crud.controller.admin;
 
 import com.thanhtu.crud.model.dto.ProductDto;
 import com.thanhtu.crud.model.request.ProductRequest;

@@ -10,7 +10,6 @@ public class CustomerMapper {
     {
         CustomerDto tmp = new CustomerDto();
         tmp.setCustomerId(customerEntity.getCustomer_id());
-        tmp.setPasswordCustomer(customerEntity.getPasswordCustomer());
         tmp.setFullnameCustomer(customerEntity.getFullnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
@@ -22,7 +21,6 @@ public class CustomerMapper {
 
         CustomerFKDto tmp=new CustomerFKDto();
         tmp.setCustomerId(customerEntity.getCustomer_id());
-        tmp.setPasswordCustomer(customerEntity.getPasswordCustomer());
         tmp.setFullnameCustomer(customerEntity.getFullnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());

@@ -19,7 +19,6 @@ public class AdminsMapper {
     {
         AdminsEntity tmp=new AdminsEntity();
         tmp.setUserAdmin(adminsRequest.getUserAdmin());
-        tmp.setPasswordAdmin(BCrypt.hashpw(adminsRequest.getPasswordAdmin(),BCrypt.gensalt(12)));
         tmp.setFullnameAdmin(adminsRequest.getFullnameAdmin());
         tmp.setGmailAdmin(adminsRequest.getGmailAdmin());
         return tmp;
@@ -27,7 +26,6 @@ public class AdminsMapper {
     public static AdminsEntity toUpdateAdminEntity(AdminsEntity adminsEntity,AdminsRequest adminsRequest)
     {
         adminsEntity.setUserAdmin(adminsRequest.getUserAdmin());
-        adminsEntity.setPasswordAdmin(BCrypt.hashpw(adminsRequest.getPasswordAdmin(),BCrypt.gensalt(12)) );
         adminsEntity.setFullnameAdmin(adminsRequest.getFullnameAdmin());
         adminsEntity.setGmailAdmin(adminsRequest.getGmailAdmin());
         return adminsEntity;
