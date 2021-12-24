@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CartService_imp implements CartService {
+public class CartService_impl implements CartService {
     @Autowired
     CartRepository cartRepo;
     @Autowired

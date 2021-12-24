@@ -17,6 +17,4 @@ public class ProductDto {
     private Integer discount;
     private Integer unitPrice;
     private String descriptionProduct;
-    private CategoryFKDto categoryFKDto;
-    private SupplierFKDto supplierFKDto;
 }

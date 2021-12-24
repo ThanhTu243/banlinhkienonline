@@ -16,21 +16,21 @@ import java.util.Objects;
 @AllArgsConstructor
 @Embeddable
 public class OrderDetailIDKey implements Serializable {
-    @Column
-    private Integer order_id;
+    @Column(name = "order_id")
+    private Integer orderId;
 
-    @Column
-    private Integer product_id;
+    @Column(name="product_id")
+    private Integer productId;
 
     @Override
     public boolean equals(Object o){
         if(this==o) return true;
         if(o==null || getClass() != o.getClass()) return false;
         OrderDetailIDKey that=(OrderDetailIDKey) o;
-        return Objects.equals(order_id,that.order_id) && Objects.equals(product_id,that.product_id);
+        return Objects.equals(orderId,that.orderId) && Objects.equals(productId,that.productId);
     }
     @Override
     public int hashCode(){
-        return Objects.hash(order_id,product_id);
+        return Objects.hash(productId,productId);
     }
 }

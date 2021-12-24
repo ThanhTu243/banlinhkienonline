@@ -21,15 +21,13 @@ public class OrdersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private Integer order_id;
+    private Integer orderId;
     private String address;
     private String phoneNumber;
     @Column(columnDefinition = "Date")
     private Timestamp createDate;
     private Integer totalAmount;
     private String statusOrder;
-    private String isDelete;
-
 
     @OneToMany(mappedBy = "ordersEntity",cascade = CascadeType.ALL)
     @JsonManagedReference

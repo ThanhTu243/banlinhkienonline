@@ -1,4 +1,5 @@
 package com.thanhtu.crud.controller.admin;
+import com.thanhtu.crud.entity.AdminsEntity;
 import com.thanhtu.crud.model.dto.AdminsDto;
 import com.thanhtu.crud.model.request.AdminsRequest;
 import com.thanhtu.crud.service.AdminsService;
@@ -13,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMIN')")
+//@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/admin")
 public class AdminsManagementController {
     @Autowired
@@ -55,10 +56,10 @@ public class AdminsManagementController {
         return ResponseEntity.status(HttpStatus.OK).body(adminsDto);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<Object> deleteAdmin(@PathVariable("id") Integer id)
     {
-        AdminsDto adminsDto=adminsService.deleteAdmin(id);
+        adminsService.deleteAdmin(id);
         return new ResponseEntity<>("Xóa thành công",HttpStatus.OK);
     }
 }

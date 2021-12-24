@@ -9,7 +9,7 @@ public class AdminsMapper {
     public static AdminsDto toAdminDto(AdminsEntity adminsEntity)
     {
         AdminsDto tmp=new AdminsDto();
-        tmp.setAdminId(adminsEntity.getAdmin_id());
+        tmp.setAdminId(adminsEntity.getAdminId());
         tmp.setUserAdmin(adminsEntity.getUserAdmin());
         tmp.setFullnameAdmin(adminsEntity.getFullnameAdmin());
         tmp.setGmailAdmin(adminsEntity.getGmailAdmin());
@@ -21,6 +21,7 @@ public class AdminsMapper {
         tmp.setUserAdmin(adminsRequest.getUserAdmin());
         tmp.setFullnameAdmin(adminsRequest.getFullnameAdmin());
         tmp.setGmailAdmin(adminsRequest.getGmailAdmin());
+        tmp.setIsDelete("NO");
         return tmp;
     }
     public static AdminsEntity toUpdateAdminEntity(AdminsEntity adminsEntity,AdminsRequest adminsRequest)

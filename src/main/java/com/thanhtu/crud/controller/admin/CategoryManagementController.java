@@ -30,8 +30,8 @@ public class CategoryManagementController {
     @GetMapping("")
     public ResponseEntity<?> getListByCategoryName(@Valid @RequestBody CategoryRequest categoryRequest, BindingResult bindingResult)
     {
-        List<CategoryDto> listCategory=categoryService.getListByCategoryName(categoryRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(listCategory);
+        CategoryDto categoryDto=categoryService.getListByCategoryName(categoryRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(categoryDto);
     }
 
     @GetMapping("/{id}")
@@ -48,7 +48,7 @@ public class CategoryManagementController {
             return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
         }
         CategoryDto categoryDto= categoryService.createCategory(categoryRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryDto);
     }
 
     @PutMapping("/{id}")
@@ -62,7 +62,7 @@ public class CategoryManagementController {
         return ResponseEntity.status(HttpStatus.OK).body(categoryDto);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<Object> deleteCategory(@PathVariable("id") Integer id)
     {
         CategoryDto categoryDto=categoryService.deleteCategory(id);

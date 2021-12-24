@@ -19,11 +19,11 @@ public class ShipperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shipper_id")
-    private Integer shipper_id;
+    private Integer shipperId;
     private String userShipper;
-    private String passwordShipper;
     private String fullnameShipper;
     private String gmailShipper;
+    private String isDelete;
 
     @OneToMany(mappedBy = "shipperEntity",cascade = CascadeType.ALL)
     @JsonManagedReference

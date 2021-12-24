@@ -17,5 +17,5 @@ public interface OrdersService {
 
     void assignOrders(List<OrdersAssignRequest> list);
 
-    List<OrdersEntity> statics(RequestDate requestDate);
+    void cancelOrder(Integer id);
 }

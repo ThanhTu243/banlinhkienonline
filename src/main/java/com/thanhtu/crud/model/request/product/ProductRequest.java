@@ -1,4 +1,4 @@
-package com.thanhtu.crud.model.request;
+package com.thanhtu.crud.model.request.product;
 
 import lombok.*;
 import javax.validation.constraints.*;

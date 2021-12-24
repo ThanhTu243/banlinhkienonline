@@ -18,8 +18,7 @@ public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private Integer category_id;
-
+    private Integer categoryId;
     private String categoryName;
     private String isDelete;
 
@@ -33,7 +32,7 @@ public class CategoryEntity {
     @Override
     public String toString() {
         return "CategoryEntity{" +
-                "category_id=" + category_id +
+                "categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
                 ", productEntityList=" + productEntityList +
                 '}';

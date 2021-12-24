@@ -13,7 +13,7 @@ public class ShipperMapper {
     public static ShipperDto toShipperDto(ShipperEntity shipperEntity)
     {
         ShipperDto tmp=new ShipperDto();
-        tmp.setShipper_id(shipperEntity.getShipper_id());
+        tmp.setShipperId(shipperEntity.getShipperId());
         tmp.setUserShipper(shipperEntity.getUserShipper());
         tmp.setFullnameShipper(shipperEntity.getFullnameShipper());
         tmp.setGmailShipper(shipperEntity.getGmailShipper());
@@ -23,15 +23,14 @@ public class ShipperMapper {
     {
         ShipperEntity tmp=new ShipperEntity();
         tmp.setUserShipper(shipperRequest.getUserShipper());
-        tmp.setPasswordShipper(BCrypt.hashpw(shipperRequest.getPasswordShipper(),BCrypt.gensalt(12)));
         tmp.setFullnameShipper(shipperRequest.getFullnameShipper());
         tmp.setGmailShipper(shipperRequest.getGmailShipper());
+        tmp.setIsDelete("NO");
         return tmp;
     }
     public static ShipperEntity toUpdateShipperEntity(ShipperEntity shipperEntity,ShipperRequest shipperRequest)
     {
         shipperEntity.setUserShipper(shipperRequest.getUserShipper());
-        shipperEntity.setPasswordShipper(BCrypt.hashpw(shipperRequest.getPasswordShipper(),BCrypt.gensalt(12)) );
         shipperEntity.setFullnameShipper(shipperRequest.getFullnameShipper());
         shipperEntity.setGmailShipper(shipperRequest.getGmailShipper());
         return shipperEntity;

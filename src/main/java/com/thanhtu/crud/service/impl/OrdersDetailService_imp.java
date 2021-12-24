@@ -34,7 +34,7 @@ public class OrdersDetailService_imp implements OrdersDetailService {
         List<OrdersDetailDto> ordersDetailDtos=new ArrayList<OrdersDetailDto>();
         for(OrderDetailEntity orderDetailEntity:orderDetailEntities)
         {
-            ProductEntity productEntity=proRepo.getById(orderDetailEntity.getId().getProduct_id());
+            ProductEntity productEntity=proRepo.getById(orderDetailEntity.getId().getProductId());
             ordersDetailDtos.add(OrdersDetailMapper.toOrdersDetailDto(orderDetailEntity,productEntity));
         }
         return ordersDetailDtos;

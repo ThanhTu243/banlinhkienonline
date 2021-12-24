@@ -8,8 +8,8 @@ public class OrdersDetailMapper {
     public static OrdersDetailDto toOrdersDetailDto(OrderDetailEntity orderDetailEntity, ProductEntity productEntity)
     {
         OrdersDetailDto tmp =new OrdersDetailDto();
-        tmp.setOrderId(orderDetailEntity.getId().getOrder_id());
-        tmp.setProductId(orderDetailEntity.getId().getProduct_id());
+        tmp.setOrderId(orderDetailEntity.getId().getOrderId());
+        tmp.setProductId(orderDetailEntity.getId().getProductId());
         tmp.setQuantity(orderDetailEntity.getQuantity());
         tmp.setAmount(orderDetailEntity.getAmount());
         tmp.setProductFKDto(ProductMapper.toProductFKDto(productEntity));

@@ -9,7 +9,7 @@ public class OrdersMapper {
     public static OrdersDto toOrdersDto(OrdersEntity ordersEntity)
     {
         OrdersDto tmp=new OrdersDto();
-        tmp.setOrderId(ordersEntity.getOrder_id());
+        tmp.setOrderId(ordersEntity.getOrderId());
         tmp.setPhoneNumber(ordersEntity.getPhoneNumber());
         tmp.setTotalAmount(ordersEntity.getTotalAmount());
         tmp.setAddress(ordersEntity.getAddress());
@@ -27,7 +27,7 @@ public class OrdersMapper {
     public static OrdersFKDto toOrdersFKDto(OrdersEntity ordersEntity)
     {
         OrdersFKDto tmp=new OrdersFKDto();
-        tmp.setOrderId(ordersEntity.getOrder_id());
+        tmp.setOrderId(ordersEntity.getOrderId());
         tmp.setAddress(ordersEntity.getAddress());
         tmp.setPhoneNumber(ordersEntity.getPhoneNumber());
         tmp.setCreateDate(ordersEntity.getCreateDate().toString());

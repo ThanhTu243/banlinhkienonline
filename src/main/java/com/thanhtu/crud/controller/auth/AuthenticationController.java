@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4004/")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {

@@ -2,13 +2,9 @@ package com.thanhtu.crud.service.impl;
 
 import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.exception.DuplicateRecoredException;
-import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.exception.ReviewMailException;
-import com.thanhtu.crud.model.dto.AccountsDto;
-import com.thanhtu.crud.model.mapper.AccountsMapper;
 import com.thanhtu.crud.model.request.RegistrationRequest;
 import com.thanhtu.crud.repository.AccountsRepository;
-import com.thanhtu.crud.repository.AdminsRepository;
 import com.thanhtu.crud.repository.CustomerRepository;
 import com.thanhtu.crud.security.JwtProvider;
 import com.thanhtu.crud.service.AuthenticationService;
@@ -110,10 +106,10 @@ public class AuthenticationService_impl implements AuthenticationService {
     public boolean sendPasswordResetCode(String email) {
         AccountsEntity account=accountsRepo.findAccountsEntitiesByGmail(email);
         if (account == null) return false;
-//        if(!account.getPasswordresetCode().equals(null))
-//        {
-//            throw new ReviewMailException("Mã đặt lại mật khẩu đã gửi về email");
-//        }
+        if(!account.getPasswordresetCode().equals(null))
+        {
+            throw new ReviewMailException("Mã đặt lại mật khẩu đã gửi về email");
+        }
         account.setPasswordresetCode(UUID.randomUUID().toString());
         accountsRepo.save(account);
         CustomerEntity customer=customerRepo.findCustomerEntityByUserCustomer(account.getUsername());

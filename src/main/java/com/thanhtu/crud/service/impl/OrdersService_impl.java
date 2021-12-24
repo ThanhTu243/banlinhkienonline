@@ -1,15 +1,15 @@
 package com.thanhtu.crud.service.impl;
 
+import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
+import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.entity.ShipperEntity;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.mapper.DeliveryMapper;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.*;
-import com.thanhtu.crud.repository.DeliveryRepository;
-import com.thanhtu.crud.repository.OrdersRepository;
-import com.thanhtu.crud.repository.ShipperRepository;
+import com.thanhtu.crud.repository.*;
 import com.thanhtu.crud.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,17 @@ import java.util.List;
 
 
 @Service
-public class OrdersService_imp implements OrdersService {
+public class OrdersService_impl implements OrdersService {
     @Autowired
     OrdersRepository orderRepo;
+    @Autowired
+    OrdersDetailRepository ordersDetailRepo;
     @Autowired
     DeliveryRepository deliveryRepo;
     @Autowired
     ShipperRepository shipperRepo;
+    @Autowired
+    ProductRepository productRepo;
 
 
     @Override
@@ -68,8 +72,28 @@ public class OrdersService_imp implements OrdersService {
         }
     }
 
+
     @Override
-    public List<OrdersEntity> statics(RequestDate requestDate) {
-        return orderRepo.findOrdersEntityByCreateDate(Timestamp.valueOf(requestDate.getFrom()));
+    public void cancelOrder(Integer id) {
+        OrdersEntity order=orderRepo.findOrdersEntityByOrderId(id);
+        if(order==null)
+        {
+            throw new NotFoundException("Không tìm thấy đơn hàng có id: "+id);
+        }
+        order.setStatusOrder("Đã hủy");
+        List<OrderDetailEntity> listCancel= ordersDetailRepo.findOrderDetailEntityByOrdersEntity(order);
+        for(OrderDetailEntity orderDetail:listCancel)
+        {
+            orderDetail.setIsDelete("YES");
+            ProductEntity product= productRepo.findProductEntityByProductIdAndIsDelete(orderDetail.getId().getProductId(),"NO");
+            if(product!=null)
+            {
+                int quantityUpdate=product.getQuantity()+orderDetail.getQuantity();
+                product.setQuantity(quantityUpdate);
+                productRepo.save(product);
+            }
+            ordersDetailRepo.save(orderDetail);
+        }
+        orderRepo.save(order);
     }
 }

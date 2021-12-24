@@ -18,7 +18,7 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private Integer product_id;
+    private Integer productId;
     private String productName;
     private Integer quantity;
     private String productImage;

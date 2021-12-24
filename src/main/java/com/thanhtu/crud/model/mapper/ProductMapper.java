@@ -1,11 +1,14 @@
 package com.thanhtu.crud.model.mapper;
 
 import com.thanhtu.crud.entity.CategoryEntity;
+import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.entity.SupplierEntity;
+import com.thanhtu.crud.model.dto.BestSellingProducts;
+import com.thanhtu.crud.model.dto.ProductPageDto;
 import com.thanhtu.crud.model.dto.ProductDto;
 import com.thanhtu.crud.model.dto.fk.ProductFKDto;
-import com.thanhtu.crud.model.request.ProductRequest;
+import com.thanhtu.crud.model.request.product.ProductRequest;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,18 +16,29 @@ import java.util.List;
 import java.util.Set;
 
 public class ProductMapper {
+    public static ProductPageDto toProductPageDto(List<ProductEntity> productList,int totalPage,int currentPage)
+    {
+        ProductPageDto tmp=new ProductPageDto();
+        tmp.setCurrentPage(currentPage);
+        tmp.setTotalPage(totalPage);
+        List<ProductDto> list=new ArrayList<ProductDto>();
+        for(ProductEntity productEn:productList)
+        {
+            list.add(ProductMapper.toProductDto(productEn));
+        }
+        tmp.setListProduct(list);
+        return tmp;
+    }
     public static ProductDto toProductDto(ProductEntity productEntity)
     {
         ProductDto tmp = new ProductDto();
-        tmp.setProductId(productEntity.getProduct_id());
+        tmp.setProductId(productEntity.getProductId());
         tmp.setProductName(productEntity.getProductName());
         tmp.setQuantity(productEntity.getQuantity());
         tmp.setProductImage(productEntity.getProductImage());
         tmp.setDiscount(productEntity.getDiscount());
         tmp.setUnitPrice(productEntity.getUnitPrice());
         tmp.setDescriptionProduct(productEntity.getDescriptionProduct());
-        tmp.setCategoryFKDto(CategoryMapper.toCategoryViewDto(productEntity.getCategoryEntity()));
-        tmp.setSupplierFKDto(SupplierMapper.toSupplierViewDto(productEntity.getSupplierEntity()));
         return tmp;
     }
     public static ProductEntity toProductEntity(ProductRequest productRequest, CategoryEntity categoryEntity, SupplierEntity supplierEntity)
@@ -38,6 +52,7 @@ public class ProductMapper {
         tmp.setDescriptionProduct(productRequest.getDescriptionProduct());
         tmp.setCategoryEntity(categoryEntity);
         tmp.setSupplierEntity(supplierEntity);
+        tmp.setIsDelete("NO");
         return tmp;
     }
     public static ProductEntity toUpdateProduct(ProductEntity product,ProductRequest productRequest,CategoryEntity categoryEntity, SupplierEntity supplierEntity)
@@ -55,24 +70,31 @@ public class ProductMapper {
     public static Set<ProductFKDto> toProductFKDto(Set<ProductEntity> productEntities)
     {
         Set<ProductFKDto> list = new HashSet<ProductFKDto>();
-        for(ProductEntity product:productEntities)
+        if(productEntities==null)
         {
-            ProductFKDto tmp=new ProductFKDto();
-            tmp.setProductId(product.getProduct_id());
-            tmp.setProductName(product.getProductImage());
-            tmp.setQuantity(product.getQuantity());
-            tmp.setProductImage(product.getProductImage());
-            tmp.setDiscount(product.getDiscount());
-            tmp.setUnitPrice(product.getUnitPrice());
-            tmp.setDescriptionProduct(product.getDescriptionProduct());
-            list.add(tmp);
+            return list;
         }
-        return list;
+        else{
+            for(ProductEntity product:productEntities)
+            {
+                ProductFKDto tmp=new ProductFKDto();
+                tmp.setProductId(product.getProductId());
+                tmp.setProductName(product.getProductImage());
+                tmp.setQuantity(product.getQuantity());
+                tmp.setProductImage(product.getProductImage());
+                tmp.setDiscount(product.getDiscount());
+                tmp.setUnitPrice(product.getUnitPrice());
+                tmp.setDescriptionProduct(product.getDescriptionProduct());
+                list.add(tmp);
+            }
+            return list;
+        }
+
     }
     public static ProductFKDto toProductFKDto(ProductEntity productEntity)
     {
         ProductFKDto tmp=new ProductFKDto();
-        tmp.setProductId(productEntity.getProduct_id());
+        tmp.setProductId(productEntity.getProductId());
         tmp.setProductName(productEntity.getProductImage());
         tmp.setQuantity(productEntity.getQuantity());
         tmp.setProductImage(productEntity.getProductImage());

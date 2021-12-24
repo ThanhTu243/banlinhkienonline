@@ -16,20 +16,20 @@ import java.util.Objects;
 @AllArgsConstructor
 @Embeddable
 public class CartIDKey implements Serializable{
-    @Column
-    private Integer customer_id;
-    @Column
-    private Integer product_id;
+    @Column(name = "customer_id")
+    private Integer customerId;
+    @Column(name = "product_id")
+    private Integer productId;
     @Override
     public boolean equals(Object o){
         if(this==o) return true;
         if(o==null || getClass() != o.getClass()) return false;
         CartIDKey that=(CartIDKey) o;
-        return Objects.equals(customer_id,that.customer_id) && Objects.equals(product_id,that.product_id);
+        return Objects.equals(customerId,that.customerId) && Objects.equals(productId,that.productId);
     }
     @Override
     public int hashCode(){
-        return Objects.hash(customer_id,product_id);
+        return Objects.hash(customerId,productId);
     }
 
 

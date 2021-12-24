@@ -5,52 +5,52 @@ import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.entity.SupplierEntity;
 import com.thanhtu.crud.exception.DuplicateRecoredException;
 import com.thanhtu.crud.exception.NotFoundException;
-import com.thanhtu.crud.model.dto.CategoryDto;
 import com.thanhtu.crud.model.dto.ProductDto;
-import com.thanhtu.crud.model.mapper.CategoryMapper;
 import com.thanhtu.crud.model.mapper.ProductMapper;
-import com.thanhtu.crud.model.request.CategoryRequest;
-import com.thanhtu.crud.model.request.ProductRequest;
+import com.thanhtu.crud.model.request.product.ProductByCategoryRequest;
+import com.thanhtu.crud.model.request.product.ProductByNameRequest;
+import com.thanhtu.crud.model.request.product.ProductBySupplierRequest;
+import com.thanhtu.crud.model.request.product.ProductRequest;
 import com.thanhtu.crud.repository.CategoryRepository;
 import com.thanhtu.crud.repository.ProductRepository;
 import com.thanhtu.crud.repository.SupplierRepository;
 import com.thanhtu.crud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductService_imp implements ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    ProductRepository productRepo;
     @Autowired
-    CategoryRepository categoryRepository;
+    CategoryRepository categoryRepo;
     @Autowired
-    SupplierRepository supplierRepository;
+    SupplierRepository supplierRepo;
+
 
     @Override
-    public List<ProductDto> getListProduct() {
-        List<ProductEntity> productEntityList=productRepository.findAll();
-        List<ProductDto> productDtoList=new ArrayList<ProductDto>();
-        for(ProductEntity productEntity:productEntityList)
-        {
-            productDtoList.add(ProductMapper.toProductDto(productEntity));
-        }
-        return productDtoList;
+    public Page<ProductEntity> getListProduct(Pageable pageable) {
+        return productRepo.findProductEntityByIsDelete("NO",pageable);
     }
 
     @Override
     public ProductDto getProductById(int id) {
-        ProductEntity productEntity=productRepository.findById(id).orElseThrow(()-> new NotFoundException("Sản phẫm không tồn tại với id: "+id));
+        ProductEntity productEntity=productRepo.findProductEntityByProductIdAndIsDelete(id,"NO");
+        if(productEntity==null)
+        {
+            throw new NotFoundException("Sản phẫm không tồn tại với id: "+id);
+        }
         return ProductMapper.toProductDto(productEntity);
     }
 
     @Override
     public ProductDto createProduct(ProductRequest productRequest) {
-        List<ProductEntity> list=productRepository.findAll();
+        List<ProductEntity> list=productRepo.findProductEntityByIsDelete("NO");
         for(ProductEntity productEntity:list)
         {
             if(productEntity.getProductName().equals(productRequest.getProductName()))
@@ -58,19 +58,23 @@ public class ProductService_imp implements ProductService {
                 throw new DuplicateRecoredException("Trùng tên sản phẫm rồi");
             }
         }
-        CategoryEntity categoryEntity=categoryRepository.getById(productRequest.getCategoryId());
-        SupplierEntity supplierEntity=supplierRepository.getById(productRequest.getSupplierId());
+        CategoryEntity categoryEntity=categoryRepo.getById(productRequest.getCategoryId());
+        SupplierEntity supplierEntity=supplierRepo.getById(productRequest.getSupplierId());
         ProductEntity product=ProductMapper.toProductEntity(productRequest,categoryEntity,supplierEntity);
-        ProductEntity productEntity=productRepository.save(product);
+        ProductEntity productEntity=productRepo.save(product);
         return ProductMapper.toProductDto(productEntity);
     }
 
     @Override
     public ProductDto updateProduct(Integer id, ProductRequest productRequest) {
-        ProductEntity productEntity=productRepository.findById(id).orElseThrow(()-> new NotFoundException("Sản phẫm không tồn tại với id: "+id));
+        ProductEntity productEntity=productRepo.findProductEntityByProductIdAndIsDelete(id,"NO");
+        if(productEntity==null)
+        {
+            throw new NotFoundException("Sản phẫm không tồn tại với id: "+id);
+        }
         if(!productEntity.getProductName().equals(productRequest.getProductName()))
         {
-            List<ProductEntity> list=productRepository.findAll();
+            List<ProductEntity> list=productRepo.findProductEntityByIsDelete("NO");
             for(ProductEntity productEntity1:list)
             {
                 if(productEntity1.getProductName().equals(productRequest.getProductName()))
@@ -79,16 +83,39 @@ public class ProductService_imp implements ProductService {
                 }
             }
         }
-        CategoryEntity categoryEntity=categoryRepository.getById(productRequest.getCategoryId());
-        SupplierEntity supplierEntity=supplierRepository.getById(productRequest.getSupplierId());
-        ProductEntity productEntity1=productRepository.save(ProductMapper.toUpdateProduct(productEntity,productRequest,categoryEntity,supplierEntity));
+        CategoryEntity categoryEntity=categoryRepo.getById(productRequest.getCategoryId());
+        SupplierEntity supplierEntity=supplierRepo.getById(productRequest.getSupplierId());
+        ProductEntity productEntity1=productRepo.save(ProductMapper.toUpdateProduct(productEntity,productRequest,categoryEntity,supplierEntity));
         return ProductMapper.toProductDto(productEntity1);
     }
 
 
     @Override
     public ProductDto deleteProduct(Integer id) {
-        productRepository.deleteById(id);
-        return null;
+        ProductEntity productEntity=productRepo.findProductEntityByProductIdAndIsDelete(id,"NO");
+        if(productEntity==null)
+        {
+            throw new NotFoundException("Sản phẫm không tồn tại với id: "+id);
+        }
+        productEntity.setIsDelete("YES");
+        productRepo.save(productEntity);
+        return ProductMapper.toProductDto(productEntity);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductByName(ProductByNameRequest productByNameRequest, Pageable pageable) {
+        return productRepo.findProductEntityByProductNameContainsAndIsDelete(productByNameRequest.getProductName(),"NO",pageable);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductByCategory(ProductByCategoryRequest productByCategoryRequest, Pageable pageable) {
+        CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(productByCategoryRequest.getCategoryName(),"NO");
+        return productRepo.findProductEntityByCategoryEntityAndIsDelete(category,"NO",pageable);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductBySupplier(ProductBySupplierRequest productBySupplierRequest, Pageable pageable) {
+        SupplierEntity supplier=supplierRepo.findSupplierEntityBySupplierNameAndIsDelete(productBySupplierRequest.getSupplierName(),"NO");
+        return productRepo.findProductEntityBySupplierEntityAndIsDelete(supplier,"NO",pageable);
     }
 }

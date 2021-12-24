@@ -1,4 +1,4 @@
-package com.thanhtu.crud.controller;
+package com.thanhtu.crud.controller.customer;
 
 import com.thanhtu.crud.model.dto.CartDto;
 import com.thanhtu.crud.model.dto.CategoryDto;

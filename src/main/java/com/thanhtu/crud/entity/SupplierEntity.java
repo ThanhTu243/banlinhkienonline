@@ -14,7 +14,7 @@ public class SupplierEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "supplier_id")
-    private Integer supplier_id;
+    private Integer supplierId;
     private String supplierName;
     private String isDelete;
 

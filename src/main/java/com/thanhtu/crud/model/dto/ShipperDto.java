@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ShipperDto {
-    private Integer shipper_id;
+    private Integer shipperId;
     private String userShipper;
     private String fullnameShipper;
     private String gmailShipper;

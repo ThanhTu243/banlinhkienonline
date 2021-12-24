@@ -22,6 +22,7 @@ public class OrderDetailEntity {
 
     private Integer quantity;
     private Integer amount;
+    private String isDelete;
 
     @ManyToOne
     @JoinColumn (name = "order_id", nullable = false,referencedColumnName = "order_id",insertable=false, updatable=false)

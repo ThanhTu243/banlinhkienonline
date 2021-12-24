@@ -12,7 +12,7 @@ public class AdminsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admin_id")
-    private Integer admin_id;
+    private Integer adminId;
     private String userAdmin;
     private String fullnameAdmin;
     private String gmailAdmin;

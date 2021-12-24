@@ -1,8 +1,6 @@
 package com.thanhtu.crud.controller.admin;
 
-import com.thanhtu.crud.model.dto.AdminsDto;
 import com.thanhtu.crud.model.dto.ShipperDto;
-import com.thanhtu.crud.model.request.AdminsRequest;
 import com.thanhtu.crud.model.request.ShipperRequest;
 import com.thanhtu.crud.service.ShipperService;
 import org.springframework.beans.factory.annotation.Autowired;

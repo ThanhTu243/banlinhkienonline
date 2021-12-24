@@ -16,21 +16,21 @@ import java.util.Objects;
 @AllArgsConstructor
 @Embeddable
 public class DeliveryIDKey implements Serializable {
-    @Column
-    private Integer order_id;
+    @Column(name = "order_id")
+    private Integer orderId;
 
-    @Column
-    private Integer shipper_id;
+    @Column(name = "shipper_id")
+    private Integer shipperId;
 
     @Override
     public boolean equals(Object o){
         if(this==o) return true;
         if(o==null || getClass() != o.getClass()) return false;
         DeliveryIDKey that=(DeliveryIDKey) o;
-        return Objects.equals(order_id,that.order_id) && Objects.equals(shipper_id,that.shipper_id);
+        return Objects.equals(orderId,that.orderId) && Objects.equals(shipperId,that.shipperId);
     }
     @Override
     public int hashCode(){
-        return Objects.hash(order_id,shipper_id);
+        return Objects.hash(orderId,shipperId);
     }
 }

@@ -25,7 +25,7 @@ public class CategoryService_impl implements CategoryService  {
     @Override
     public List<CategoryDto> getListCategory()
     {
-        List<CategoryEntity> categoryEntities=categoryRepo.findAll();
+        List<CategoryEntity> categoryEntities=categoryRepo.findCategoryEntityByIsDelete("NO");
         List<CategoryDto> categoryDtos=new ArrayList<CategoryDto>();
         for(CategoryEntity categoryEntity:categoryEntities)
         {
@@ -36,13 +36,17 @@ public class CategoryService_impl implements CategoryService  {
 
     @Override
     public CategoryDto getCateById(int id)  {
-        CategoryEntity categoryEntity=categoryRepo.findById(id).orElseThrow(()-> new NotFoundException("Danh mục không tồn tại với id: "+id));
+        CategoryEntity categoryEntity=categoryRepo.findCategoryEntityByCategoryIdAndIsDelete(id,"NO");
+        if(categoryEntity==null)
+        {
+            throw new NotFoundException("Danh mục không tồn tại với id: "+id);
+        }
         return CategoryMapper.toCategoryDto(categoryEntity);
     }
 
     @Override
     public CategoryDto createCategory(CategoryRequest categoryRequest) {
-        List<CategoryEntity> list=categoryRepo.findAll();
+        List<CategoryEntity> list=categoryRepo.findCategoryEntityByIsDelete("NO");
         for(CategoryEntity categoryEn:list)
         {
             if(categoryEn.getCategoryName().equals(categoryRequest.getCategoryName()))
@@ -50,16 +54,20 @@ public class CategoryService_impl implements CategoryService  {
                 throw new DuplicateRecoredException("Trùng tên danh mục");
             }
         }
-        CategoryEntity categoryEntity=categoryRepo.save(new CategoryEntity(categoryRequest.getCategoryName()));
+        CategoryEntity categoryEntity=categoryRepo.save(CategoryMapper.toCategoryEntity(categoryRequest));
         return CategoryMapper.toCategoryDto(categoryEntity);
     }
 
     @Override
     public CategoryDto updateCategory(int id,CategoryRequest categoryRequest) {
-        CategoryEntity categoryEntity=categoryRepo.findById(id).orElseThrow(()-> new NotFoundException("Danh mục không tồn tại với id: "+id));
+        CategoryEntity categoryEntity=categoryRepo.findCategoryEntityByCategoryIdAndIsDelete(id,"NO");
+        if(categoryEntity==null)
+        {
+            throw new NotFoundException("Danh mục không tồn tại với id: "+id);
+        }
         if(!categoryEntity.getCategoryName().equals(categoryRequest.getCategoryName()))
         {
-            List<CategoryEntity> list=categoryRepo.findAll();
+            List<CategoryEntity> list=categoryRepo.findCategoryEntityByIsDelete("NO");
             for(CategoryEntity categoryEn:list)
             {
                 if(categoryEn.getCategoryName().equals(categoryRequest.getCategoryName()))
@@ -69,25 +77,24 @@ public class CategoryService_impl implements CategoryService  {
             }
         }
         categoryEntity.setCategoryName(categoryRequest.getCategoryName());
+        return CategoryMapper.toCategoryDto(categoryRepo.save(categoryEntity));
+    }
+
+    @Override
+    public CategoryDto deleteCategory(Integer id) {
+        CategoryEntity categoryEntity=categoryRepo.findCategoryEntityByCategoryIdAndIsDelete(id,"NO");
+        if(categoryEntity==null)
+        {
+            throw new NotFoundException("Danh mục không tồn tại với id: "+id);
+        }
+        categoryEntity.setIsDelete("YES");
         CategoryEntity category=categoryRepo.save(categoryEntity);
         return CategoryMapper.toCategoryDto(category);
     }
 
     @Override
-    public CategoryDto deleteCategory(Integer id) {
-        CategoryEntity cate1=categoryRepo.findById(id).orElseThrow(()-> new NotFoundException("Danh mục không tồn tại với id: "+id));
-        categoryRepo.deleteById(id);
-        return null;
-    }
-
-    @Override
-    public List<CategoryDto> getListByCategoryName(CategoryRequest categoryRequest) {
-        List<CategoryEntity> list=categoryRepo.findCategoryEntityByCategoryName(categoryRequest.getCategoryName());
-        List<CategoryDto> list1=new ArrayList<CategoryDto>();
-        for(CategoryEntity categoryEntity:list)
-        {
-            list1.add(CategoryMapper.toCategoryDto(categoryEntity));
-        }
-        return list1;
+    public CategoryDto getListByCategoryName(CategoryRequest categoryRequest) {
+        CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(categoryRequest.getCategoryName(),"NO");
+        return CategoryMapper.toCategoryDto(category);
     }
 }

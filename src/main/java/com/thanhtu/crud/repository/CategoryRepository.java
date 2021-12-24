@@ -11,5 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity,Integer>{
-    List<CategoryEntity> findCategoryEntityByCategoryName(String name);
+    CategoryEntity findCategoryEntityByCategoryNameAndIsDelete(String name,String status);
+    List<CategoryEntity> findCategoryEntityByIsDelete(String status);
+    CategoryEntity findCategoryEntityByCategoryIdAndIsDelete(Integer id,String status);
 }

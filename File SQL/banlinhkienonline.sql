@@ -71,7 +71,7 @@ CREATE TABLE SUPPLIER
 CREATE TABLE PRODUCT
 (
 	 product_id INT AUTO_INCREMENT,
-	 product_Name NVARCHAR(50),
+	 product_name NVARCHAR(50),
 	 quantity INT,
 	 product_image VARCHAR(150),
      discount INT,

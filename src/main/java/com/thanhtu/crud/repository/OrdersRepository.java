@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface OrdersRepository extends JpaRepository<OrdersEntity,Integer>{
     List<OrdersEntity> findOrdersEntityByStatusOrder(String status);
-    List<OrdersEntity> findOrdersEntityByCreateDate(Timestamp from);
+    OrdersEntity findOrdersEntityByOrderId(int id);
+    List<OrdersEntity> findOrdersEntityByCreateDateBetweenAndStatusOrder(Timestamp from,Timestamp to,String status);
 }

@@ -7,8 +7,8 @@ public class DeliveryIdKeyMapper {
     public static DeliveryIDKey toDeliveryIdKey(OrdersAssignRequest ordersAssignRequest)
     {
         DeliveryIDKey tmp=new DeliveryIDKey();
-        tmp.setOrder_id(ordersAssignRequest.getOrderId());
-        tmp.setShipper_id(ordersAssignRequest.getShipperId());
+        tmp.setOrderId(ordersAssignRequest.getOrderId());
+        tmp.setShipperId(ordersAssignRequest.getShipperId());
         return tmp;
     }
 }

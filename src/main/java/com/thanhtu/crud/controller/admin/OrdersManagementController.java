@@ -92,10 +92,11 @@ public class OrdersManagementController {
         List<OrdersDetailDto> list=orderDetaiService.detailOrders(id);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
-    @GetMapping("/statics")
-    public ResponseEntity<?> statics(@RequestBody RequestDate requestDate)
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<?> cancelOrder(@PathVariable("id") Integer id)
     {
-        List<OrdersEntity> list=ordersService.statics(requestDate);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        ordersService.cancelOrder(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Hủy đơn hàng thành công");
     }
 }
