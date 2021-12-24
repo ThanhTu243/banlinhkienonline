@@ -1,10 +1,9 @@
-package com.thanhtu.crud.controller.auth;
+package com.thanhtu.crud.controller.admin;
 
 import com.thanhtu.crud.entity.AccountsEntity;
 import com.thanhtu.crud.exception.EnterUserAndPassException;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.exception.PasswordException;
-import com.thanhtu.crud.model.dto.AccountsDto;
 import com.thanhtu.crud.model.mapper.AuthenticationMapper;
 import com.thanhtu.crud.model.request.PasswordResetRequest;
 import com.thanhtu.crud.model.request.auth.AuthenticationRequest;
@@ -24,10 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4006/")
-@RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:4004/")
+@RequestMapping("/auth/admin")
 @RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthenticationAdminController {
     @Autowired private CustomAuthenticationProviderService customAuthenticationProviderService;
     @Autowired private AuthenticationManager authenticationManager;
     private final AuthenticationMapper authenticationMapper;
