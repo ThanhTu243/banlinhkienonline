@@ -59,7 +59,9 @@ public class CustomAuthenticationProviderService implements AuthenticationProvid
         {
             grantedAuthorities.add(new SimpleGrantedAuthority("SHIPPER"));
         }
-        grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+        else{
+            grantedAuthorities.add(new SimpleGrantedAuthority("CUSTOMER"));
+        }
         return grantedAuthorities;
 
     }

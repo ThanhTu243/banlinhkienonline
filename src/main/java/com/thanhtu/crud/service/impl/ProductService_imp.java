@@ -112,10 +112,58 @@ public class ProductService_imp implements ProductService {
         CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(productByCategoryRequest.getCategoryName(),"NO");
         return productRepo.findProductEntityByCategoryEntityAndIsDelete(category,"NO",pageable);
     }
+    public Page<ProductEntity> getListProductByCategoryName(String categoryName, Pageable pageable) {
+        CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(categoryName,"NO");
+        return productRepo.findProductEntityByCategoryEntityAndIsDelete(category,"NO",pageable);
+    }
 
     @Override
     public Page<ProductEntity> getListProductBySupplier(ProductBySupplierRequest productBySupplierRequest, Pageable pageable) {
         SupplierEntity supplier=supplierRepo.findSupplierEntityBySupplierNameAndIsDelete(productBySupplierRequest.getSupplierName(),"NO");
         return productRepo.findProductEntityBySupplierEntityAndIsDelete(supplier,"NO",pageable);
     }
+
+    @Override
+    public Page<ProductEntity> getListProductBySupplierName(String supplierName, Pageable pageable) {
+        SupplierEntity supplier=supplierRepo.findSupplierEntityBySupplierNameAndIsDelete(supplierName,"NO");
+        return productRepo.findProductEntityBySupplierEntityAndIsDelete(supplier,"NO",pageable);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductByKeyWord(String keyword,Pageable page) {
+        return productRepo.findProductEntityByProductNameLike(keyword,page);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductByKeyWord1(String keyword,Pageable page) {
+        return productRepo.findAllByProductNameContainsAndIsDelete(keyword,"NO",page);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductByKeyWordAndCategory(String keyword, String categoryName, Pageable pageable) {
+        CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(categoryName,"NO");
+        return productRepo.findAllByProductNameContainsAndCategoryEntityAndIsDelete(keyword,category,"NO",pageable);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductByKeyWordAndSupplier(String keyword, String supplierName, Pageable pageable) {
+        SupplierEntity supplier=supplierRepo.findSupplierEntityBySupplierNameAndIsDelete(supplierName,"NO");
+        return productRepo.findAllByProductNameContainsAndSupplierEntityAndIsDelete(keyword,supplier,"NO",pageable);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductByCategoryAndSupplier(String categoryName, String supplierName, Pageable pageable) {
+        CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(categoryName,"NO");
+        SupplierEntity supplier=supplierRepo.findSupplierEntityBySupplierNameAndIsDelete(supplierName,"NO");
+        return productRepo.findAllByCategoryEntityAndSupplierEntityAndIsDelete(category,supplier,"NO",pageable);
+    }
+
+    @Override
+    public Page<ProductEntity> getListProductByCategoryAndSupplierAndKeyword(String categoryName, String supplierName, String keyword, Pageable pageable) {
+        CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(categoryName,"NO");
+        SupplierEntity supplier=supplierRepo.findSupplierEntityBySupplierNameAndIsDelete(supplierName,"NO");
+        return productRepo.findAllByProductNameContainsAndCategoryEntityAndSupplierEntityAndIsDelete(keyword,category,supplier,"NO",pageable);
+    }
+
+
 }

@@ -14,7 +14,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
+@CrossOrigin(origins = "http://localhost:4004/")
+@RequestMapping("/admin/category")
 public class CategoryManagementController {
 
     @Autowired

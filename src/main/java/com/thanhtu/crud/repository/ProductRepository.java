@@ -6,8 +6,6 @@ import com.thanhtu.crud.entity.SupplierEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
@@ -19,4 +17,11 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
     Page<ProductEntity> findProductEntityByCategoryEntityAndIsDelete(CategoryEntity categoryEntity,String status,Pageable pageable);
 
     Page<ProductEntity> findProductEntityBySupplierEntityAndIsDelete(SupplierEntity supplier, String status, Pageable pageable);
+    Page<ProductEntity> findProductEntityByProductNameLike(String keyword,Pageable pageable);
+
+    Page<ProductEntity> findAllByProductNameContainsAndIsDelete(String keyword,String status,Pageable page);
+    Page<ProductEntity> findAllByProductNameContainsAndCategoryEntityAndIsDelete(String keyword,CategoryEntity categoryEntity,String status,Pageable page);
+    Page<ProductEntity> findAllByProductNameContainsAndSupplierEntityAndIsDelete(String keyword,SupplierEntity supplierEntity,String status,Pageable page);
+    Page<ProductEntity> findAllByCategoryEntityAndSupplierEntityAndIsDelete(CategoryEntity categoryEntity,SupplierEntity supplierEntity,String status,Pageable page);
+    Page<ProductEntity> findAllByProductNameContainsAndCategoryEntityAndSupplierEntityAndIsDelete(String keyword,CategoryEntity categoryEntity,SupplierEntity supplierEntity,String status,Pageable page);
 }

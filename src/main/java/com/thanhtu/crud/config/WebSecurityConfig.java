@@ -26,14 +26,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/auth/**","/admin/**","/registration/**","/category/**","/**")
+                .antMatchers("/auth/**","/admin/**","/registration/**","/category/**","/cart/**","/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "http://localhost:4006/"));
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
     @Bean

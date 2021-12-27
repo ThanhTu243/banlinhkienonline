@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/product")
+@CrossOrigin(origins = "http://localhost:4004/")
+@RequestMapping("admin/product")
 public class ProductManagementController {
 
     @Autowired
@@ -40,7 +41,7 @@ public class ProductManagementController {
         else{
             page=Optional.of(0);
         }
-        Pageable pageable= PageRequest.of(page.get(),2);
+        Pageable pageable= PageRequest.of(page.get(),10);
         Page<ProductEntity> list=productService.getListProduct(pageable);
         int totalPages=list.getTotalPages();
         int currentPage=list.getNumber()+1;
@@ -119,7 +120,7 @@ public class ProductManagementController {
         else{
             page=Optional.of(0);
         }
-        Pageable pageable= PageRequest.of(page.get(),2);
+        Pageable pageable= PageRequest.of(page.get(),10);
 
         Page<ProductEntity> list=productService.getListProductBySupplier(productBySupplierRequest,pageable);
         int totalPages=list.getTotalPages();

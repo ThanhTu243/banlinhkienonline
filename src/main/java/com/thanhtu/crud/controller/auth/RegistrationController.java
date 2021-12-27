@@ -16,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4006/")
 @RequestMapping("/registration")
 public class RegistrationController {
     private final AuthenticationMapper authenticationMapper;

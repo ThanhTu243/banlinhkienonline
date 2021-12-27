@@ -106,7 +106,7 @@ public class AuthenticationService_impl implements AuthenticationService {
     public boolean sendPasswordResetCode(String email) {
         AccountsEntity account=accountsRepo.findAccountsEntitiesByGmail(email);
         if (account == null) return false;
-        if(!account.getPasswordresetCode().equals(null))
+        if(account.getPasswordresetCode()!=null)
         {
             throw new ReviewMailException("Mã đặt lại mật khẩu đã gửi về email");
         }

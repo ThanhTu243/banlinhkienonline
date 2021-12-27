@@ -8,6 +8,7 @@ import com.thanhtu.crud.model.mapper.CustomerMapper;
 import com.thanhtu.crud.model.mapper.ProductMapper;
 import com.thanhtu.crud.repository.AccountsRepository;
 import com.thanhtu.crud.repository.CustomerRepository;
+import com.thanhtu.crud.repository.ProductRepository;
 import com.thanhtu.crud.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 public class CustomerService_impl implements CustomerService {
     @Autowired
     CustomerRepository customerRepo;
+
+    @Autowired
+    ProductRepository productRepo;
 
     @Autowired
     AccountsRepository accountsRepo;
@@ -45,4 +49,5 @@ public class CustomerService_impl implements CustomerService {
         customerRepo.save(customerEntity);
         accountsRepo.save(account);
     }
+
 }

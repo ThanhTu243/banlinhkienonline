@@ -28,6 +28,7 @@ public class CustomerMapper {
 
         CustomerFKDto tmp=new CustomerFKDto();
         tmp.setCustomerId(customerEntity.getCustomerId());
+        tmp.setUserCustomer(customerEntity.getUserCustomer());
         tmp.setFullnameCustomer(customerEntity.getFullnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());

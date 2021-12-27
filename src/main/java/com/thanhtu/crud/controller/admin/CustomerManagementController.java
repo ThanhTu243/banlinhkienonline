@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/customer")
+@CrossOrigin(origins = "http://localhost:4004/")
+@RequestMapping("/admin/customer")
 public class CustomerManagementController {
     @Autowired
     CustomerService customerService;

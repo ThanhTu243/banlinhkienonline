@@ -27,6 +27,7 @@ public class OrdersEntity {
     @Column(columnDefinition = "Date")
     private Timestamp createDate;
     private Integer totalAmount;
+    private String note;
     private String statusOrder;
 
     @OneToMany(mappedBy = "ordersEntity",cascade = CascadeType.ALL)

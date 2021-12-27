@@ -24,7 +24,7 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4004/")
-@RequestMapping("/auth/admin")
+@RequestMapping("/admin/auth")
 @RequiredArgsConstructor
 public class AuthenticationAdminController {
     @Autowired private CustomAuthenticationProviderService customAuthenticationProviderService;

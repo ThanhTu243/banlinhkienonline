@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@CrossOrigin(origins = "http://localhost:4004/")
+@RequestMapping("/admin/orders")
 public class OrdersManagementController {
     @Autowired
     OrdersService ordersService;

@@ -11,7 +11,10 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
-
+    @ExceptionHandler(NotEnoughQuantityException.class)
+    public ErrorResponse handleReviewMailException(NotEnoughQuantityException ex,WebRequest reg) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
     @ExceptionHandler(ReviewMailException.class)
     public ErrorResponse handleReviewMailException(ReviewMailException ex,WebRequest reg) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());

@@ -1,21 +1,22 @@
 package com.thanhtu.crud.controller.admin;
 
 import com.thanhtu.crud.model.dto.BestSellingProducts;
+import com.thanhtu.crud.model.dto.BestSellingProductsPage;
 import com.thanhtu.crud.model.request.RequestDate;
 import com.thanhtu.crud.service.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/statistic")
+@CrossOrigin(origins = "http://localhost:4004/")
+@RequestMapping("admin/statistic")
 public class StatisticController {
     @Autowired
     StatisticService statisticService;
@@ -27,9 +28,17 @@ public class StatisticController {
         return ResponseEntity.status(HttpStatus.OK).body(sumRevenue);
     }
     @GetMapping("/bestsellingproducts")
-    public ResponseEntity<?> bestSellingProducts(@RequestBody RequestDate requestDate)
+    public ResponseEntity<?> bestSellingProducts(@RequestBody RequestDate requestDate,
+                                                 @RequestParam(value = "page",required = false) Integer page)
     {
-        Map<String, BestSellingProducts> list=statisticService.bestSellingProducts(requestDate);
+        if(page==null)
+        {
+            page=0;
+        }
+        else{
+            page=page-1;
+        }
+        BestSellingProductsPage list=statisticService.bestSellingProducts(requestDate,page);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 }

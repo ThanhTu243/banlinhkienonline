@@ -16,8 +16,8 @@ import java.util.Set;
 public class CustomerDto {
     private Integer customerId;
     private String userCustomer;
-    private String passwordCustomer;
     private String fullnameCustomer;
+    private String address;
     private String gmailCustomer;
     private String phoneNumberCustomer;
     private Set<CartEntity> cartEntities;

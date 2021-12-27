@@ -10,7 +10,6 @@ import lombok.*;
 public class CustomerFKDto {
     private Integer customerId;
     private String userCustomer;
-    private String passwordCustomer;
     private String fullnameCustomer;
     private String gmailCustomer;
     private String phoneNumberCustomer;

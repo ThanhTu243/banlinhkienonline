@@ -17,7 +17,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/supplier")
+@CrossOrigin(origins = "http://localhost:4004/")
+@RequestMapping("admin/supplier")
 public class SupplierManagementController {
 
     @Autowired

@@ -1,9 +1,14 @@
 package com.thanhtu.crud.model.mapper;
 
+import com.thanhtu.crud.entity.CustomerEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.dto.fk.OrdersFKDto;
+import com.thanhtu.crud.model.request.OrderCreateRequest;
 import com.thanhtu.crud.model.request.OrdersUpdateRequest;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class OrdersMapper {
     public static OrdersDto toOrdersDto(OrdersEntity ordersEntity)
@@ -33,6 +38,18 @@ public class OrdersMapper {
         tmp.setCreateDate(ordersEntity.getCreateDate().toString());
         tmp.setTotalAmount(ordersEntity.getTotalAmount());
         tmp.setStatusOrder(ordersEntity.getStatusOrder());
+        return tmp;
+    }
+    public static OrdersEntity toCreateOrders(OrderCreateRequest orderCreateRequest, CustomerEntity customer)
+    {
+        OrdersEntity tmp=new OrdersEntity();
+        tmp.setAddress(orderCreateRequest.getAddress());
+        tmp.setPhoneNumber(orderCreateRequest.getPhoneNumber());
+        tmp.setCreateDate(Timestamp.valueOf(LocalDateTime.now()));
+        tmp.setTotalAmount(orderCreateRequest.getTotal());
+        tmp.setStatusOrder("Chưa duyệt");
+        tmp.setNote("Chưa thanh toán");
+        tmp.setCustomerEntity(customer);
         return tmp;
     }
 }

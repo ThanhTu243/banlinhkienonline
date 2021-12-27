@@ -1,8 +1,8 @@
 package com.thanhtu.crud.model.mapper;
 
-import com.thanhtu.crud.entity.OrderDetailEntity;
-import com.thanhtu.crud.entity.ProductEntity;
+import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.model.dto.OrdersDetailDto;
+import com.thanhtu.crud.model.dto.ProductToOrder;
 
 public class OrdersDetailMapper {
     public static OrdersDetailDto toOrdersDetailDto(OrderDetailEntity orderDetailEntity, ProductEntity productEntity)
@@ -13,6 +13,17 @@ public class OrdersDetailMapper {
         tmp.setQuantity(orderDetailEntity.getQuantity());
         tmp.setAmount(orderDetailEntity.getAmount());
         tmp.setProductFKDto(ProductMapper.toProductFKDto(productEntity));
+        return tmp;
+    }
+    public static OrderDetailEntity toOrderDetailEntity(ProductToOrder productToOrder, OrdersEntity orders,ProductEntity product)
+    {
+        OrderDetailEntity tmp=new OrderDetailEntity();
+        tmp.setId(OrderDetailIdKeyMapper.toOrderDetailIDKey(orders.getOrderId(), productToOrder.getProductId()));
+        tmp.setQuantity(productToOrder.getQuantity());
+        tmp.setAmount(productToOrder.getQuantity()*product.getUnitPrice());
+        tmp.setIsDelete("NO");
+        tmp.setOrdersEntity(orders);
+        tmp.setProductEntity(product);
         return tmp;
     }
 }

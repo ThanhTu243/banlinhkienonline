@@ -4,7 +4,9 @@ import com.sun.org.glassfish.external.statistics.Statistic;
 import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.entity.ProductEntity;
+import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.BestSellingProducts;
+import com.thanhtu.crud.model.dto.BestSellingProductsPage;
 import com.thanhtu.crud.model.dto.ProductDto;
 import com.thanhtu.crud.model.request.RequestDate;
 import com.thanhtu.crud.repository.OrdersDetailRepository;
@@ -38,7 +40,7 @@ public class StatisticService_impl implements StatisticService {
     }
 
     @Override
-    public Map<String, BestSellingProducts> bestSellingProducts(RequestDate requestDate) {
+    public BestSellingProductsPage bestSellingProducts(RequestDate requestDate, int page) {
         List<OrdersEntity> list=ordersRepo.findOrdersEntityByCreateDateBetweenAndStatusOrder(Timestamp.valueOf(requestDate.getFrom()),Timestamp.valueOf(requestDate.getTo()),"Đã giao");
         List<OrderDetailEntity> listDetail=new ArrayList<OrderDetailEntity>();
         Map<String,BestSellingProducts> listBestSellingProducts=new HashMap<String,BestSellingProducts>();
@@ -78,9 +80,42 @@ public class StatisticService_impl implements StatisticService {
         List<Map.Entry<String,BestSellingProducts>> listEntries=new ArrayList<>(entries);
         Collections.sort(listEntries,comparator);
         LinkedHashMap<String, BestSellingProducts> sortedMap = new LinkedHashMap<>(listEntries.size());
-        for (Map.Entry<String, BestSellingProducts> entry : listEntries) {
-            sortedMap.put(entry.getKey(), entry.getValue());
+//        for (Map.Entry<String, BestSellingProducts> entry : listEntries) {
+//            sortedMap.put(entry.getKey(), entry.getValue());
+//        }
+        int totalPage=0;
+        if(entries.size()>10)
+        {
+            double totalPageDouble=(double)entries.size()/10;
+            double totalPageInt=entries.size()/10;
+            totalPage=totalPageDouble>totalPageInt?(int)totalPageInt+1:(int)totalPageInt;
         }
-        return sortedMap;
+        else
+        {
+            totalPage=1;
+        }
+        if(totalPage<=page)
+        {
+            throw new NotFoundException("Không có trang "+(page+1));
+        }
+        if(page==totalPage-1 && entries.size()%10!=0)
+        {
+            for(int j=page*10;j<entries.size();j++)
+            {
+                sortedMap.put(listEntries.get(j).getKey(),listEntries.get(j).getValue());
+            }
+        }
+        else{
+            for(int i=page*10;i<page*10+10;i++)
+            {
+                sortedMap.put(listEntries.get(i).getKey(),listEntries.get(i).getValue());
+            }
+        }
+
+        BestSellingProductsPage bestSellingProductsPage=new BestSellingProductsPage();
+        bestSellingProductsPage.setCurrentPage(page+1);
+        bestSellingProductsPage.setTotalPage(totalPage);
+        bestSellingProductsPage.setMap(sortedMap);
+        return bestSellingProductsPage;
     }
 }

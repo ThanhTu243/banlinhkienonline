@@ -18,4 +18,10 @@ public interface OrdersService {
     void assignOrders(List<OrdersAssignRequest> list);
 
     void cancelOrder(Integer id);
+
+    OrdersDto createOrders(OrderCreateRequest orderCreateRequest);
+
+    OrdersDto createOrdersPaypal(OrderCreateRequest orderCreateRequest);
+
+    void sendEmailOrder();
 }

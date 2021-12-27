@@ -13,7 +13,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shipper")
+@CrossOrigin(origins = "http://localhost:4004/")
+@RequestMapping("admin/shipper")
 public class ShipperManagementController {
     @Autowired
     ShipperService shipperService;

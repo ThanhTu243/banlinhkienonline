@@ -1,25 +1,35 @@
 package com.thanhtu.crud.service.impl;
 
-import com.thanhtu.crud.entity.OrderDetailEntity;
-import com.thanhtu.crud.entity.OrdersEntity;
-import com.thanhtu.crud.entity.ProductEntity;
-import com.thanhtu.crud.entity.ShipperEntity;
+
+import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.OrdersDto;
+import com.thanhtu.crud.model.dto.ProductToOrder;
 import com.thanhtu.crud.model.mapper.DeliveryMapper;
+import com.thanhtu.crud.model.mapper.OrdersDetailMapper;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.*;
 import com.thanhtu.crud.repository.*;
 import com.thanhtu.crud.service.OrdersService;
+import com.thanhtu.crud.service.email.MailSender;
+import com.thanhtu.crud.utils.Utils;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
+@RequiredArgsConstructor
 public class OrdersService_impl implements OrdersService {
+    @Autowired
+    PaypalService_impl paypalService;
     @Autowired
     OrdersRepository orderRepo;
     @Autowired
@@ -30,6 +40,8 @@ public class OrdersService_impl implements OrdersService {
     ShipperRepository shipperRepo;
     @Autowired
     ProductRepository productRepo;
+    @Autowired CustomerRepository customerRepo;
+    private final MailSender mailSender;
 
 
     @Override
@@ -96,4 +108,76 @@ public class OrdersService_impl implements OrdersService {
         }
         orderRepo.save(order);
     }
+
+    @Override
+    public OrdersDto createOrders(OrderCreateRequest orderCreateRequest) {
+        List<ProductToOrder> productToOrderList=new ArrayList<ProductToOrder>();
+        productToOrderList=orderCreateRequest.getList();
+        for(ProductToOrder productToOrder:productToOrderList)
+        {
+            ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
+            if(product==null)
+            {
+                throw new NotFoundException(""+product.getProductName()+" không còn bán nữa");
+            }
+            if(product.getQuantity()<productToOrder.getQuantity())
+            {
+                throw new NotFoundException(""+product.getProductName()+" không đủ số lượng. Chỉ còn "+product.getQuantity());
+            }
+        }
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(orderCreateRequest.getCustomerId(),"NO");
+        OrdersEntity orderCreate=orderRepo.save(OrdersMapper.toCreateOrders(orderCreateRequest,customer));
+        for(ProductToOrder productToOrder:productToOrderList)
+        {
+            ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
+            ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
+        }
+        String subject = "Đơn hàng #" + orderCreate.getOrderId();
+        String template = "order-template";
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("order", orderCreate);
+        attributes.put("fullname",customer.getFullnameCustomer());
+        mailSender.sendMessageHtml(orderCreate.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
+        return OrdersMapper.toOrdersDto(orderCreate);
+    }
+    @Override
+    public OrdersDto createOrdersPaypal(OrderCreateRequest orderCreateRequest)
+    {
+        List<ProductToOrder> productToOrderList=new ArrayList<ProductToOrder>();
+        productToOrderList=orderCreateRequest.getList();
+        for(ProductToOrder productToOrder:productToOrderList)
+        {
+            ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
+            if(product==null)
+            {
+                throw new NotFoundException(""+product.getProductName()+" không còn bán nữa");
+            }
+            if(product.getQuantity()<productToOrder.getQuantity())
+            {
+                throw new NotFoundException(""+product.getProductName()+" không đủ số lượng. Chỉ còn "+product.getQuantity());
+            }
+        }
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(orderCreateRequest.getCustomerId(),"NO");
+        OrdersEntity orders=OrdersMapper.toCreateOrders(orderCreateRequest,customer);
+        orders.setNote("Đã thanh toán");
+        OrdersEntity orderCreate=orderRepo.save(orders);
+        for(ProductToOrder productToOrder:productToOrderList)
+        {
+            ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
+            ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
+        }
+        String subject = "Đơn hàng #" + orderCreate.getOrderId();
+        String template = "order-template";
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("order", orderCreate);
+        attributes.put("fullname",customer.getFullnameCustomer());
+        mailSender.sendMessageHtml(orderCreate.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
+        return OrdersMapper.toOrdersDto(orderCreate);
+    }
+
+    @Override
+    public void sendEmailOrder() {
+
+    }
+
 }

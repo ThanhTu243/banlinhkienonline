@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .table {
+            border-collapse: collapse;
+            width: 600px;
+            border-radius: 50px;
+            border: 1px solid #dee2e6;
+        }
+        .header {
+            width: 260px;
+            vertical-align: center;
+        }
+        .content {
+            height: 110px;
+            vertical-align: center;
+            padding: 0 15px
+        }
+        hr {
+            border: none;
+            color: #dee2e6;
+            background-color: #dee2e6;
+            height: 1px;
+        }
+    </style>
+</head>
+<body>
+<table align="center" class="table">
+    <tr>
+        <td style="background-color: #ffffff; padding: 40px 30px 40px 30px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                <tr>
+                    <td class="header" align="center">
+                        <h3>Order # <span th:text="${order.getOrderId()}" th:remove="tag"></span></h3>
+                    </td>
+                    <td class="header" align="center">
+                        <img src="https://i.ibb.co/6YNPHCd/LOGO3.jpg" style="width: 180px; border-radius: 5px;"/>
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+            <h3 style="text-align: center">Chào <span th:text="${fullname}" th:remove="tag"></span>!</h3>
+            <p style="text-align: center">Cảm ơn bạn đã mua hàng của Shoplinhkien PT </p>
+            <hr/>
+            <div class="text-left">
+                <p><b>Mã đơn hàng: <span th:text="${order.getOrderId()}" th:remove="tag"></span></b></p>
+                <p><b>Ngày đặt:</b> <span th:text="${order.getCreateDate()}" th:remove="tag"></span></p>
+                <p><b>Tên:</b> <span th:text="${fullname}"
+                                      th:remove="tag"></span></p>
+                <p><b>Địa chỉ:</b> <span th:text="${order.getAddress()}" th:remove="tag"></span>
+                </p>
+                <p><b>Số điện thoại:</b> <span th:text="${order.getPhoneNumber()}" th:remove="tag"></span></p>
+            </div>
+            <hr/>
+            <h3>Tổng đơn hàng <span th:text="${order.getTotalAmount()}" th:remove="tag"></span> vnđ</h3>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
