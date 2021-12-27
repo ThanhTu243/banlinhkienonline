@@ -104,10 +104,9 @@ CREATE TABLE ORDERS
 	 phone_number VARCHAR(15),
      create_date TIMESTAMP,
      total_amount INT,
+     note NVARCHAR(20),
 	 status_order NVARCHAR(10),
      customer_id INT,
-	 is_delete VARCHAR(10),
-	 CONSTRAINT OR_isDeleteORDERS_CHK CHECK (is_delete IN ('NO','YES')),
      CONSTRAINT OR_activeORDER_CHK CHECK (status_order IN ('Chưa duyệt','Đã duyệt', 'Đang giao', 'Đã giao','Đã hủy')),
 	 CONSTRAINT OR_maOR_PK PRIMARY KEY(order_id),
 	 CONSTRAINT OR_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id) ON DELETE CASCADE
@@ -118,7 +117,8 @@ CREATE TABLE ORDERDETAIL(
 	 product_id INT,
 	 quantity INT(10),
 	 amount INT,
-
+     is_delete VARCHAR(10),
+	 CONSTRAINT OR_isDeleteORDERDETAIL_CHK CHECK (is_delete IN ('NO','YES')),
 	 CONSTRAINT OD_maORDERDETAIL_PK PRIMARY KEY(order_id, product_id),
 	 CONSTRAINT OD_maORDER_FK FOREIGN KEY(order_id) REFERENCES ORDERS(order_id) ON DELETE CASCADE,
 	 CONSTRAINT OD_maPRODUCT_FK FOREIGN KEY(product_id) REFERENCES PRODUCT (product_id) ON DELETE CASCADE
@@ -131,6 +131,18 @@ CREATE TABLE DELIVERY(
 	 CONSTRAINT DE_maDELIVERY_PK PRIMARY KEY(order_id, shipper_id),
 	 CONSTRAINT DE_maORDER_FK FOREIGN KEY(order_id) REFERENCES ORDERS(order_id) ON DELETE CASCADE,
 	 CONSTRAINT DE_maSHIPPER_FK FOREIGN KEY(shipper_id) REFERENCES SHIPPER(shipper_id) ON DELETE NO ACTION
+);
+
+CREATE TABLE REVIEWS(
+	  order_id INT,
+      product_id INT,
+      customer_id INT,
+      comments NVARCHAR(255),
+      rating double,
+      CONSTRAINT RE_maREVIEWS_PK PRIMARY KEY(order_id, product_id,customer_id),
+	  CONSTRAINT RE_maORDER_FK FOREIGN KEY(order_id) REFERENCES ORDERS(order_id),
+	  CONSTRAINT RE_maPRODUCT_FK FOREIGN KEY(product_id) REFERENCES PRODUCT(product_id),
+      CONSTRAINT RE_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id)
 );
 
 INSERT INTO ACCOUNTS(username, passwords,gmail,activation_code,passwordreset_code, active_account,provider, roles) 
@@ -150,12 +162,12 @@ INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,ph
 VALUES("username1","tu","Tam Ky","ahihihihi@gmail.com","0123456789","NO");
 
 
-INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order, customer_id,is_delete)
-VALUES ("Tam Dan","345","2021-10-15",15000,"Chưa duyệt",1,"NO");
-INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order, customer_id,is_delete)
-VALUES ("Tam Dan","567","2021-10-15",15000,"Chưa duyệt",1,"NO");
-INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order, customer_id,is_delete)
-VALUES ("Tam Dan","897","2021-10-15",15000,"Đã duyệt",1,"NO");
+INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
+VALUES ("Tam Dan","345","2021-10-15",15000,"Chưa duyệt","Đã thanh toán",1);
+INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
+VALUES ("Tam Dan","567","2021-10-15",15000,"Chưa duyệt","Đã thanh toán",1);
+INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
+VALUES ("Tam Dan","897","2021-10-15",15000,"Đã duyệt","Đã thanh toán",1);
 
 INSERT INTO CATEGORY (category_name,is_delete)
 VALUES ('Máy tính',"NO");

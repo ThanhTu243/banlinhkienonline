@@ -1,11 +1,15 @@
 package com.thanhtu.crud.controller.customer;
 
 import com.thanhtu.crud.entity.ProductEntity;
+import com.thanhtu.crud.entity.ReviewsEntity;
 import com.thanhtu.crud.model.dto.ProductDto;
+import com.thanhtu.crud.model.dto.ProductViewByIdDto;
+import com.thanhtu.crud.model.dto.ReviewsDto;
 import com.thanhtu.crud.model.mapper.ProductMapper;
 import com.thanhtu.crud.model.request.product.ProductByCategoryRequest;
 import com.thanhtu.crud.service.CategoryService;
 import com.thanhtu.crud.service.ProductService;
+import com.thanhtu.crud.service.ReviewsService;
 import com.thanhtu.crud.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,11 +34,15 @@ public class ProductController {
     CategoryService categoryService;
     @Autowired
     SupplierService supplierService;
+    @Autowired
+    ReviewsService reviewsService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getProductById(@PathVariable int id) {
+    public ResponseEntity<?> getProductById(@PathVariable int id) {
         ProductDto productById = productService.getProductById(id);
-        return new ResponseEntity<>(productById,HttpStatus.OK);
+        String rating=reviewsService.getRating(id);
+        List<ReviewsDto> listReviews=reviewsService.getAllCommentsByProductId(id);
+        return new ResponseEntity<>(ProductMapper.toProductViewByIdDto(productById,rating,listReviews),HttpStatus.OK);
     }
     @GetMapping("/search")
     public ResponseEntity<Object> getListProduct(@RequestParam(value = "page",required = false) Optional<Integer> page,

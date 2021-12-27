@@ -38,6 +38,10 @@ public class OrdersEntity {
     @JsonManagedReference
     private Set<OrderDetailEntity> orderDetailEntities;
 
+    @OneToMany(mappedBy = "ordersEntity",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<ReviewsEntity> reviewsEntities;
+
     @ManyToOne
     @JoinColumn (name = "customer_id", nullable = false,referencedColumnName = "customer_id")
     @JsonBackReference

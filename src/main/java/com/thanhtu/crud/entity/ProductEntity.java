@@ -44,5 +44,9 @@ public class ProductEntity {
     @JsonBackReference
     private Set<OrderDetailEntity> productEntities;
 
+    @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<ReviewsEntity> reviewsEntities;
+
 
 }

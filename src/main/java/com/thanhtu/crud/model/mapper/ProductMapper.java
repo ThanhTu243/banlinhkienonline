@@ -4,9 +4,7 @@ import com.thanhtu.crud.entity.CategoryEntity;
 import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.entity.SupplierEntity;
-import com.thanhtu.crud.model.dto.BestSellingProducts;
-import com.thanhtu.crud.model.dto.ProductPageDto;
-import com.thanhtu.crud.model.dto.ProductDto;
+import com.thanhtu.crud.model.dto.*;
 import com.thanhtu.crud.model.dto.fk.ProductFKDto;
 import com.thanhtu.crud.model.request.product.ProductRequest;
 
@@ -16,6 +14,20 @@ import java.util.List;
 import java.util.Set;
 
 public class ProductMapper {
+    public static ProductViewByIdDto toProductViewByIdDto(ProductDto productDto, String rating, List<ReviewsDto> list)
+    {
+        ProductViewByIdDto tmp=new ProductViewByIdDto();
+        tmp.setProductId(productDto.getProductId());
+        tmp.setProductName(productDto.getProductName());
+        tmp.setQuantity(productDto.getQuantity());
+        tmp.setProductImage(productDto.getProductImage());
+        tmp.setDiscount(productDto.getDiscount());
+        tmp.setUnitPrice(productDto.getUnitPrice());
+        tmp.setDescriptionProduct(productDto.getDescriptionProduct());
+        tmp.setRating(rating);
+        tmp.setList(list);
+        return tmp;
+    }
     public static ProductPageDto toProductPageDto(List<ProductEntity> productList,int totalPage,int currentPage)
     {
         ProductPageDto tmp=new ProductPageDto();
