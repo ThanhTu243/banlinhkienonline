@@ -4,8 +4,11 @@ import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.exception.NotFoundException;
+import com.thanhtu.crud.model.dto.OrderDetailViewDto;
 import com.thanhtu.crud.model.dto.OrdersDetailDto;
+import com.thanhtu.crud.model.dto.ProductOrderDetailDto;
 import com.thanhtu.crud.model.mapper.OrdersDetailMapper;
+import com.thanhtu.crud.model.mapper.ProductMapper;
 import com.thanhtu.crud.repository.OrdersDetailRepository;
 import com.thanhtu.crud.repository.OrdersRepository;
 import com.thanhtu.crud.repository.ProductRepository;
@@ -28,15 +31,19 @@ public class OrdersDetailService_imp implements OrdersDetailService {
     ProductRepository proRepo;
 
     @Override
-    public List<OrdersDetailDto> detailOrders(Integer id) {
+    public OrderDetailViewDto detailOrders(Integer id) {
         OrdersEntity ordersEntity=ordersRepo.findById(id).orElseThrow(()-> new NotFoundException("Không tồn tại đơn hàng với id: "+id));
         List<OrderDetailEntity> orderDetailEntities=ordersDetailRepo.findOrderDetailEntityByOrdersEntity(ordersEntity);
-        List<OrdersDetailDto> ordersDetailDtos=new ArrayList<OrdersDetailDto>();
+        List<ProductOrderDetailDto> list=new ArrayList<ProductOrderDetailDto>();
         for(OrderDetailEntity orderDetailEntity:orderDetailEntities)
         {
-            ProductEntity productEntity=proRepo.getById(orderDetailEntity.getId().getProductId());
-            ordersDetailDtos.add(OrdersDetailMapper.toOrdersDetailDto(orderDetailEntity,productEntity));
+            list.add(ProductMapper.totoProductOrderDetailDto(orderDetailEntity));
         }
+        OrderDetailViewDto ordersDetailDtos=new OrderDetailViewDto();
+        ordersDetailDtos.setOrderId(id);
+        ordersDetailDtos.setNameCustomer(ordersEntity.getCustomerEntity().getFullnameCustomer());
+        ordersDetailDtos.setTotalAmount(ordersEntity.getTotalAmount());
+        ordersDetailDtos.setList(list);
         return ordersDetailDtos;
     }
 }

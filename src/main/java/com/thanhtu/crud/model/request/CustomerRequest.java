@@ -1,6 +1,7 @@
 package com.thanhtu.crud.model.request;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 
@@ -10,23 +11,18 @@ import javax.validation.constraints.*;
 @Getter
 @Setter
 public class CustomerRequest {
-    @NotNull(message = "Nhập tên khách hàng")
-    @NotEmpty(message = "Nhập tên khách hàng")
-    private String userCustomer;
-
-    @NotNull(message = "Nhập mật khẩu của khách hàng")
-    @NotEmpty(message = "Nhập mật khẩu của khách hàng")
-    @Size(min = 4,max = 20,message = "Nhập mật khẩu từ 4 đến 20 ký tự")
-    @Pattern(regexp = "[^ ]+",message = "Không nhập dấu cách")
-    private String passwordCustomer;
 
     @NotNull(message = "Nhập tên khách hàng")
     @NotEmpty(message = "Nhập tên khách hàng")
     @Size(max =100,message = "Nhập tên khách hàng nhỏ hơn 10 ký tự")
-    private String fullnameCustomer;
+    private String fullname;
 
-    @NotNull(message = "Nhập mật khẩu khách hàng")
-    @NotEmpty(message = "Nhập mật khẩu khách hàng")
-    @Email(message = "Vui lòng nhập đúng định dạng Email")
-    private String gmailAdmin;
+    @NotNull(message = "Nhập địa chỉ khách hàng")
+    @NotEmpty(message = "Nhập địa chỉ khách hàng")
+    private String address;
+
+    @NotNull(message = "Nhập số điện thoại khách hàng")
+    @NotEmpty(message = "Nhập số điện thoại khách hàng")
+    @Length(min = 10,max = 10,message = "Nhập đủ 10 số điện thoại")
+    private String phoneNumber;
 }

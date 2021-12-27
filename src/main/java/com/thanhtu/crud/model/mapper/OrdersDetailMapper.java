@@ -1,8 +1,14 @@
 package com.thanhtu.crud.model.mapper;
 
 import com.thanhtu.crud.entity.*;
+import com.thanhtu.crud.model.dto.OrderDetailViewDto;
 import com.thanhtu.crud.model.dto.OrdersDetailDto;
 import com.thanhtu.crud.model.dto.ProductToOrder;
+import org.hibernate.mapping.Array;
+import org.hibernate.mapping.List;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 public class OrdersDetailMapper {
     public static OrdersDetailDto toOrdersDetailDto(OrderDetailEntity orderDetailEntity, ProductEntity productEntity)

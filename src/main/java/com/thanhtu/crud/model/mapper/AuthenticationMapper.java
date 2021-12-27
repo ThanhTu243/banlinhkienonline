@@ -15,8 +15,8 @@ import java.util.Map;
 public class AuthenticationMapper {
     private final AuthenticationService authenticationService;
 
-    public AuthenticationResponse login(String username) {
-        Map<String, String> resultMap = authenticationService.login(username);
+    public AuthenticationResponse login(String username,String role) {
+        Map<String, String> resultMap = authenticationService.login(username,role);
         AuthenticationResponse response = new AuthenticationResponse();
         response.setUsername(resultMap.get("username"));
         response.setToken(resultMap.get("token"));

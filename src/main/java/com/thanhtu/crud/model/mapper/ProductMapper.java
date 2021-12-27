@@ -14,6 +14,15 @@ import java.util.List;
 import java.util.Set;
 
 public class ProductMapper {
+    public static ProductOrderDetailDto totoProductOrderDetailDto(OrderDetailEntity orderDetail)
+    {
+        ProductOrderDetailDto tmp=new ProductOrderDetailDto();
+        tmp.setProductId(orderDetail.getProductEntity().getProductId());
+        tmp.setNameProduct(orderDetail.getProductEntity().getProductName());
+        tmp.setQuantity(orderDetail.getQuantity());
+        tmp.setAmount(orderDetail.getAmount());
+        return tmp;
+    }
     public static ProductViewByIdDto toProductViewByIdDto(ProductDto productDto, String rating, List<ReviewsDto> list)
     {
         ProductViewByIdDto tmp=new ProductViewByIdDto();

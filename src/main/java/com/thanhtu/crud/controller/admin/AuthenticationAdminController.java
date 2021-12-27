@@ -8,7 +8,7 @@ import com.thanhtu.crud.model.mapper.AuthenticationMapper;
 import com.thanhtu.crud.model.request.PasswordResetRequest;
 import com.thanhtu.crud.model.request.auth.AuthenticationRequest;
 import com.thanhtu.crud.security.UserPrincipal;
-import com.thanhtu.crud.service.impl.CustomAuthenticationProviderService;
+import com.thanhtu.crud.service.impl.CustomAuthenticationAdminProviderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ import javax.validation.Valid;
 @RequestMapping("/admin/auth")
 @RequiredArgsConstructor
 public class AuthenticationAdminController {
-    @Autowired private CustomAuthenticationProviderService customAuthenticationProviderService;
+    @Autowired private CustomAuthenticationAdminProviderService customAuthenticationAdminProviderService;
     @Autowired private AuthenticationManager authenticationManager;
     private final AuthenticationMapper authenticationMapper;
 
@@ -38,8 +38,8 @@ public class AuthenticationAdminController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
         try {
-            customAuthenticationProviderService.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            return ResponseEntity.ok(authenticationMapper.login(request.getUsername()));
+            customAuthenticationAdminProviderService.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            return ResponseEntity.ok(authenticationMapper.login(request.getUsername(),"ADMIN"));
         } catch (AuthenticationException e) {
             throw new EnterUserAndPassException("Nhập sai mật khẩu hoặc tên tài khoản");
         }

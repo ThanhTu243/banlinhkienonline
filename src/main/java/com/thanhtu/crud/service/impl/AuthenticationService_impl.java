@@ -34,8 +34,8 @@ public class AuthenticationService_impl implements AuthenticationService {
     private String hostname;
 
     @Override
-    public Map<String, String> login(String username) {
-        AccountsEntity account = accountsRepo.findAccountsEntitiesByUsername(username);
+    public Map<String, String> login(String username,String role) {
+        AccountsEntity account = accountsRepo.findAccountsEntitiesByUsernameAndRoles(username,role);
         String userRole = account.getRoles().toString();
         String token = jwtProvider.createToken(username, userRole);
 

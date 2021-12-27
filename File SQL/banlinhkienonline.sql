@@ -146,11 +146,11 @@ CREATE TABLE REVIEWS(
 );
 
 INSERT INTO ACCOUNTS(username, passwords,gmail,activation_code,passwordreset_code, active_account,provider, roles) 
-VALUES("username1","$2y$12$0GACF4LnH8ufKhTOeG7DQOR.ZDvqHvsyPbszhIS4DnslJUdfZC5lu","username1@gmail.com","123","","ACTIVE","LOCAL","ADMIN");
+VALUES("username1","$2y$12$EQbZdVS0EeEM8dbUIO70BOEUKYaLiTXn9ELFMh1GsyuOAluG2VTA2","username1@gmail.com","123","","ACTIVE","LOCAL","ADMIN");
 INSERT INTO ACCOUNTS(username, passwords,gmail,activation_code,passwordreset_code, active_account,provider, roles)  
-VALUES("username2","$2y$12$JYUzp/PCnl8xDUQMQxUyI.Hfx7YO.UyRWtOcBVZhbB832fZAhWdE2","username2@gmail.com","123","","ACTIVE","LOCAL","SHIPPER");
+VALUES("username2","$2y$12$iFvzkWjqz2MT4lQXC9ywO.DA/r7tluPpp0O2qhTvx8irbIPZSPeG2","username2@gmail.com","123","","ACTIVE","LOCAL","SHIPPER");
 INSERT INTO ACCOUNTS(username, passwords,gmail,activation_code,passwordreset_code, active_account,provider, roles) 
-VALUES("username3","$2y$12$ztKqdvMziletmKMytSb29.YXyhfPBF1p53jcg9H9YEhCbUkER5Sia","username3@gmail.com","123","","ACTIVE","LOCAL","CUSTOMER");
+VALUES("username3","$2y$12$67uynXZwsJLYj1ndul/fD.h/4I.oyeKYjxl2nxik5RDELaxsj1jwu","username3@gmail.com","123","","ACTIVE","LOCAL","CUSTOMER");
 
 INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
 VALUES("username1","tu","ahihi@gmail.com","NO");

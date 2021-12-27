@@ -1,4 +1,4 @@
-package com.thanhtu.crud.controller.auth;
+package com.thanhtu.crud.controller.customer;
 
 import com.thanhtu.crud.exception.InputFieldException;
 import com.thanhtu.crud.exception.NotFoundException;

@@ -33,6 +33,10 @@ public class CartService_impl implements CartService {
     CustomerRepository customerRepo;
     @Override
     public CartDto createCart(CartRequest cartRequest) {
+        CartIDKey cartIDKey=new CartIDKey();
+        cartIDKey.setProductId(cartRequest.getProductId());
+        cartIDKey.setCustomerId(cartRequest.getCustomerId());
+        CartEntity cart=cartRepo.findCartEntityById(cartIDKey);
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
         if(product==null)
         {
@@ -42,9 +46,20 @@ public class CartService_impl implements CartService {
         {
             throw new NotEnoughQuantityException("Không đủ số lượng. Sản phẫm chỉ còn "+product.getQuantity());
         }
-        CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
-        CartEntity cartEntity=cartRepo.save(CartMapper.toCartEntity(cartRequest,product,customer));
-        return CartMapper.toCartDto(cartEntity);
+
+        if(cart==null)
+        {
+            CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
+            CartEntity cartEntity=cartRepo.save(CartMapper.toCartEntity(cartRequest,product,customer));
+            return CartMapper.toCartDto(cartEntity);
+        }
+        else{
+            int quantityUpdate=cart.getQuantity()+cartRequest.getQuantity();
+            cart.setQuantity(quantityUpdate);
+            cartRepo.save(cart);
+            return CartMapper.toCartDto(cart);
+        }
+
     }
 
     @Override

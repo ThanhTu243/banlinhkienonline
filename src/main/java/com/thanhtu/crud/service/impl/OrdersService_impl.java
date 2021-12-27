@@ -4,6 +4,7 @@ package com.thanhtu.crud.service.impl;
 import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.OrdersDto;
+import com.thanhtu.crud.model.dto.OrdersIdDto;
 import com.thanhtu.crud.model.dto.ProductToOrder;
 import com.thanhtu.crud.model.mapper.DeliveryMapper;
 import com.thanhtu.crud.model.mapper.OrdersDetailMapper;
@@ -52,16 +53,21 @@ public class OrdersService_impl implements OrdersService {
 
     @Override
     public OrdersDto updateOrders(int id, OrdersUpdateRequest ordersUpdateRequest) {
+        OrdersEntity ordersDelete=orderRepo.findOrdersEntityByOrderIdAndStatusOrder(id,"Đã hủy");
+        if(ordersDelete!=null)
+        {
+            throw new NotFoundException("Đã hủy đơn hàng với id: "+id);
+        }
         OrdersEntity ordersEntity=orderRepo.findById(id).orElseThrow(()-> new NotFoundException("Không tồn tại đơn hàng với id: "+id));
         OrdersEntity orders=orderRepo.save(OrdersMapper.toUpdateOrders(ordersEntity,ordersUpdateRequest));
         return OrdersMapper.toOrdersDto(orders);
     }
 
     @Override
-    public void approvalOrders(List<OrdersUpdateStatusRequest> listId) {
-        for(OrdersUpdateStatusRequest orderId:listId)
+    public void approvalOrders(OrdersUpdateStatusRequest ordersUpdateStatusRequest) {
+        for(OrdersIdDto orderId:ordersUpdateStatusRequest.getList())
         {
-            OrdersEntity ordersEntity=orderRepo.findById(orderId.getId()).orElseThrow(()-> new NotFoundException("Không tồn tại đơn hàng với id: "+orderId.getId()));
+            OrdersEntity ordersEntity=orderRepo.findById(orderId.getOrdersId()).orElseThrow(()-> new NotFoundException("Không tồn tại đơn hàng với id: "+orderId.getOrdersId()));
             ordersEntity.setStatusOrder("Đã duyệt");
             orderRepo.save(ordersEntity);
         }

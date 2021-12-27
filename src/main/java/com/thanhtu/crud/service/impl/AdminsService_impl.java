@@ -67,7 +67,7 @@ public class AdminsService_impl implements AdminsService {
         AdminsEntity adminsEntity=adminsRepo.findAdminsEntitiesByAdminIdAndIsDelete(id,"NO");
         if(adminsEntity==null)
         {
-            throw new NotFoundException("Không tài tại tài khoản với id: "+id);
+            throw new NotFoundException("Không tìm thấy quản trị viên có id: "+id);
         }
         AccountsEntity accounts=accountsRepo.findAccountsEntitiesByUsername(adminsEntity.getUserAdmin());
         List<AccountsEntity> list=accountsRepo.findAll();
@@ -102,7 +102,7 @@ public class AdminsService_impl implements AdminsService {
         AdminsEntity adminsEntity=adminsRepo.findAdminsEntitiesByAdminIdAndIsDelete(id,"NO");
         if(adminsEntity==null)
         {
-            throw new NotFoundException("Không tài tại tài khoản với id: "+id);
+            throw new NotFoundException("Không tìm thấy quản trị viên có id: "+id);
         }
         AccountsEntity account=accountsRepo.findAccountsEntitiesByUsername(adminsEntity.getUserAdmin());
         adminsEntity.setIsDelete("YES");

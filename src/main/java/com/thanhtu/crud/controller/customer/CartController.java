@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@PreAuthorize("hasAuthority('CUSTOMER')")
+//@PreAuthorize("hasAuthority('CUSTOMER')")
 @RequestMapping("/cart")
 public class CartController {
     @Autowired CartService cartService;

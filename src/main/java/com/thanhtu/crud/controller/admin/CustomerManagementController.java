@@ -7,6 +7,7 @@ import com.thanhtu.crud.model.dto.CustomerDto;
 import com.thanhtu.crud.model.mapper.CustomerMapper;
 import com.thanhtu.crud.model.mapper.ProductMapper;
 import com.thanhtu.crud.model.request.AdminsRequest;
+import com.thanhtu.crud.model.request.CustomerRequest;
 import com.thanhtu.crud.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,9 +49,21 @@ public class CustomerManagementController {
         return ResponseEntity.status(HttpStatus.OK).body(CustomerMapper.toCustomerPageDto(listCustomer,totalPages,currentPage));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateCustomer(@PathVariable("id") Integer id, @Valid @RequestBody CustomerRequest customerRequest, BindingResult bindingResult)
+    {
+        if(bindingResult.hasErrors())
+        {
+            return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
+        }
+        CustomerDto customerDto=customerService.updateCustomer(id,customerRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(customerDto);
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable int id) {
-        return new ResponseEntity<>(customerService.getCustomerById(id), HttpStatus.OK);
+        return new ResponseEntity<>(CustomerMapper.toCustomerDto(customerService.getCustomerById(id)), HttpStatus.OK);
     }
 
     @PutMapping("/delete/{id}")

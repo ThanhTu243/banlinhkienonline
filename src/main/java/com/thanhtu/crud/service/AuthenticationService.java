@@ -7,7 +7,7 @@ import com.thanhtu.crud.model.request.RegistrationRequest;
 import java.util.Map;
 
 public interface AuthenticationService {
-    Map<String, String> login(String username);
+    Map<String, String> login(String username,String role);
 
     void registerUser(RegistrationRequest request);
 

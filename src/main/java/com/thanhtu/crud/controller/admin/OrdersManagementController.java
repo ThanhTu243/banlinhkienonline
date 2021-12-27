@@ -1,8 +1,10 @@
 package com.thanhtu.crud.controller.admin;
 import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
+import com.thanhtu.crud.model.dto.OrderDetailViewDto;
 import com.thanhtu.crud.model.dto.OrdersDetailDto;
 import com.thanhtu.crud.model.dto.OrdersDto;
+import com.thanhtu.crud.model.dto.OrdersIdDto;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.*;
 import com.thanhtu.crud.service.OrdersDetailService;
@@ -55,14 +57,14 @@ public class OrdersManagementController {
         return ResponseEntity.status(HttpStatus.OK).body(ordersDto);
     }
     @PutMapping("/approval")
-    public ResponseEntity<?> approvalOrders(@Valid @RequestBody List<OrdersUpdateStatusRequest> list,
+    public ResponseEntity<?> approvalOrders(@Valid @RequestBody OrdersUpdateStatusRequest ordersUpdateStatusRequest,
                                             BindingResult bingResult)
     {
         if(bingResult.hasErrors())
         {
             return new ResponseEntity<>(bingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
         }
-        ordersService.approvalOrders(list);
+        ordersService.approvalOrders(ordersUpdateStatusRequest);
         List<OrdersEntity> listOrders=ordersService.getListOrderByStatus("Chưa duyệt");
         List<OrdersDto> dtoList=new ArrayList<OrdersDto>();
         for(OrdersEntity ordersEntity:listOrders)
@@ -90,8 +92,8 @@ public class OrdersManagementController {
     @GetMapping ("/detail/{id}")
     public ResponseEntity<?> detailOrders(@PathVariable("id") Integer id)
     {
-        List<OrdersDetailDto> list=orderDetaiService.detailOrders(id);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        OrderDetailViewDto orders=orderDetaiService.detailOrders(id);
+        return ResponseEntity.status(HttpStatus.OK).body(orders);
     }
 
     @PutMapping("/cancel/{id}")

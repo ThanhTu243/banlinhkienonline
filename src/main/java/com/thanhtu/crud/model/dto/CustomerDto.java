@@ -20,6 +20,4 @@ public class CustomerDto {
     private String address;
     private String gmailCustomer;
     private String phoneNumberCustomer;
-    private Set<CartEntity> cartEntities;
-    private Set<OrdersEntity> ordersEntities;
 }

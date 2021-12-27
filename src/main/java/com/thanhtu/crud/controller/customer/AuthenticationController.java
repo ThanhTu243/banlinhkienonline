@@ -1,15 +1,15 @@
-package com.thanhtu.crud.controller.auth;
+package com.thanhtu.crud.controller.customer;
 
 import com.thanhtu.crud.entity.AccountsEntity;
 import com.thanhtu.crud.exception.EnterUserAndPassException;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.exception.PasswordException;
-import com.thanhtu.crud.model.dto.AccountsDto;
 import com.thanhtu.crud.model.mapper.AuthenticationMapper;
 import com.thanhtu.crud.model.request.PasswordResetRequest;
 import com.thanhtu.crud.model.request.auth.AuthenticationRequest;
 import com.thanhtu.crud.security.UserPrincipal;
-import com.thanhtu.crud.service.impl.CustomAuthenticationProviderService;
+import com.thanhtu.crud.service.impl.CustomAuthenticationAdminProviderService;
+import com.thanhtu.crud.service.impl.CustomAuthenticationCustomerProviderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    @Autowired private CustomAuthenticationProviderService customAuthenticationProviderService;
+    @Autowired private CustomAuthenticationCustomerProviderService customAuthenticationCustomerProviderService;
     @Autowired private AuthenticationManager authenticationManager;
     private final AuthenticationMapper authenticationMapper;
 
@@ -39,8 +39,8 @@ public class AuthenticationController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
         try {
-            customAuthenticationProviderService.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            return ResponseEntity.ok(authenticationMapper.login(request.getUsername()));
+            customAuthenticationCustomerProviderService.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            return ResponseEntity.ok(authenticationMapper.login(request.getUsername(),"CUSTOMER"));
         } catch (AuthenticationException e) {
             throw new EnterUserAndPassException("Nhập sai mật khẩu hoặc tên tài khoản");
         }

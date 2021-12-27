@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
-public class CustomAuthenticationProviderService implements AuthenticationProvider {
+public class CustomAuthenticationAdminProviderService implements AuthenticationProvider {
     @Autowired
     private AccountsRepository accountsRepo;
     @Override
@@ -28,7 +28,7 @@ public class CustomAuthenticationProviderService implements AuthenticationProvid
         UsernamePasswordAuthenticationToken authenticationToken=null;
         String username=authentication.getName();
         String passwrod=authentication.getCredentials().toString();
-        AccountsEntity account=accountsRepo.findAccountsEntitiesByUsername(username);
+        AccountsEntity account=accountsRepo.findAccountsEntitiesByUsernameAndRoles(username,"ADMIN");
         if(account!=null)
         {
             if(username.equals(account.getUsername()) && BCrypt.checkpw(passwrod,account.getPasswords()))
@@ -55,15 +55,7 @@ public class CustomAuthenticationProviderService implements AuthenticationProvid
         if(account.getRoles().equals("ADMIN")) {
             grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
         }
-        else if(account.getRoles().equals("SHIPPER"))
-        {
-            grantedAuthorities.add(new SimpleGrantedAuthority("SHIPPER"));
-        }
-        else{
-            grantedAuthorities.add(new SimpleGrantedAuthority("CUSTOMER"));
-        }
         return grantedAuthorities;
-
     }
 
     @Override

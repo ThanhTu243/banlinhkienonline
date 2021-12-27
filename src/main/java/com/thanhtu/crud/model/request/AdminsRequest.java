@@ -22,7 +22,7 @@ public class AdminsRequest {
 
     @NotNull(message = "Nhập tên quản trị viên")
     @NotEmpty(message = "Nhập tên quản trị viên")
-    @Size(max =100,message = "Nhập tên quản trị viên nhỏ hơn 10 ký tự")
+    @Size(max =100,message = "Nhập tên quản trị viên nhỏ hơn 100 ký tự")
     private String fullnameAdmin;
 
     @NotNull(message = "Nhập mật khẩu quản trị viên")
