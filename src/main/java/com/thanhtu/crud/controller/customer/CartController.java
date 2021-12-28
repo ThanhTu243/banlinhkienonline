@@ -8,11 +8,13 @@ import com.thanhtu.crud.model.dto.CategoryDto;
 import com.thanhtu.crud.model.mapper.CartMapper;
 import com.thanhtu.crud.model.mapper.CustomerMapper;
 import com.thanhtu.crud.model.request.CartRequest;
+import com.thanhtu.crud.model.request.CartSelectRequest;
 import com.thanhtu.crud.model.request.CategoryRequest;
 import com.thanhtu.crud.security.UserPrincipal;
 import com.thanhtu.crud.service.CartService;
 import com.thanhtu.crud.service.CategoryService;
 import com.thanhtu.crud.service.CustomerService;
+import org.hibernate.id.BulkInsertionCapableIdentifierGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 //@PreAuthorize("hasAuthority('CUSTOMER')")
@@ -30,6 +33,17 @@ public class CartController {
     @Autowired CartService cartService;
     @Autowired
     CustomerService customerService;
+
+    @GetMapping("select")
+    public ResponseEntity<?> selectCart(@Valid @RequestBody CartSelectRequest cartSelectRequest, BindingResult bindingResult)
+    {
+        if(bindingResult.hasErrors())
+        {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        Long sumCart=cartService.selectCart(cartSelectRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(sumCart);
+    }
 
     @GetMapping("/{customerId}")
     public ResponseEntity<?> getCartByCustomer(@PathVariable int customerId)

@@ -2,15 +2,14 @@ package com.thanhtu.crud.controller.customer;
 
 import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.entity.ReviewsEntity;
+import com.thanhtu.crud.model.dto.BestSellingProductsPage;
 import com.thanhtu.crud.model.dto.ProductDto;
 import com.thanhtu.crud.model.dto.ProductViewByIdDto;
 import com.thanhtu.crud.model.dto.ReviewsDto;
 import com.thanhtu.crud.model.mapper.ProductMapper;
 import com.thanhtu.crud.model.request.product.ProductByCategoryRequest;
-import com.thanhtu.crud.service.CategoryService;
-import com.thanhtu.crud.service.ProductService;
-import com.thanhtu.crud.service.ReviewsService;
-import com.thanhtu.crud.service.SupplierService;
+import com.thanhtu.crud.service.*;
+import com.thanhtu.crud.service.impl.StatisticService_impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +35,22 @@ public class ProductController {
     SupplierService supplierService;
     @Autowired
     ReviewsService reviewsService;
+    @Autowired
+    StatisticService statisticService;
+
+    @GetMapping("/10discount")
+    public ResponseEntity <?> getTop10DiscountProduct()
+    {
+        List<ProductDto> list=productService.getTop10DiscountProduct();
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/10bestproduct")
+    public ResponseEntity <?> getTop10BestSellerProduct()
+    {
+        BestSellingProductsPage list=statisticService.top10BestSellingProducts();
+        return ResponseEntity.ok(list) ;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable int id) {
@@ -119,7 +134,6 @@ public class ProductController {
             currentPage=productByCategoryAndSupplierAndKeyword.getNumber()+1;
             listPro=productByCategoryAndSupplierAndKeyword.toList();
         }
-
 
         return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toProductPageDto(listPro,totalPages,currentPage));
     }

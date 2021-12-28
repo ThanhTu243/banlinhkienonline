@@ -15,6 +15,7 @@ import lombok.*;
 public class CartDto {
     private CartIDPKDto id;
     private Integer quantity;
+    private Long amountCart;
     private CustomerFKDto customerFKDto;
     private ProductFKDto productFKDto;
 }

@@ -211,4 +211,14 @@ public class OrdersService_impl implements OrdersService {
         return orderDetailViewList;
     }
 
+    @Override
+    public void orderDelivered(OrdersUpdateStatusRequest ordersUpdateStatusRequest) {
+        for(OrdersIdDto orderId:ordersUpdateStatusRequest.getList())
+        {
+            OrdersEntity ordersEntity=orderRepo.findById(orderId.getOrdersId()).orElseThrow(()-> new NotFoundException("Không tồn tại đơn hàng với id: "+orderId.getOrdersId()));
+            ordersEntity.setStatusOrder("Đã giao");
+            orderRepo.save(ordersEntity);
+        }
+    }
+
 }

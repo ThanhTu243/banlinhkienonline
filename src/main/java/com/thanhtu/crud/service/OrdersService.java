@@ -28,4 +28,6 @@ public interface OrdersService {
     void sendEmailOrder();
 
     List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest);
+
+    void orderDelivered(OrdersUpdateStatusRequest ordersUpdateStatusRequest);
 }

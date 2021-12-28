@@ -21,7 +21,7 @@ public class OrderDetailEntity {
     private OrderDetailIDKey id;
 
     private Integer quantity;
-    private Integer amount;
+    private Long amount;
     private String isDelete;
 
     @ManyToOne

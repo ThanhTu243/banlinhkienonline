@@ -103,7 +103,7 @@ CREATE TABLE ORDERS
 	 address NVARCHAR(100),
 	 phone_number VARCHAR(15),
      create_date TIMESTAMP,
-     total_amount INT,
+     total_amount LONG,
      note NVARCHAR(20),
 	 status_order NVARCHAR(10),
      customer_id INT,
@@ -116,7 +116,7 @@ CREATE TABLE ORDERDETAIL(
 	 order_id INT,
 	 product_id INT,
 	 quantity INT(10),
-	 amount INT,
+	 amount LONG,
      is_delete VARCHAR(10),
 	 CONSTRAINT OR_isDeleteORDERDETAIL_CHK CHECK (is_delete IN ('NO','YES')),
 	 CONSTRAINT OD_maORDERDETAIL_PK PRIMARY KEY(order_id, product_id),
@@ -163,7 +163,7 @@ VALUES("username1","tu","Tam Ky","ahihihihi@gmail.com","0123456789","NO");
 
 
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Tam Dan","345","2021-10-15",15000,"Chưa duyệt","Đã thanh toán",1);
+VALUES ("Tam Dan","345","2021-10-15",92233,"Chưa duyệt","Đã thanh toán",1);
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
 VALUES ("Tam Dan","567","2021-10-15",15000,"Chưa duyệt","Đã thanh toán",1);
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)

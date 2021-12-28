@@ -8,6 +8,6 @@ public class OrdersFKDto {
     private String address;
     private String phoneNumber;
     private String createDate;
-    private Integer totalAmount;
+    private Long totalAmount;
     private String statusOrder;
 }

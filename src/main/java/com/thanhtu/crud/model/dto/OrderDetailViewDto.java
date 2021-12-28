@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class OrderDetailViewDto {
     private Integer orderId;
-    private Integer totalAmount;
+    private Long totalAmount;
     private String nameCustomer;
     private List<ProductOrderDetailDto> list;
 }

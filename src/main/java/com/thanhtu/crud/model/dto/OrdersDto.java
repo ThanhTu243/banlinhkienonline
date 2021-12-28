@@ -9,7 +9,7 @@ public class OrdersDto {
     private String address;
     private String phoneNumber;
     private String createDate;
-    private Integer totalAmount;
+    private Long totalAmount;
     private String statusOrder;
     private CustomerFKDto customerFKDto;
 }

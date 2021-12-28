@@ -9,5 +9,5 @@ public class OrderDetailView {
     private String productName;
     private String productImage;
     private Integer quantity;
-    private Integer amount;
+    private Long amount;
 }

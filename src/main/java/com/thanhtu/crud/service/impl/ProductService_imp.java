@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -163,6 +164,17 @@ public class ProductService_imp implements ProductService {
         CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(categoryName,"NO");
         SupplierEntity supplier=supplierRepo.findSupplierEntityBySupplierNameAndIsDelete(supplierName,"NO");
         return productRepo.findAllByProductNameContainsAndCategoryEntityAndSupplierEntityAndIsDelete(keyword,category,supplier,"NO",pageable);
+    }
+
+    @Override
+    public List<ProductDto> getTop10DiscountProduct() {
+        List<ProductEntity> list=productRepo.findProductEntityByIsDeleteOrderByDiscountDesc("NO");
+        List<ProductDto> listTop10DiscountProduct=new ArrayList<ProductDto>();
+        for(int i=0;i<10;i++)
+        {
+            listTop10DiscountProduct.add(ProductMapper.toProductDto(list.get(i)));
+        }
+        return listTop10DiscountProduct;
     }
 
 

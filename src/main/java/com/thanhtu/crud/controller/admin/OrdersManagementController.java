@@ -73,6 +73,23 @@ public class OrdersManagementController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
+    @PutMapping("/delivered")
+    public ResponseEntity<?> orderDelivered(@Valid @RequestBody OrdersUpdateStatusRequest ordersUpdateStatusRequest,
+                                            BindingResult bingResult)
+    {
+        if(bingResult.hasErrors())
+        {
+            return new ResponseEntity<>(bingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
+        }
+        ordersService.orderDelivered(ordersUpdateStatusRequest);
+        List<OrdersEntity> listOrders=ordersService.getListOrderByStatus("Đã duyệt");
+        List<OrdersDto> dtoList=new ArrayList<OrdersDto>();
+        for(OrdersEntity ordersEntity:listOrders)
+        {
+            dtoList.add(OrdersMapper.toOrdersDto(ordersEntity));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+    }
     @PutMapping ("/assign")
     public ResponseEntity<?> assignOrders(@Valid @RequestBody List<OrdersAssignRequest> list,BindingResult bindingResult)
     {

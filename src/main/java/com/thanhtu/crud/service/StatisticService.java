@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface StatisticService {
-    Integer revenueStatistics(RequestDate requestDate);
+    Long revenueStatistics(RequestDate requestDate);
 
     BestSellingProductsPage bestSellingProducts(RequestDate requestDate, int page);
+
+    BestSellingProductsPage top10BestSellingProducts();
 }

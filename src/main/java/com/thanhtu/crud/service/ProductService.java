@@ -42,4 +42,6 @@ public interface ProductService {
     Page<ProductEntity> getListProductByCategoryAndSupplier(String category, String supplier, Pageable pageable);
 
     Page<ProductEntity> getListProductByCategoryAndSupplierAndKeyword(String category, String supplier, String keyword, Pageable pageable);
+
+    List<ProductDto> getTop10DiscountProduct();
 }

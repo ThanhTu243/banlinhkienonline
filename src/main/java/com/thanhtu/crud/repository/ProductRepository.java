@@ -24,4 +24,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
     Page<ProductEntity> findAllByProductNameContainsAndSupplierEntityAndIsDelete(String keyword,SupplierEntity supplierEntity,String status,Pageable page);
     Page<ProductEntity> findAllByCategoryEntityAndSupplierEntityAndIsDelete(CategoryEntity categoryEntity,SupplierEntity supplierEntity,String status,Pageable page);
     Page<ProductEntity> findAllByProductNameContainsAndCategoryEntityAndSupplierEntityAndIsDelete(String keyword,CategoryEntity categoryEntity,SupplierEntity supplierEntity,String status,Pageable page);
+    List<ProductEntity> findProductEntityByIsDeleteOrderByDiscountDesc(String staus);
 }

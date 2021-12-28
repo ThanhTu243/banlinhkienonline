@@ -7,5 +7,5 @@ public class ProductOrderDetailDto {
    private Integer productId;
    private String nameProduct;
    private Integer quantity;
-   private Integer amount;
+   private Long amount;
 }

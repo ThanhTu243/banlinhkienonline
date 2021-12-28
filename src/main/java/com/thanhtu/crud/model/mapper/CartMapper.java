@@ -28,11 +28,15 @@ public class CartMapper {
     public static CartFKViewDto toCartFKViewDto(ProductEntity product,CartEntity cart)
     {
         CartFKViewDto tmp=new CartFKViewDto();
+        tmp.setProductId(product.getProductId());
         tmp.setNameProduct(product.getProductName());
         tmp.setUnitPrice(product.getUnitPrice());
+        tmp.setDiscount(product.getDiscount());
+        tmp.setPriceAfterDiscount((100-product.getDiscount())*product.getUnitPrice()/100);
         tmp.setQuantity(cart.getQuantity());
         tmp.setProductImage(product.getProductImage());
-        tmp.setCost(product.getUnitPrice()* cart.getQuantity());
+
+        tmp.setCost(Long.valueOf(tmp.getPriceAfterDiscount()* cart.getQuantity()));
         return tmp;
     }
 }

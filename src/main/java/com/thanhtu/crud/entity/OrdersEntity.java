@@ -26,7 +26,7 @@ public class OrdersEntity {
     private String phoneNumber;
     @Column(columnDefinition = "Date")
     private Timestamp createDate;
-    private Integer totalAmount;
+    private Long totalAmount;
     private String note;
     private String statusOrder;
 

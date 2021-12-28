@@ -29,12 +29,12 @@ public class StatisticService_impl implements StatisticService {
     ProductRepository productRepo;
 
     @Override
-    public Integer revenueStatistics(RequestDate requestDate) {
+    public Long revenueStatistics(RequestDate requestDate) {
         List<OrdersEntity> list=ordersRepo.findOrdersEntityByCreateDateBetweenAndStatusOrder(Timestamp.valueOf(requestDate.getFrom()),Timestamp.valueOf(requestDate.getTo()),"Đã giao");
-        int sumRevenue=0;
+        Long sumRevenue=Long.valueOf(0);
         for(OrdersEntity ordersEn:list)
         {
-            sumRevenue+=ordersEn.getTotalAmount();
+            sumRevenue+=Long.valueOf(ordersEn.getTotalAmount());
         }
         return sumRevenue;
     }
@@ -115,6 +115,62 @@ public class StatisticService_impl implements StatisticService {
         BestSellingProductsPage bestSellingProductsPage=new BestSellingProductsPage();
         bestSellingProductsPage.setCurrentPage(page+1);
         bestSellingProductsPage.setTotalPage(totalPage);
+        bestSellingProductsPage.setMap(sortedMap);
+        return bestSellingProductsPage;
+    }
+
+    @Override
+    public BestSellingProductsPage top10BestSellingProducts() {
+        List<OrdersEntity> list=ordersRepo.findOrdersEntityByStatusOrder("Đã giao");
+        List<OrderDetailEntity> listDetail=new ArrayList<OrderDetailEntity>();
+        Map<String,BestSellingProducts> listBestSellingProducts=new HashMap<String,BestSellingProducts>();
+        for(OrdersEntity order:list)
+        {
+            List<OrderDetailEntity> listDetailUnit= ordersDetailRepo.findOrderDetailEntityByOrdersEntity(order);
+            for(OrderDetailEntity orderDetail:listDetailUnit)
+            {
+                listDetail.add(orderDetail);
+            }
+        }
+        for(OrderDetailEntity orderDetail:listDetail)
+        {
+            String nameProduct=orderDetail.getProductEntity().getProductName();
+            if(listBestSellingProducts.containsKey(nameProduct))
+            {
+                BestSellingProducts productUpdate=listBestSellingProducts.get(nameProduct);
+                productUpdate.setQuantity(productUpdate.getQuantity()+orderDetail.getQuantity());
+                listBestSellingProducts.put(nameProduct,productUpdate);
+            }
+            else{
+                BestSellingProducts newProduct=new BestSellingProducts();
+                newProduct.setProductName(nameProduct);
+                newProduct.setQuantity(orderDetail.getQuantity());
+                listBestSellingProducts.put(nameProduct,newProduct);
+            }
+        }
+        Set<Map.Entry<String,BestSellingProducts>> entries=listBestSellingProducts.entrySet();
+        Comparator<Map.Entry<String, BestSellingProducts>> comparator = new Comparator<Map.Entry<String, BestSellingProducts>>() {
+            @Override
+            public int compare(Map.Entry<String, BestSellingProducts> o1, Map.Entry<String, BestSellingProducts> o2) {
+                int quantity1=o1.getValue().getQuantity();
+                int quantity2=o2.getValue().getQuantity();
+                return quantity2-quantity1;
+            }
+        };
+        List<Map.Entry<String,BestSellingProducts>> listEntries=new ArrayList<>(entries);
+        Collections.sort(listEntries,comparator);
+        LinkedHashMap<String, BestSellingProducts> sortedMap = new LinkedHashMap<>(listEntries.size());
+//        for (Map.Entry<String, BestSellingProducts> entry : listEntries) {
+//            sortedMap.put(entry.getKey(), entry.getValue());
+//        }
+        for(int i=0;i<10;i++)
+        {
+            sortedMap.put(listEntries.get(i).getKey(),listEntries.get(i).getValue());
+        }
+
+        BestSellingProductsPage bestSellingProductsPage=new BestSellingProductsPage();
+        bestSellingProductsPage.setCurrentPage(1);
+        bestSellingProductsPage.setTotalPage(1);
         bestSellingProductsPage.setMap(sortedMap);
         return bestSellingProductsPage;
     }

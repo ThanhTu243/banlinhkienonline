@@ -10,6 +10,6 @@ public class OrdersDetailDto {
     private Integer orderId;
     private Integer productId;
     private Integer quantity;
-    private Integer amount;
+    private Long amount;
     private ProductFKDto productFKDto;
 }

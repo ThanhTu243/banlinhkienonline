@@ -12,6 +12,8 @@ import com.thanhtu.crud.model.dto.fk.CartFKViewDto;
 import com.thanhtu.crud.model.mapper.CartIdKeyMapper;
 import com.thanhtu.crud.model.mapper.CartMapper;
 import com.thanhtu.crud.model.request.CartRequest;
+import com.thanhtu.crud.model.request.CartSelectRequest;
+import com.thanhtu.crud.model.request.ProductSelectCartRequest;
 import com.thanhtu.crud.repository.CartRepository;
 import com.thanhtu.crud.repository.CustomerRepository;
 import com.thanhtu.crud.repository.ProductRepository;
@@ -115,5 +117,32 @@ public class CartService_impl implements CartService {
         }
         cartByCustomerDto.setCartEntities(set);
         return cartByCustomerDto;
+    }
+
+    @Override
+    public Long selectCart(CartSelectRequest cartSelectRequest) {
+        CustomerEntity customer= customerRepo.findCustomerEntityByCustomerIdAndIsDelete(cartSelectRequest.getCustomerId(),"NO");
+        if(customer==null)
+        {
+            throw new NotFoundException("Không tìm được khách hàng có Id: "+cartSelectRequest.getCustomerId());
+        }
+        Long sumCart=Long.valueOf(0);
+        List<ProductSelectCartRequest> list=cartSelectRequest.getListProducts();
+        for(ProductSelectCartRequest productSelectCartRequest:list)
+        {
+            ProductEntity product= proRepo.findProductEntityByProductIdAndIsDelete(productSelectCartRequest.getProductId(),"No");
+            if(product==null)
+            {
+                throw new NotFoundException("Không tìm thấy sản phẫm có Id "+productSelectCartRequest.getProductId());
+            }
+            CartEntity cart=cartRepo.findCartEntityById(CartIdKeyMapper.toCartIdKey(customer,product));
+            if(cart==null)
+            {
+                throw new NotFoundException("Không có trong giỏ hàng");
+            }
+            Long priceAfterDiscount=Long.valueOf(product.getUnitPrice()*(100-product.getQuantity())/100);
+            sumCart+=Long.valueOf(priceAfterDiscount* productSelectCartRequest.getQuantity());
+        }
+        return sumCart;
     }
 }

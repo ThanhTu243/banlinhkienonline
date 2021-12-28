@@ -4,9 +4,12 @@ import lombok.Data;
 
 @Data
 public class CartFKViewDto {
+    private Integer productId;
     private String nameProduct;
     private String productImage;
     private Integer quantity;
+    private Integer discount;
     private Integer unitPrice;
-    private Integer cost;
+    private Integer priceAfterDiscount;
+    private Long cost;
 }

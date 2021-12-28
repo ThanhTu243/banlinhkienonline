@@ -24,7 +24,7 @@ public class StatisticController {
     @GetMapping("/revenue")
     public ResponseEntity<?> revenueStatistics(@RequestBody RequestDate requestDate)
     {
-        int sumRevenue=statisticService.revenueStatistics(requestDate);
+        long sumRevenue=statisticService.revenueStatistics(requestDate);
         return ResponseEntity.status(HttpStatus.OK).body(sumRevenue);
     }
     @GetMapping("/bestsellingproducts")

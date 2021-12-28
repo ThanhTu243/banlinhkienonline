@@ -32,9 +32,10 @@ public class ProductMapper {
         tmp.setProductImage(productDto.getProductImage());
         tmp.setDiscount(productDto.getDiscount());
         tmp.setUnitPrice(productDto.getUnitPrice());
+        tmp.setPriceAfterDiscount((100-productDto.getDiscount())*productDto.getUnitPrice()/100);
         tmp.setDescriptionProduct(productDto.getDescriptionProduct());
         tmp.setRating(rating);
-        tmp.setList(list);
+        tmp.setListReviews(list);
         return tmp;
     }
     public static ProductPageDto toProductPageDto(List<ProductEntity> productList,int totalPage,int currentPage)
@@ -59,6 +60,7 @@ public class ProductMapper {
         tmp.setProductImage(productEntity.getProductImage());
         tmp.setDiscount(productEntity.getDiscount());
         tmp.setUnitPrice(productEntity.getUnitPrice());
+        tmp.setPriceAfterDiscount((100-productEntity.getDiscount())* productEntity.getUnitPrice()/100);
         tmp.setDescriptionProduct(productEntity.getDescriptionProduct());
         return tmp;
     }
