@@ -4,6 +4,7 @@ import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.thanhtu.crud.entity.OrdersEntity;
+import com.thanhtu.crud.model.dto.OrderDetailView;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.OrderCreateRequest;
@@ -44,6 +45,15 @@ public class OrderController {
         }
         OrdersDto ordersDto=ordersService.createOrders(orderCreateRequest);
         return ResponseEntity.ok(ordersDto);
-
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrderDetailByCustomerIdAndStatus(@Valid @RequestBody OrdersStatusRequest ordersStatusRequest, BindingResult bindingResult,@PathVariable int id)
+    {
+        if(bindingResult.hasErrors())
+        {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        List<OrderDetailView> ordersDto=ordersService.getOrderDetailByCustomerIdAndStatus(id,ordersStatusRequest);
+        return ResponseEntity.ok(ordersDto);
     }
 }

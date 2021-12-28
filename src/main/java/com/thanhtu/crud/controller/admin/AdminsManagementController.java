@@ -1,6 +1,8 @@
 package com.thanhtu.crud.controller.admin;
 import com.thanhtu.crud.entity.AdminsEntity;
+import com.thanhtu.crud.exception.SelfDestructionExeption;
 import com.thanhtu.crud.model.dto.AdminsDto;
+import com.thanhtu.crud.model.request.AdminIdRequest;
 import com.thanhtu.crud.model.request.AdminsRequest;
 import com.thanhtu.crud.service.AdminsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +59,12 @@ public class AdminsManagementController {
     }
 
     @PutMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteAdmin(@PathVariable("id") Integer id)
+    public ResponseEntity<Object> deleteAdmin(@Valid @RequestBody AdminIdRequest adminIdRequest, @PathVariable("id") Integer id) throws SelfDestructionExeption
     {
+        if(id.equals(adminIdRequest.getId()))
+        {
+            throw new SelfDestructionExeption("Không tự xóa chính mình");
+        }
         adminsService.deleteAdmin(id);
         return new ResponseEntity<>("Xóa thành công",HttpStatus.OK);
     }

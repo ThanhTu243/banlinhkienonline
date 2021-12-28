@@ -31,6 +31,7 @@ public class CartMapper {
         tmp.setNameProduct(product.getProductName());
         tmp.setUnitPrice(product.getUnitPrice());
         tmp.setQuantity(cart.getQuantity());
+        tmp.setProductImage(product.getProductImage());
         tmp.setCost(product.getUnitPrice()* cart.getQuantity());
         return tmp;
     }

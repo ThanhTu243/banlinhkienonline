@@ -22,7 +22,7 @@ public class UserPrincipal implements UserDetails {
     public static UserPrincipal create(AccountsEntity account) {
         String userRole=account.getRoles();
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(userRole));
-        return new UserPrincipal(account.getAccount_id(), account.getGmail(), account.getPasswords(), authorities);
+        return new UserPrincipal(account.getAccountId(), account.getGmail(), account.getPasswords(), authorities);
     }
 
     @Override

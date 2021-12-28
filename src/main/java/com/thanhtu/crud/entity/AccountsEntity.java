@@ -18,7 +18,7 @@ public class AccountsEntity {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
-    private Integer account_id;
+    private Integer accountId;
     private String username;
     private String passwords;
     private String gmail;

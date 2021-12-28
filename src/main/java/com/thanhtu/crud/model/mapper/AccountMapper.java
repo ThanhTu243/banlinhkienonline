@@ -10,7 +10,7 @@ public class AccountMapper {
     public static AccountsDto toAccountsDto(AccountsEntity account)
     {
         AccountsDto tmp=new AccountsDto();
-        tmp.setId(account.getAccount_id());
+        tmp.setId(account.getAccountId());
         tmp.setUsername(account.getUsername());
         tmp.setGmail(account.getGmail());
         tmp.setProvider(account.getProvider());

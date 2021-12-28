@@ -11,6 +11,11 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
+    @ExceptionHandler(SelfDestructionExeption.class)
+    public ErrorResponse handleSelfDestructionExeption(SelfDestructionExeption ex,WebRequest reg) {
+        return new ErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
     @ExceptionHandler(NotEnoughQuantityException.class)
     public ErrorResponse handleReviewMailException(NotEnoughQuantityException ex,WebRequest reg) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());

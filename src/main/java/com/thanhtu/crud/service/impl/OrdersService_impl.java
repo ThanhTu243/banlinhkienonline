@@ -3,6 +3,7 @@ package com.thanhtu.crud.service.impl;
 
 import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.exception.NotFoundException;
+import com.thanhtu.crud.model.dto.OrderDetailView;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.dto.OrdersIdDto;
 import com.thanhtu.crud.model.dto.ProductToOrder;
@@ -184,6 +185,30 @@ public class OrdersService_impl implements OrdersService {
     @Override
     public void sendEmailOrder() {
 
+    }
+
+    @Override
+    public List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest) {
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(id,"NO");
+        List<OrdersEntity> listOrder=orderRepo.findOrdersEntityByCustomerEntityAndStatusOrder(customer,ordersStatusRequest.getStatusOrder());
+        List<OrderDetailView> orderDetailViewList=new ArrayList<OrderDetailView>();
+        for(OrdersEntity orders:listOrder)
+        {
+            List<OrderDetailEntity> listOrderDetail=ordersDetailRepo.findOrderDetailEntityByOrdersEntity(orders);
+            for(OrderDetailEntity orderDetailEntity:listOrderDetail)
+            {
+                OrderDetailView orderDetailView=new OrderDetailView();
+                orderDetailView.setOrderId(orderDetailEntity.getId().getOrderId());
+                orderDetailView.setProducId(orderDetailEntity.getId().getProductId());
+                orderDetailView.setProductName(orderDetailEntity.getProductEntity().getProductName());
+                orderDetailView.setProductImage(orderDetailEntity.getProductEntity().getProductImage());
+                orderDetailView.setQuantity(orderDetailEntity.getQuantity());
+                orderDetailView.setAmount(orderDetailEntity.getAmount());
+                orderDetailViewList.add(orderDetailView);
+            }
+        }
+
+        return orderDetailViewList;
     }
 
 }

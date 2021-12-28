@@ -1,6 +1,7 @@
 package com.thanhtu.crud.service;
 
 import com.thanhtu.crud.entity.OrdersEntity;
+import com.thanhtu.crud.model.dto.OrderDetailView;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.dto.OrdersIdDto;
 import com.thanhtu.crud.model.request.*;
@@ -25,4 +26,6 @@ public interface OrdersService {
     OrdersDto createOrdersPaypal(OrderCreateRequest orderCreateRequest);
 
     void sendEmailOrder();
+
+    List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest);
 }
