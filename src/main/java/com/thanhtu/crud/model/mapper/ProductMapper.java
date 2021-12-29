@@ -74,7 +74,7 @@ public class ProductMapper {
         tmp.setProductImage(productRequest.getProductImage());
         tmp.setDiscount(productRequest.getDiscount());
         tmp.setUnitPrice(productRequest.getUnitPrice());
-        tmp.setDescriptionProduct(productRequest.getDescription());
+        tmp.setDescriptionProduct(productRequest.getDescriptionProduct());
         tmp.setCategoryEntity(categoryEntity);
         tmp.setSupplierEntity(supplierEntity);
         tmp.setIsDelete("NO");
@@ -87,7 +87,7 @@ public class ProductMapper {
         product.setProductImage(productRequest.getProductImage());
         product.setDiscount(productRequest.getDiscount());
         product.setUnitPrice(productRequest.getUnitPrice());
-        product.setDescriptionProduct(productRequest.getDescription());
+        product.setDescriptionProduct(productRequest.getDescriptionProduct());
         product.setCategoryEntity(categoryEntity);
         product.setSupplierEntity(supplierEntity);
         return product;
