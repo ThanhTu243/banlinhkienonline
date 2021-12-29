@@ -13,5 +13,6 @@ import java.util.Set;
 public class SupplierDto {
     private Integer supplierId;
     private String supplierName;
+    private String supplierImage;
     private Set<ProductFKDto> productEntityList;
 }

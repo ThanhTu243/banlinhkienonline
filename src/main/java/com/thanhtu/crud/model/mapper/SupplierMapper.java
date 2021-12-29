@@ -20,6 +20,7 @@ public class SupplierMapper {
         SupplierDto tmp=new SupplierDto();
         tmp.setSupplierId(supplierEntity.getSupplierId());
         tmp.setSupplierName(supplierEntity.getSupplierName());
+        tmp.setSupplierImage(supplierEntity.getSupplierImage());
         tmp.setProductEntityList(ProductMapper.toProductFKDto(supplierEntity.getProductEntitySet()));
         return tmp;
     }
@@ -27,6 +28,7 @@ public class SupplierMapper {
     {
         SupplierEntity tmp = new SupplierEntity();
         tmp.setSupplierName(supplierRequest.getSupplierName());
+        tmp.setSupplierImage(supplierRequest.getSupplierImage());
         tmp.setIsDelete("NO");
         return tmp;
     }

@@ -16,6 +16,7 @@ public class SupplierEntity {
     @Column(name = "supplier_id")
     private Integer supplierId;
     private String supplierName;
+    private String supplierImage;
     private String isDelete;
 
     @OneToMany(mappedBy = "supplierEntity",cascade = CascadeType.ALL)
