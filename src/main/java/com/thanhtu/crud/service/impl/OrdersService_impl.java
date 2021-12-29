@@ -18,6 +18,8 @@ import com.thanhtu.crud.utils.Utils;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -47,9 +49,8 @@ public class OrdersService_impl implements OrdersService {
 
 
     @Override
-    public List<OrdersEntity> getListOrderByStatus(OrdersStatusRequest ordersStatusRequest) {
-        List<OrdersEntity> list=orderRepo.findOrdersEntityByStatusOrder(ordersStatusRequest.getStatusOrder());
-        return list;
+    public Page<OrdersEntity> getListOrderByStatus(String status, Pageable page) {
+        return orderRepo.findOrdersEntityByStatusOrderOrderByCreateDateDesc(status,page);
     }
 
     @Override
@@ -217,6 +218,7 @@ public class OrdersService_impl implements OrdersService {
         {
             OrdersEntity ordersEntity=orderRepo.findById(orderId.getOrdersId()).orElseThrow(()-> new NotFoundException("Không tồn tại đơn hàng với id: "+orderId.getOrdersId()));
             ordersEntity.setStatusOrder("Đã giao");
+            ordersEntity.setNote("Đã thanh toán");
             orderRepo.save(ordersEntity);
         }
     }

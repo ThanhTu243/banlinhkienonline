@@ -159,9 +159,23 @@ public class ProductManagementController {
     }
 
     @PutMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable("id") Integer id)
+    public ResponseEntity<Object> deleteProduct(@RequestParam(value = "page",required = false) Optional<Integer> page,@PathVariable("id") Integer id)
     {
-        ProductDto productDto=productService.deleteProduct(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        productService.deleteProduct(id);
+        if(page.isPresent())
+        {
+            int pageNumber= page.get();
+            page=Optional.of(pageNumber-1);
+
+        }
+        else{
+            page=Optional.of(0);
+        }
+        Pageable pageable= PageRequest.of(page.get(),10);
+        Page<ProductEntity> list=productService.getListProduct(pageable);
+        int totalPages=list.getTotalPages();
+        int currentPage=list.getNumber()+1;
+        List<ProductEntity> listPro=list.toList();
+        return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toProductPageDto(listPro,totalPages,currentPage));
     }
 }

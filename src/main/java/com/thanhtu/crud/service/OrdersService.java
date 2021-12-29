@@ -3,14 +3,15 @@ package com.thanhtu.crud.service;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.model.dto.OrderDetailView;
 import com.thanhtu.crud.model.dto.OrdersDto;
-import com.thanhtu.crud.model.dto.OrdersIdDto;
 import com.thanhtu.crud.model.request.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface OrdersService {
 
-    List<OrdersEntity> getListOrderByStatus(OrdersStatusRequest ordersStatusRequest);
+    Page<OrdersEntity> getListOrderByStatus(String status, Pageable page);
 
     OrdersDto updateOrders(int id , OrdersUpdateRequest ordersUpdateRequest);
 

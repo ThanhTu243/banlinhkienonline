@@ -1,6 +1,7 @@
 package com.thanhtu.crud.controller.admin;
 import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
+import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.model.dto.OrderDetailViewDto;
 import com.thanhtu.crud.model.dto.OrdersDetailDto;
 import com.thanhtu.crud.model.dto.OrdersDto;
@@ -10,6 +11,9 @@ import com.thanhtu.crud.model.request.*;
 import com.thanhtu.crud.service.OrdersDetailService;
 import com.thanhtu.crud.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4004/")
@@ -30,19 +35,27 @@ public class OrdersManagementController {
 
 
     @GetMapping("")
-    public ResponseEntity<?> getListOrderByStatus(@Valid @RequestBody OrdersStatusRequest ordersStatusRequest,BindingResult bindingResult)
+    public ResponseEntity<?> getListOrderByStatus(@RequestParam(value = "page",required = false) Optional<Integer> page,@Valid @RequestBody OrdersStatusRequest ordersStatusRequest, BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())
         {
             return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
         }
-        List<OrdersEntity> listOrders=ordersService.getListOrderByStatus(ordersStatusRequest);
-        List<OrdersDto> dtoList=new ArrayList<OrdersDto>();
-        for(OrdersEntity ordersEntity:listOrders)
+        if(page.isPresent())
         {
-            dtoList.add(OrdersMapper.toOrdersDto(ordersEntity));
+            int pageNumber= page.get();
+            page=Optional.of(pageNumber-1);
+
         }
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+        else{
+            page=Optional.of(0);
+        }
+        Pageable pageable= PageRequest.of(page.get(),10);
+        Page<OrdersEntity> list=ordersService.getListOrderByStatus(ordersStatusRequest.getStatusOrder(),pageable);
+        int totalPages=list.getTotalPages();
+        int currentPage=list.getNumber()+1;
+        List<OrdersEntity> listOrders=list.toList();
+        return ResponseEntity.status(HttpStatus.OK).body(OrdersMapper.toOrdersPageDto(listOrders,totalPages,currentPage));
     }
 
     @PutMapping("/{id}")
@@ -57,7 +70,7 @@ public class OrdersManagementController {
         return ResponseEntity.status(HttpStatus.OK).body(ordersDto);
     }
     @PutMapping("/approval")
-    public ResponseEntity<?> approvalOrders(@Valid @RequestBody OrdersUpdateStatusRequest ordersUpdateStatusRequest,
+    public ResponseEntity<?> approvalOrders(@RequestParam(value = "page",required = false) Optional<Integer> page,@Valid @RequestBody OrdersUpdateStatusRequest ordersUpdateStatusRequest,
                                             BindingResult bingResult)
     {
         if(bingResult.hasErrors())
@@ -65,16 +78,24 @@ public class OrdersManagementController {
             return new ResponseEntity<>(bingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
         }
         ordersService.approvalOrders(ordersUpdateStatusRequest);
-        List<OrdersEntity> listOrders=ordersService.getListOrderByStatus("Chưa duyệt");
-        List<OrdersDto> dtoList=new ArrayList<OrdersDto>();
-        for(OrdersEntity ordersEntity:listOrders)
+        if(page.isPresent())
         {
-            dtoList.add(OrdersMapper.toOrdersDto(ordersEntity));
+            int pageNumber= page.get();
+            page=Optional.of(pageNumber-1);
+
         }
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+        else{
+            page=Optional.of(0);
+        }
+        Pageable pageable= PageRequest.of(page.get(),10);
+        Page<OrdersEntity> list=ordersService.getListOrderByStatus("Chưa duyệt",pageable);
+        int totalPages=list.getTotalPages();
+        int currentPage=list.getNumber()+1;
+        List<OrdersEntity> listOrders=list.toList();
+        return ResponseEntity.status(HttpStatus.OK).body(OrdersMapper.toOrdersPageDto(listOrders,totalPages,currentPage));
     }
     @PutMapping("/delivered")
-    public ResponseEntity<?> orderDelivered(@Valid @RequestBody OrdersUpdateStatusRequest ordersUpdateStatusRequest,
+    public ResponseEntity<?> orderDelivered(@RequestParam(value = "page",required = false) Optional<Integer> page, @Valid @RequestBody OrdersUpdateStatusRequest ordersUpdateStatusRequest,
                                             BindingResult bingResult)
     {
         if(bingResult.hasErrors())
@@ -82,13 +103,21 @@ public class OrdersManagementController {
             return new ResponseEntity<>(bingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
         }
         ordersService.orderDelivered(ordersUpdateStatusRequest);
-        List<OrdersEntity> listOrders=ordersService.getListOrderByStatus("Đã duyệt");
-        List<OrdersDto> dtoList=new ArrayList<OrdersDto>();
-        for(OrdersEntity ordersEntity:listOrders)
+        if(page.isPresent())
         {
-            dtoList.add(OrdersMapper.toOrdersDto(ordersEntity));
+            int pageNumber= page.get();
+            page=Optional.of(pageNumber-1);
+
         }
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+        else{
+            page=Optional.of(0);
+        }
+        Pageable pageable= PageRequest.of(page.get(),10);
+        Page<OrdersEntity> list=ordersService.getListOrderByStatus("Đã duyệt",pageable);
+        int totalPages=list.getTotalPages();
+        int currentPage=list.getNumber()+1;
+        List<OrdersEntity> listOrders=list.toList();
+        return ResponseEntity.status(HttpStatus.OK).body(OrdersMapper.toOrdersPageDto(listOrders,totalPages,currentPage));
     }
     @PutMapping ("/assign")
     public ResponseEntity<?> assignOrders(@Valid @RequestBody List<OrdersAssignRequest> list,BindingResult bindingResult)
@@ -114,9 +143,23 @@ public class OrdersManagementController {
     }
 
     @PutMapping("/cancel/{id}")
-    public ResponseEntity<?> cancelOrder(@PathVariable("id") Integer id)
+    public ResponseEntity<?> cancelOrder(@RequestParam(value = "page",required = false) Optional<Integer> page, @PathVariable("id") Integer id)
     {
         ordersService.cancelOrder(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Hủy đơn hàng thành công");
+        if(page.isPresent())
+        {
+            int pageNumber= page.get();
+            page=Optional.of(pageNumber-1);
+
+        }
+        else{
+            page=Optional.of(0);
+        }
+        Pageable pageable= PageRequest.of(page.get(),10);
+        Page<OrdersEntity> list=ordersService.getListOrderByStatus("Chưa duyệt",pageable);
+        int totalPages=list.getTotalPages();
+        int currentPage=list.getNumber()+1;
+        List<OrdersEntity> listOrders=list.toList();
+        return ResponseEntity.status(HttpStatus.OK).body(OrdersMapper.toOrdersPageDto(listOrders,totalPages,currentPage));
     }
 }
