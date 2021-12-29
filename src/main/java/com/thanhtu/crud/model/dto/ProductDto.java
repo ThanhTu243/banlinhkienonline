@@ -18,4 +18,6 @@ public class ProductDto {
     private Integer unitPrice;
     private Integer priceAfterDiscount;
     private String descriptionProduct;
+    private CategoryFKDto categoryFKDto;
+    private SupplierFKDto supplierFKDto;
 }

@@ -62,6 +62,8 @@ public class ProductMapper {
         tmp.setUnitPrice(productEntity.getUnitPrice());
         tmp.setPriceAfterDiscount((100-productEntity.getDiscount())* productEntity.getUnitPrice()/100);
         tmp.setDescriptionProduct(productEntity.getDescriptionProduct());
+        tmp.setCategoryFKDto(CategoryMapper.toCategoryViewDto(productEntity.getCategoryEntity()));
+        tmp.setSupplierFKDto(SupplierMapper.toSupplierViewDto(productEntity.getSupplierEntity()));
         return tmp;
     }
     public static ProductEntity toProductEntity(ProductRequest productRequest, CategoryEntity categoryEntity, SupplierEntity supplierEntity)
