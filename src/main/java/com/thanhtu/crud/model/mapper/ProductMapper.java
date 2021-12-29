@@ -104,7 +104,7 @@ public class ProductMapper {
             {
                 ProductFKDto tmp=new ProductFKDto();
                 tmp.setProductId(product.getProductId());
-                tmp.setProductName(product.getProductImage());
+                tmp.setProductName(product.getProductName());
                 tmp.setQuantity(product.getQuantity());
                 tmp.setProductImage(product.getProductImage());
                 tmp.setDiscount(product.getDiscount());
