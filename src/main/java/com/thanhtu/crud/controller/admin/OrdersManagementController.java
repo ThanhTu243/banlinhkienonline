@@ -34,7 +34,7 @@ public class OrdersManagementController {
     OrdersDetailService orderDetaiService;
 
 
-    @GetMapping("")
+    @PostMapping("")
     public ResponseEntity<?> getListOrderByStatus(@RequestParam(value = "page",required = false) Optional<Integer> page,@Valid @RequestBody OrdersStatusRequest ordersStatusRequest, BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())

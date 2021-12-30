@@ -19,6 +19,7 @@ public class ProductMapper {
         ProductOrderDetailDto tmp=new ProductOrderDetailDto();
         tmp.setProductId(orderDetail.getProductEntity().getProductId());
         tmp.setNameProduct(orderDetail.getProductEntity().getProductName());
+        tmp.setProductImage(orderDetail.getProductEntity().getProductImage());
         tmp.setQuantity(orderDetail.getQuantity());
         tmp.setAmount(orderDetail.getAmount());
         return tmp;

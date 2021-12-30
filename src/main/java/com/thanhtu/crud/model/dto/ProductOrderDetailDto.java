@@ -6,6 +6,7 @@ import lombok.Data;
 public class ProductOrderDetailDto {
    private Integer productId;
    private String nameProduct;
+   private String productImage;
    private Integer quantity;
    private Long amount;
 }
