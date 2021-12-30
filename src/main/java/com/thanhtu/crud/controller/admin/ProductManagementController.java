@@ -46,7 +46,8 @@ public class ProductManagementController {
         int totalPages=list.getTotalPages();
         int currentPage=list.getNumber()+1;
         List<ProductEntity> listPro=list.toList();
-        return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toProductPageDto(listPro,totalPages,currentPage));
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+//        return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toProductPageDto(listPro,totalPages,currentPage));
     }
     @GetMapping("")
     public ResponseEntity<?> getListProductByName(@RequestParam(value = "page",required = false) Optional<Integer> page,
@@ -173,8 +174,19 @@ public class ProductManagementController {
         }
         Pageable pageable= PageRequest.of(page.get(),10);
         Page<ProductEntity> list=productService.getListProduct(pageable);
-        int totalPages=list.getTotalPages();
-        int currentPage=list.getNumber()+1;
+        int totalPages=0;
+        int currentPage=0;
+        if(list.getNumberOfElements()==0)
+        {
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber();
+            Pageable pageable1=PageRequest.of(currentPage-1,10);
+            list=productService.getListProduct(pageable1);
+        }
+        else{
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber()+1;
+        }
         List<ProductEntity> listPro=list.toList();
         return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toProductPageDto(listPro,totalPages,currentPage));
     }

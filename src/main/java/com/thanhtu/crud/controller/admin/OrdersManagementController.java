@@ -89,8 +89,19 @@ public class OrdersManagementController {
         }
         Pageable pageable= PageRequest.of(page.get(),10);
         Page<OrdersEntity> list=ordersService.getListOrderByStatus("Chưa duyệt",pageable);
-        int totalPages=list.getTotalPages();
-        int currentPage=list.getNumber()+1;
+        int totalPages=0;
+        int currentPage=0;
+        if(list.getNumberOfElements()==0)
+        {
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber();
+            Pageable pageable1=PageRequest.of(currentPage-1,10);
+            list=ordersService.getListOrderByStatus("Chưa duyệt",pageable1);
+        }
+        else{
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber()+1;
+        }
         List<OrdersEntity> listOrders=list.toList();
         return ResponseEntity.status(HttpStatus.OK).body(OrdersMapper.toOrdersPageDto(listOrders,totalPages,currentPage));
     }
@@ -114,8 +125,19 @@ public class OrdersManagementController {
         }
         Pageable pageable= PageRequest.of(page.get(),10);
         Page<OrdersEntity> list=ordersService.getListOrderByStatus("Đã duyệt",pageable);
-        int totalPages=list.getTotalPages();
-        int currentPage=list.getNumber()+1;
+        int totalPages=0;
+        int currentPage=0;
+        if(list.getNumberOfElements()==0)
+        {
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber();
+            Pageable pageable1=PageRequest.of(currentPage-1,10);
+            list=ordersService.getListOrderByStatus("Đã duyệt",pageable1);
+        }
+        else{
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber()+1;
+        }
         List<OrdersEntity> listOrders=list.toList();
         return ResponseEntity.status(HttpStatus.OK).body(OrdersMapper.toOrdersPageDto(listOrders,totalPages,currentPage));
     }
@@ -157,8 +179,19 @@ public class OrdersManagementController {
         }
         Pageable pageable= PageRequest.of(page.get(),10);
         Page<OrdersEntity> list=ordersService.getListOrderByStatus("Chưa duyệt",pageable);
-        int totalPages=list.getTotalPages();
-        int currentPage=list.getNumber()+1;
+        int totalPages=0;
+        int currentPage=0;
+        if(list.getNumberOfElements()==0)
+        {
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber();
+            Pageable pageable1=PageRequest.of(currentPage-1,10);
+            list=ordersService.getListOrderByStatus("Chưa duyệt",pageable1);
+        }
+        else{
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber()+1;
+        }
         List<OrdersEntity> listOrders=list.toList();
         return ResponseEntity.status(HttpStatus.OK).body(OrdersMapper.toOrdersPageDto(listOrders,totalPages,currentPage));
     }

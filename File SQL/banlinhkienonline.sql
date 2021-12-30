@@ -171,9 +171,6 @@ VALUES ("Tam Dan","567","2021-10-15",15000,"Chưa duyệt","Đã thanh toán",1)
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
 VALUES ("Tam Dan","897","2021-10-15",15000,"Đã duyệt","Đã thanh toán",1);
 
-
-
-
 INSERT INTO CATEGORY (category_name,is_delete)
 VALUES ('Laptop',"NO");
 INSERT INTO CATEGORY (category_name,is_delete)
@@ -191,9 +188,9 @@ VALUES ('Dell','https://bom.so/Zeic2l',"NO");
 INSERT INTO SUPPLIER (supplier_name,supplier_image,is_delete)
 VALUES ('Asus','https://bom.so/apjzXy',"NO");
 INSERT INTO SUPPLIER (supplier_name,supplier_image,is_delete)
-VALUES ('Sony','',"NO");
+VALUES ('Sony',"NO");
 INSERT INTO SUPPLIER (supplier_name,supplier_image,is_delete)
-VALUES ('Logitech','',"NO");
+VALUES ('Logitech',"NO");
 
 -- HP LAPTOP
 INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
@@ -243,12 +240,6 @@ VALUES ( 1, 2, 'Laptop Dell Inspiron 3501 5580BLK', 100,'Laptop_Dell_Inspiron_35
 
 
 
-INSERT INTO ORDERDETAIL(order_id, product_id, quantity ,amount)
-VALUES (1,1,5,15000);
-INSERT INTO ORDERDETAIL(order_id, product_id, quantity ,amount)
-VALUES (1,2,5,15000);
-INSERT INTO ORDERDETAIL(order_id, product_id, quantity ,amount)
-VALUES (1,3,5,15000);
 
 
 
