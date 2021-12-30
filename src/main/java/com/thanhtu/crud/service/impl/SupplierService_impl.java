@@ -79,6 +79,7 @@ public class SupplierService_impl implements SupplierService  {
             }
         }
         supplierEntity.setSupplierName(supplierRequest.getSupplierName());
+        supplierEntity.setSupplierImage(supplierRequest.getSupplierImage());
         return SupplierMapper.toSupplierDto(supplierRepo.save(supplierEntity));
     }
 
