@@ -91,8 +91,12 @@ public class OrdersManagementController {
         Page<OrdersEntity> list=ordersService.getListOrderByStatus("Chưa duyệt",pageable);
         int totalPages=0;
         int currentPage=0;
-        if(list.getNumberOfElements()==0)
+        if(list.getNumberOfElements()==0 && list.getTotalPages()==0)
         {
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber();
+        }
+        else if(list.getNumberOfElements()==0){
             totalPages=list.getTotalPages();
             currentPage=list.getNumber();
             Pageable pageable1=PageRequest.of(currentPage-1,10);
@@ -127,7 +131,17 @@ public class OrdersManagementController {
         Page<OrdersEntity> list=ordersService.getListOrderByStatus("Đã duyệt",pageable);
         int totalPages=0;
         int currentPage=0;
-        if(list.getNumberOfElements()==0)
+        if(list.getNumberOfElements()==0 && list.getTotalPages()==0)
+        {
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber();
+        }
+        else if(list.getNumberOfElements()==0)
+        {
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber();
+        }
+        else if(list.getNumberOfElements()==0)
         {
             totalPages=list.getTotalPages();
             currentPage=list.getNumber();
@@ -181,7 +195,12 @@ public class OrdersManagementController {
         Page<OrdersEntity> list=ordersService.getListOrderByStatus("Chưa duyệt",pageable);
         int totalPages=0;
         int currentPage=0;
-        if(list.getNumberOfElements()==0)
+        if(list.getNumberOfElements()==0 && list.getTotalPages()==0)
+        {
+            totalPages=list.getTotalPages();
+            currentPage=list.getNumber();
+        }
+        else if(list.getNumberOfElements()==0)
         {
             totalPages=list.getTotalPages();
             currentPage=list.getNumber();
