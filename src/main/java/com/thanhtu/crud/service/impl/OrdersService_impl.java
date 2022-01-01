@@ -7,20 +7,17 @@ import com.thanhtu.crud.model.dto.OrderDetailView;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.dto.OrdersIdDto;
 import com.thanhtu.crud.model.dto.ProductToOrder;
-import com.thanhtu.crud.model.mapper.DeliveryMapper;
 import com.thanhtu.crud.model.mapper.OrdersDetailMapper;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.*;
 import com.thanhtu.crud.repository.*;
 import com.thanhtu.crud.service.OrdersService;
 import com.thanhtu.crud.service.email.MailSender;
-import com.thanhtu.crud.utils.Utils;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,10 +35,6 @@ public class OrdersService_impl implements OrdersService {
     OrdersRepository orderRepo;
     @Autowired
     OrdersDetailRepository ordersDetailRepo;
-    @Autowired
-    DeliveryRepository deliveryRepo;
-    @Autowired
-    ShipperRepository shipperRepo;
     @Autowired
     ProductRepository productRepo;
     @Autowired CustomerRepository customerRepo;
@@ -80,18 +73,6 @@ public class OrdersService_impl implements OrdersService {
         List<OrdersEntity> list=orderRepo.findOrdersEntityByStatusOrder(status);
         return list;
     }
-
-    @Override
-    public void assignOrders(List<OrdersAssignRequest> list) {
-        for(OrdersAssignRequest ordersAssignRequest:list)
-        {
-            OrdersEntity ordersEntity=orderRepo.findById(ordersAssignRequest.getOrderId()).orElseThrow(()-> new NotFoundException("Không tồn tại đơn hàng với id: "+ordersAssignRequest.getOrderId()));
-            ordersEntity.setStatusOrder("Đang giao");
-            ShipperEntity shipperEntity=shipperRepo.findById(ordersAssignRequest.getShipperId()).orElseThrow(()-> new NotFoundException("Không tồn tại shipper với id: "+ordersAssignRequest.getShipperId()));
-            deliveryRepo.save(DeliveryMapper.toDeliveryEntity(ordersAssignRequest,shipperEntity,ordersEntity));
-        }
-    }
-
 
     @Override
     public void cancelOrder(Integer id) {

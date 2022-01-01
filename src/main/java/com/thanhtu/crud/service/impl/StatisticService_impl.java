@@ -163,7 +163,7 @@ public class StatisticService_impl implements StatisticService {
 //        for (Map.Entry<String, BestSellingProducts> entry : listEntries) {
 //            sortedMap.put(entry.getKey(), entry.getValue());
 //        }
-        for(int i=0;i<10;i++)
+        for(int i=0;i<listEntries.size();i++)
         {
             sortedMap.put(listEntries.get(i).getKey(),listEntries.get(i).getValue());
         }

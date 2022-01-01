@@ -18,7 +18,7 @@ public interface OrdersService {
     void approvalOrders(OrdersUpdateStatusRequest ordersUpdateStatusRequest);
     List<OrdersEntity> getListOrderByStatus(String status);
 
-    void assignOrders(List<OrdersAssignRequest> list);
+//    void assignOrders(List<OrdersAssignRequest> list);
 
     void cancelOrder(Integer id);
 

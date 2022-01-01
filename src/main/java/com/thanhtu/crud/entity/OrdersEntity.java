@@ -30,9 +30,6 @@ public class OrdersEntity {
     private String note;
     private String statusOrder;
 
-    @OneToMany(mappedBy = "ordersEntity",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<DeliveryEntity> deliveryEntities;
 
     @OneToMany(mappedBy = "ordersEntity",cascade = CascadeType.ALL)
     @JsonManagedReference

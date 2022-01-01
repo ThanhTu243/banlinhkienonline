@@ -155,22 +155,22 @@ public class OrdersManagementController {
         List<OrdersEntity> listOrders=list.toList();
         return ResponseEntity.status(HttpStatus.OK).body(OrdersMapper.toOrdersPageDto(listOrders,totalPages,currentPage));
     }
-    @PutMapping ("/assign")
-    public ResponseEntity<?> assignOrders(@Valid @RequestBody List<OrdersAssignRequest> list,BindingResult bindingResult)
-    {
-        if(bindingResult.hasErrors())
-        {
-            return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
-        }
-        ordersService.assignOrders(list);
-        List<OrdersEntity> listOrders=ordersService.getListOrderByStatus("Đã duyệt");
-        List<OrdersDto> dtoList=new ArrayList<OrdersDto>();
-        for(OrdersEntity ordersEntity:listOrders)
-        {
-            dtoList.add(OrdersMapper.toOrdersDto(ordersEntity));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
-    }
+//    @PutMapping ("/assign")
+//    public ResponseEntity<?> assignOrders(@Valid @RequestBody List<OrdersAssignRequest> list,BindingResult bindingResult)
+//    {
+//        if(bindingResult.hasErrors())
+//        {
+//            return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
+//        }
+//        ordersService.assignOrders(list);
+//        List<OrdersEntity> listOrders=ordersService.getListOrderByStatus("Đã duyệt");
+//        List<OrdersDto> dtoList=new ArrayList<OrdersDto>();
+//        for(OrdersEntity ordersEntity:listOrders)
+//        {
+//            dtoList.add(OrdersMapper.toOrdersDto(ordersEntity));
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+//    }
     @GetMapping ("/detail/{id}")
     public ResponseEntity<?> detailOrders(@PathVariable("id") Integer id)
     {

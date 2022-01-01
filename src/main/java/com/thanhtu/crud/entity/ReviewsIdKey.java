@@ -29,7 +29,7 @@ public class ReviewsIdKey implements Serializable {
     public boolean equals(Object o){
         if(this==o) return true;
         if(o==null || getClass() != o.getClass()) return false;
-        DeliveryIDKey that=(DeliveryIDKey) o;
+        ReviewsIdKey that=(ReviewsIdKey) o;
         return Objects.equals(orderId,orderId) && Objects.equals(productId,productId) && Objects.equals(customerId,customerId);
     }
     @Override
