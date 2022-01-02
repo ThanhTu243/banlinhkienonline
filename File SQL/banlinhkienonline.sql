@@ -165,22 +165,7 @@ INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
 VALUES("thanhtuadmin","Nguyễn Thanh Tú","thanhtuadmin@gmail.com","NO");
 INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
 VALUES("ngoctinhadmin","Nguyễn Ngọc Tình","ngoctinhadmin@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("halamhy@gmail.com","Hạ Lâm Hy","halamhy@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("trantrietvien@gmail.com","Trần Triết Viễn","trantrietvien@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("tumongkhiet@gmail.com","Từ Mộng Khiết","tumongkhiet@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("thanhlong@gmail.com","Thành Long","thanhlong@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete) 
-VALUES("vuongtrachhien@gmail.com","Vương Trách Hiện","vuongtrachhien@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("vuongnhatlam@gmail.com","Vương Nhất Lâm","vuongnhatlam@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("vuonganvu@gmail.com","Vương An Vũ","vuonganvu@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("huonghamchi@gmail.com","Hướng Hàm Chi","huonghamchi@gmail.com","NO");
+
 
 INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
 VALUES("huynhngocphuc@gmail.com","Huỳnh Ngọc Phúc","Buôn Mê Thuột","huynhngocphuc@gmail.com","0326000587","NO");
@@ -190,6 +175,22 @@ INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,ph
 VALUES("ntthanhthao31@gmail.com","Nguyễn Thị Thanh Thảo","Quảng Nam","ntthanhthao31@gmail.com","0867832447","NO");
 INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
 VALUES("chaugiakiet55533395@gmail.com","tu","Tam Ky","chaugiakiet55533395@gmail.com","032111587","NO");
+INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
+VALUES("halamhy@gmail.com","Hạ Lâm Hy","Tam Thái","halamhy@gmail.com","0333000698","NO");
+INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
+VALUES("trantrietvien@gmail.com","Trần Triết Viễn","Bạc Liêu","trantrietvien@gmail.com","0333100698","NO");
+INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
+VALUES("tumongkhiet@gmail.com","Từ Mộng Khiết","Bến Tre","tumongkhiet@gmail.com","0333110698","NO");
+INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
+VALUES("thanhlong@gmail.com","Thành Long","Bình Dương ","thanhlong@gmail.com","0334000698","NO");
+INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
+VALUES("vuongtrachhien@gmail.com","Vương Trách Hiện","Hồ Chí Minh","vuongtrachhien@gmail.com","0333200698","NO");
+INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
+VALUES("vuongnhatlam@gmail.com","Vương Nhất Lâm","Vũng Tàu","vuongnhatlam@gmail.com","0343000698","NO");
+INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
+VALUES("vuonganvu@gmail.com","Vương An Vũ","Tam An","vuonganvu@gmail.com","0333000608","NO");
+INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
+VALUES("huonghamchi@gmail.com","Hướng Hàm Chi","Tam Phú","huonghamchi@gmail.com","0333111698","NO");
 
 
 INSERT INTO CATEGORY (category_name,is_delete)
