@@ -142,6 +142,22 @@ INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles)
 VALUES("ntthanhthao31@gmail.com","$2y$12$c3e35UG2lL4lhTM1iCcS7OaNQRimhgijW7Fn/NrTjXZu3YfxAFEvO","ntthanhthao31@gmail.com","ACTIVE","LOCAL","CUSTOMER");
 INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
 VALUES("chaugiakiet55533395@gmail.com","$2y$12$bbLhM88F0bKdOYGKg4vMKOZ20NLsllTDLKpK.FMxkKDkoH9/eI0Ma","chaugiakiet55533395@gmail.com","ACTIVE","LOCAL","CUSTOMER");
+INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
+VALUES("halamhy@gmail.com","$2y$12$L6G1I3WH/99ZL0y5B0WYzOOxicSniPe1vy8/tC75ev8FeqKg00a5u","halamhy@gmail.com","ACTIVE","LOCAL","CUSTOMER");
+INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
+VALUES("trantrietvien@gmail.com","$2y$12$MyMaqVtRK9d39.aoJhKBS.pp0I7aoHCWmhPdA5Jr7P9eslPh6reGW","trantrietvien@gmail.com","ACTIVE","LOCAL","CUSTOMER");
+INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
+VALUES("tumongkhiet@gmail.com","$2y$12$Wb9boDgvXQKuSLl0Gy3JN.qUJ24.b/iXGoF/QLrcwOxNuf0Zx1VjC","tumongkhiet@gmail.com","ACTIVE","LOCAL","CUSTOMER");
+INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
+VALUES("thanhlong@gmail.com","$2y$12$GD9bewiDJoSgISxzXIpZF.fJPsicaBHT4CKc5i2vHdRSEJMN.tPNe","thanhlong@gmail.com","ACTIVE","LOCAL","CUSTOMER");
+INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
+VALUES("vuongtrachhien@gmail.com","$2y$12$P2.cuN6ZABetZgDIZfNY6uUWWlVM2k/Laq1RG.PUx53ub3DY9vedm","vuongtrachhien@gmail.com","ACTIVE","LOCAL","CUSTOMER");
+INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
+VALUES("vuongnhatlam@gmail.com","$2y$12$v/3DMekr0H8LmtzpbzPVkuu2mHdjUVtop76Ep3fYtm/tygXvl7Inm","vuongnhatlam@gmail.com","ACTIVE","LOCAL","CUSTOMER");
+INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
+VALUES("vuonganvu@gmail.com","$2y$12$GY8rHWAFPwBkKvAko.NylOFoMQAuRkLT80vvWQ/dzaqk0fD8f.0GK","vuonganvu@gmail.com","ACTIVE","LOCAL","CUSTOMER");
+INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
+VALUES("huonghamchi@gmail.com","$2y$12$/CeNbvY00r3WlcoudUbiPeZpv31VAq5tI6sxMgoTuzLftVLjc0Lb6","huonghamchi@gmail.com","ACTIVE","LOCAL","CUSTOMER");
 
 INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
 VALUES("huynhphucadmin","Huỳnh Ngọc Phúc","huynhphucadmin@gmail.com","NO");
@@ -149,6 +165,22 @@ INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
 VALUES("thanhtuadmin","Nguyễn Thanh Tú","thanhtuadmin@gmail.com","NO");
 INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
 VALUES("ngoctinhadmin","Nguyễn Ngọc Tình","ngoctinhadmin@gmail.com","NO");
+INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
+VALUES("halamhy@gmail.com","Hạ Lâm Hy","halamhy@gmail.com","NO");
+INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
+VALUES("trantrietvien@gmail.com","Trần Triết Viễn","trantrietvien@gmail.com","NO");
+INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
+VALUES("tumongkhiet@gmail.com","Từ Mộng Khiết","tumongkhiet@gmail.com","NO");
+INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
+VALUES("thanhlong@gmail.com","Thành Long","thanhlong@gmail.com","NO");
+INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete) 
+VALUES("vuongtrachhien@gmail.com","Vương Trách Hiện","vuongtrachhien@gmail.com","NO");
+INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
+VALUES("vuongnhatlam@gmail.com","Vương Nhất Lâm","vuongnhatlam@gmail.com","NO");
+INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
+VALUES("vuonganvu@gmail.com","Vương An Vũ","vuonganvu@gmail.com","NO");
+INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
+VALUES("huonghamchi@gmail.com","Hướng Hàm Chi","huonghamchi@gmail.com","NO");
 
 INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
 VALUES("huynhngocphuc@gmail.com","Huỳnh Ngọc Phúc","Buôn Mê Thuột","huynhngocphuc@gmail.com","0326000587","NO");
@@ -296,7 +328,7 @@ VALUES ( 1, 3, 'Laptop ASUS TUF DASH F15 FX516PC-HN002T', 100,'https://bom.so/R0
 INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
 VALUES ( 1, 3, 'Laptop ASUS ExpertBook B9400CEA-KC0790T', 100,'https://bom.so/7ISsER','https://bom.so/rOiZnz', 3, 36990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
 INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop Asus ExpertBook B5302FEA LF0749W', 100,'https://bom.so/oyEBsB','https://bom.so/QSFFPV', 7, 2590000, '',"NO");
+VALUES ( 1, 3, 'Laptop Asus ExpertBook B5302FEA LF0749W', 100,'https://bom.so/oyEBsB','https://bom.so/QSFFPV', 7, 25900000, '',"NO");
 
 -- ACER
 INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
@@ -528,7 +560,7 @@ INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
 VALUES (4,122,1,903500,"NO");
 
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Tam Thành","0326000696","2021-10-28",15000,"Đã giao","Đã thanh toán",1);
+VALUES ("Tam Thành","0326000696","2021-10-28",31062900,"Đã giao","Đã thanh toán",1);
 INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
 VALUES (5,59,1,28820700,"NO");
 INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
@@ -540,24 +572,127 @@ VALUES (5,122,1,903500,"NO");
 
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
 VALUES ("Tam Đại","0326000697","2021-11-7",15000,"Đã giao","Đã thanh toán",2);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (6,28,1,18422400,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (6,78,1,4990000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (6,95,1,254800,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (6,121,1,1997500,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (6,107,1,2185500,"NO");
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Phú Ninh","0326000698","2021-11-15",92233,"Đã giao","Đã thanh toán",3);
+VALUES ("Phú Ninh","0326000698","2021-11-15",6080900,"Đã giao","Đã thanh toán",3);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (7,82,1,252000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (7,83,1,2990000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (7,84,1,1099400,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (7,85,1,1000800,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (7,86,1,738700,"NO");
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Duy Xuyên","0326000699","2021-11-22",15000,"Đã giao","Đã thanh toán",4);
+VALUES ("Duy Xuyên","0326000699","2021-11-22",2019420,"Đã giao","Đã thanh toán",4);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (8,92,1,640000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (8,93,1,340000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (8,94,1,377300,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (8,95,1,254800,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (8,96,1,407320,"NO");
+
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Thăng Bình","0326000670","2021-11-28",15000,"Đã giao","Đã thanh toán",1);
+VALUES ("Thăng Bình","0326000670","2021-11-28",13270400,"Đã giao","Đã thanh toán",1);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (9,100,1,1757700,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (9,101,1,2315700,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (9,102,1,5133600,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (9,103,1,1664700,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (9,104,1,2398700,"NO");
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Quận 9","0326110670","2021-12-1",92233,"Đã giao","Đã thanh toán",2);
+VALUES ("Quận 9","0326110670","2021-12-1",118081000,"Đã giao","Đã thanh toán",2);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (10,40,1,25210300,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (10,41,1,22217700,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (10,42,1,35880300,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (10,43,1,24087000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (10,44,1,10685700,"NO");
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Quận 5","0326110670","2021-12-8",92233,"Đã giao","Đã thanh toán",2);
+VALUES ("Quận 5","0326110670","2021-12-8",108141770,"Đã giao","Đã thanh toán",2);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (11,73,1,19169400,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (11,74,1,69740700,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (11,75,1,3072300,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (11,76,1,5039370,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (11,77,1,11120000,"NO");
+
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Quận Tân Bình","0326110670","2021-12-15",92233,"Đã giao","Đã thanh toán",2);
+VALUES ("Quận Tân Bình","0326110670","2021-12-15",3075230,"Đã giao","Đã thanh toán",2);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (12,90,1,999600,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (12,91,1,890000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (12,92,1,600000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (12,93,1,340000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (12,94,1,245630,"NO");
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Quận Gò Vấp","0326110670","2021-12-24",92233,"Đã giao","Đã thanh toán",2);
+VALUES ("Quận Gò Vấp","0326110670","2021-12-24",101628500,"Đã giao","Đã thanh toán",2);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (13,7,1,28341000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (13,8,1,19845500,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (13,9,1,21466100,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (13,10,1,17288700,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (13,11,1,14687200,"NO");
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Buôn Mê Thuột","0326110670","2021-12-27",92233,"Đã duyệt","Chưa thanh toán",2);
+VALUES ("Buôn Mê Thuột","0326110670","2021-12-27",91399700,"Đã duyệt","Chưa thanh toán",2);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (14,90,1,999600,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (14,91,1,890000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (14,92,1,600000,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (14,73,1,19169400,"NO");
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (14,74,1,69740700,"NO");
+
 INSERT INTO ORDERS(address,phone_number,create_date, total_amount, status_order,note, customer_id)
-VALUES ("Lê Văn Việt, Quận 9","0326110670","2021-12-29",92233,"Đã duyệt","Chưa thanh toán",2);
+VALUES ("Lê Văn Việt, Quận 9","0326110670","2021-12-29",69740700,"Đã duyệt","Chưa thanh toán",2);
+INSERT INTO ORDERDETAIL(order_id,product_id,quantity ,amount,is_delete)
+VALUES (15,74,1,69740700,"NO");
 
 
 

@@ -26,7 +26,9 @@ public class OrdersDetailMapper {
         OrderDetailEntity tmp=new OrderDetailEntity();
         tmp.setId(OrderDetailIdKeyMapper.toOrderDetailIDKey(orders.getOrderId(), productToOrder.getProductId()));
         tmp.setQuantity(productToOrder.getQuantity());
-        tmp.setAmount(Long.valueOf(productToOrder.getQuantity()*product.getUnitPrice()));
+        Long priceAfterDiscount=product.getUnitPrice().longValue()*(100-product.getDiscount())/100;
+        Long amountProduct=productToOrder.getQuantity().longValue()*priceAfterDiscount;
+        tmp.setAmount(amountProduct);
         tmp.setIsDelete("NO");
         tmp.setOrdersEntity(orders);
         tmp.setProductEntity(product);

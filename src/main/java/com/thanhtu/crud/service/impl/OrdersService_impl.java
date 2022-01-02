@@ -148,20 +148,27 @@ public class OrdersService_impl implements OrdersService {
         }
         CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(orderCreateRequest.getCustomerId(),"NO");
         OrdersEntity orders=OrdersMapper.toCreateOrders(orderCreateRequest,customer);
-        orders.setNote("Đã thanh toán");
+        orders.setNote("Chưa thanh toán");
         OrdersEntity orderCreate=orderRepo.save(orders);
         for(ProductToOrder productToOrder:productToOrderList)
         {
             ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
             ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
         }
-        String subject = "Đơn hàng #" + orderCreate.getOrderId();
+        return OrdersMapper.toOrdersDto(orderCreate);
+    }
+
+    @Override
+    public void confirmPaymentAndSendMail(int orderId) {
+        OrdersEntity ordersEntity=orderRepo.findOrdersEntityByOrderId(orderId);
+        ordersEntity.setNote("Đã thanh toán");
+        orderRepo.save(ordersEntity);
+        String subject = "Đơn hàng #" + orderId;
         String template = "order-template";
         Map<String, Object> attributes = new HashMap<>();
-        attributes.put("order", orderCreate);
-        attributes.put("fullname",customer.getFullnameCustomer());
-        mailSender.sendMessageHtml(orderCreate.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
-        return OrdersMapper.toOrdersDto(orderCreate);
+        attributes.put("order", ordersEntity);
+        attributes.put("fullname",ordersEntity.getCustomerEntity().getFullnameCustomer());
+        mailSender.sendMessageHtml(ordersEntity.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
     }
 
     @Override

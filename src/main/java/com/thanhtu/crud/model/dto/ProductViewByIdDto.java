@@ -16,7 +16,7 @@ public class ProductViewByIdDto {
     private String productImage;
     private Integer discount;
     private Integer unitPrice;
-    private Integer priceAfterDiscount;
+    private Long priceAfterDiscount;
     private String descriptionProduct;
     private String rating;
     private List<ReviewsDto> listReviews;

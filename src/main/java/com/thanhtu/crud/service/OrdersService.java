@@ -26,6 +26,8 @@ public interface OrdersService {
 
     OrdersDto createOrdersPaypal(OrderCreateRequest orderCreateRequest);
 
+    void confirmPaymentAndSendMail(int OrderId);
+
     void sendEmailOrder();
 
     List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest);

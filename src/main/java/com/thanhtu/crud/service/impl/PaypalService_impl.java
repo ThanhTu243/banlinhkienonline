@@ -13,6 +13,8 @@ public class PaypalService_impl {
     @Autowired
     private APIContext apiContext;
     public Payment createPayment(
+            Integer ordersId,
+            ItemList itemList,
             Double total,
             String currency,
             String method,
@@ -20,12 +22,22 @@ public class PaypalService_impl {
             String description,
             String cancelUrl,
             String successUrl) throws PayPalRESTException {
+        Details details = new Details();
+        details.setShipping("0");
+        details.setTax("0");
+        details.setSubtotal(String.format("%.2f", total));
         Amount amount = new Amount();
         amount.setCurrency(currency);
         amount.setTotal(String.format("%.2f", total));
+        amount.setDetails(details);
+
         Transaction transaction = new Transaction();
         transaction.setDescription(description);
         transaction.setAmount(amount);
+
+
+        transaction.setItemList(itemList);
+
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(transaction);
         Payer payer = new Payer();
