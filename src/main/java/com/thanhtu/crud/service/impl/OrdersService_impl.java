@@ -7,6 +7,7 @@ import com.thanhtu.crud.model.dto.OrderDetailView;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.dto.OrdersIdDto;
 import com.thanhtu.crud.model.dto.ProductToOrder;
+import com.thanhtu.crud.model.mapper.CartIdKeyMapper;
 import com.thanhtu.crud.model.mapper.OrdersDetailMapper;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.*;
@@ -37,6 +38,8 @@ public class OrdersService_impl implements OrdersService {
     OrdersDetailRepository ordersDetailRepo;
     @Autowired
     ProductRepository productRepo;
+    @Autowired
+    CartRepository cartRepo;
     @Autowired CustomerRepository customerRepo;
     private final MailSender mailSender;
 
@@ -119,7 +122,11 @@ public class OrdersService_impl implements OrdersService {
         for(ProductToOrder productToOrder:productToOrderList)
         {
             ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
+            CartEntity cartDelete= cartRepo.findCartEntityById(CartIdKeyMapper.toCartIdKey(customer,product));
+            cartRepo.delete(cartDelete);
             ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
+            int quantityUpdate=product.getQuantity()-productToOrder.getQuantity();
+            product.setQuantity(quantityUpdate);
         }
         String subject = "Đơn hàng #" + orderCreate.getOrderId();
         String template = "order-template";
@@ -153,7 +160,11 @@ public class OrdersService_impl implements OrdersService {
         for(ProductToOrder productToOrder:productToOrderList)
         {
             ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
+            CartEntity cartDelete= cartRepo.findCartEntityById(CartIdKeyMapper.toCartIdKey(customer,product));
+            cartRepo.delete(cartDelete);
             ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
+            int quantityUpdate=product.getQuantity()-productToOrder.getQuantity();
+            product.setQuantity(quantityUpdate);
         }
         return OrdersMapper.toOrdersDto(orderCreate);
     }
