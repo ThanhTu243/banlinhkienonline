@@ -5,6 +5,7 @@ import com.thanhtu.crud.exception.DuplicateRecoredException;
 import com.thanhtu.crud.exception.ReviewMailException;
 import com.thanhtu.crud.model.request.RegistrationRequest;
 import com.thanhtu.crud.repository.AccountsRepository;
+import com.thanhtu.crud.repository.AdminsRepository;
 import com.thanhtu.crud.repository.CustomerRepository;
 import com.thanhtu.crud.security.JwtProvider;
 import com.thanhtu.crud.service.AuthenticationService;
@@ -29,6 +30,7 @@ public class AuthenticationService_impl implements AuthenticationService {
     @Autowired
     private AccountsRepository accountsRepo;
     @Autowired private CustomerRepository customerRepo;
+    @Autowired private AdminsRepository adminsRepo;
 
     @Value("${hostname}")
     private String hostname;
@@ -36,9 +38,19 @@ public class AuthenticationService_impl implements AuthenticationService {
     @Override
     public Map<String, String> login(String username,String role) {
         AccountsEntity account = accountsRepo.findAccountsEntitiesByUsernameAndRoles(username,role);
-        CustomerEntity customer=customerRepo.findCustomerEntityByUserCustomer(username);
+        String id="";
+        if(role.equals("ADMIN"))
+        {
+            AdminsEntity admins=adminsRepo.findAdminsEntitiesByUserAdmin(username);
+            id=admins.getAdminId().toString();
+
+        }
+        else if(role.equals("CUSTOMER")){
+            CustomerEntity customer=customerRepo.findCustomerEntityByUserCustomer(username);
+            id=customer.getCustomerId().toString();
+        }
+
         String userRole = account.getRoles().toString();
-        String id=customer.getCustomerId().toString();
         String token = jwtProvider.createToken(username, userRole);
 
         Map<String, String> response = new HashMap<>();
