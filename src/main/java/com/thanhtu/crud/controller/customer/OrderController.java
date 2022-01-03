@@ -15,6 +15,9 @@ import com.thanhtu.crud.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +28,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 //@PreAuthorize("hasAuthority('CUSTOMER')")
@@ -46,7 +50,7 @@ public class OrderController {
         OrdersDto ordersDto=ordersService.createOrders(orderCreateRequest);
         return ResponseEntity.ok(ordersDto);
     }
-    @GetMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<?> getOrderDetailByCustomerIdAndStatus(@Valid @RequestBody OrdersStatusRequest ordersStatusRequest, BindingResult bindingResult,@PathVariable int id)
     {
         if(bindingResult.hasErrors())
@@ -55,5 +59,11 @@ public class OrderController {
         }
         List<OrderDetailView> ordersDto=ordersService.getOrderDetailByCustomerIdAndStatus(id,ordersStatusRequest);
         return ResponseEntity.ok(ordersDto);
+    }
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<?> cancelOrder(@PathVariable("id") Integer id)
+    {
+        ordersService.cancelOrder(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Hủy đơn hàng thành công");
     }
 }

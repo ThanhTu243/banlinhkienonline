@@ -74,7 +74,7 @@ public class ProductController {
         else{
             page=Optional.of(0);
         }
-        Pageable pageable= PageRequest.of(page.get(),10);
+        Pageable pageable= PageRequest.of(page.get(),12);
         int totalPages=0;
         int currentPage=0;
         List<ProductEntity> listPro=new ArrayList<ProductEntity>();
