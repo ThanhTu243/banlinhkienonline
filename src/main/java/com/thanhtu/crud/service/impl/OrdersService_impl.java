@@ -127,6 +127,7 @@ public class OrdersService_impl implements OrdersService {
             ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
             int quantityUpdate=product.getQuantity()-productToOrder.getQuantity();
             product.setQuantity(quantityUpdate);
+            productRepo.save(product);
         }
         String subject = "Đơn hàng #" + orderCreate.getOrderId();
         String template = "order-template";
@@ -165,6 +166,7 @@ public class OrdersService_impl implements OrdersService {
             ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
             int quantityUpdate=product.getQuantity()-productToOrder.getQuantity();
             product.setQuantity(quantityUpdate);
+            productRepo.save(product);
         }
         return OrdersMapper.toOrdersDto(orderCreate);
     }
