@@ -17,6 +17,7 @@ import com.thanhtu.crud.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ import java.util.List;
 public class PaymentController {
     public static final String URL_PAYPAL_SUCCESS = "payment/success";
     public static final String URL_PAYPAL_CANCEL = "payment/cancel";
+    @Value("${hostname.paypalreturn}")
+    private String hostname;
+
     private Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private PaypalService_impl paypalService;
@@ -52,8 +56,8 @@ public class PaymentController {
         }
 
         OrdersDto order=ordersService.createOrdersPaypal(orderCreateRequest);
-        String cancelUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
-        String successUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS +"/"+order.getOrderId();
+        String cancelUrl = hostname+"/" + URL_PAYPAL_CANCEL;
+        String successUrl = hostname+ "/" + URL_PAYPAL_SUCCESS +"/"+order.getOrderId();
         OrderDetailViewDto orderDetailViewDto=ordersDetailService.detailOrders(order.getOrderId());
         List<ProductOrderDetailDto> listProductOrders=orderDetailViewDto.getList();
         ItemList itemList = new ItemList();
