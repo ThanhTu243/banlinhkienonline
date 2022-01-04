@@ -23,6 +23,7 @@ public class OrderDetailEntity {
     private Integer quantity;
     private Long amount;
     private String isDelete;
+    private String isReview;
 
     @ManyToOne
     @JoinColumn (name = "order_id", nullable = false,referencedColumnName = "order_id",insertable=false, updatable=false)

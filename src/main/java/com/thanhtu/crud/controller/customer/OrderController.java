@@ -6,6 +6,8 @@ import com.paypal.base.rest.PayPalRESTException;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.model.dto.OrderDetailView;
 import com.thanhtu.crud.model.dto.OrdersDto;
+import com.thanhtu.crud.model.dto.ProductOrder;
+import com.thanhtu.crud.model.dto.ProductToReview;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.OrderCreateRequest;
 import com.thanhtu.crud.model.request.OrdersStatusRequest;
@@ -66,6 +68,20 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Trống");
         }
         return ResponseEntity.ok(ordersDto);
+    }
+    @PostMapping("/delivered/{id}")
+    public ResponseEntity<?> getOrderDetailByCustomerToReview(@Valid @RequestBody OrdersStatusRequest ordersStatusRequest,BindingResult bindingResult,@PathVariable int id)
+    {
+        if(bindingResult.hasErrors())
+        {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        List<ProductToReview> listProductToReview=ordersService.getOrderDetailByCustomerToReview(id,ordersStatusRequest.getStatusOrder());
+        if(listProductToReview.size()==0)
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Trống");
+        }
+        return ResponseEntity.ok(listProductToReview);
     }
     @PutMapping("/cancel/{id}")
     public ResponseEntity<?> cancelOrderDetail(@PathVariable("id") Integer id)

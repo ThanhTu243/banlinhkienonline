@@ -3,6 +3,7 @@ package com.thanhtu.crud.service;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.model.dto.OrderDetailView;
 import com.thanhtu.crud.model.dto.OrdersDto;
+import com.thanhtu.crud.model.dto.ProductToReview;
 import com.thanhtu.crud.model.request.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,4 +34,6 @@ public interface OrdersService {
     List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest);
 
     void orderDelivered(OrdersUpdateStatusRequest ordersUpdateStatusRequest);
+
+    List<ProductToReview> getOrderDetailByCustomerToReview(int id, String statusOrder);
 }

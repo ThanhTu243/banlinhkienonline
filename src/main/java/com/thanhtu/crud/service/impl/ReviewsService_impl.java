@@ -25,6 +25,8 @@ public class ReviewsService_impl implements ReviewsService {
     private ProductRepository productRepo;
     @Autowired
     private CustomerRepository customerRepo;
+    @Autowired
+    private OrdersDetailRepository ordersDetailRepo;
 
     @Override
     public ReviewsDto createReviews(ReviewsCreateRequest request) {
@@ -32,6 +34,9 @@ public class ReviewsService_impl implements ReviewsService {
         ProductEntity product= productRepo.findProductEntityByProductIdAndIsDelete(request.getProductId(), "NO");
         CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(request.getCustomerId(), "NO");
         ReviewsEntity reviews= reviewsRepo.save(ReviewsMapper.toReviewsEntity(request,orders,product,customer));
+        OrderDetailEntity orderDetailEntity=ordersDetailRepo.findOrderDetailEntityByOrdersEntityAndProductEntity(orders,product);
+        orderDetailEntity.setIsReview("YES");
+        ordersDetailRepo.save(orderDetailEntity);
         return ReviewsMapper.toReviewDto(reviews);
     }
 

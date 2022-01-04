@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -206,6 +203,7 @@ public class OrdersService_impl implements OrdersService {
             for(OrderDetailEntity orderDetailEntity:listOrderDetail)
             {
                 ProductOrder productOrder=new ProductOrder();
+                productOrder.setOrderId(orderDetailEntity.getId().getOrderId());
                 productOrder.setProducId(orderDetailEntity.getId().getProductId());
                 productOrder.setProductName(orderDetailEntity.getProductEntity().getProductName());
                 productOrder.setQuantity(orderDetailEntity.getQuantity());
@@ -226,6 +224,52 @@ public class OrdersService_impl implements OrdersService {
             ordersEntity.setNote("Đã thanh toán");
             orderRepo.save(ordersEntity);
         }
+    }
+
+    @Override
+    public List<ProductToReview> getOrderDetailByCustomerToReview(int id, String statusOrder) {
+        List<ProductToReview> productToReviewList=new ArrayList<ProductToReview>();
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(id,"NO");
+        List<OrdersEntity> ordersEntities=orderRepo.findOrdersEntityByCustomerEntityAndStatusOrder(customer,statusOrder);
+        for(OrdersEntity ordersEntity:ordersEntities)
+        {
+            List<OrderDetailEntity> listOrderDetail=ordersDetailRepo.findOrderDetailEntityByOrdersEntity(ordersEntity);
+            for(OrderDetailEntity orderDetailEntity:listOrderDetail)
+            {
+                ProductToReview productToReview= new ProductToReview();
+                productToReview.setOrderId(ordersEntity.getOrderId());
+                DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss");
+                String formattedDate = ordersEntity.getCreateDate().toLocalDateTime().format(myFormatObj);
+                productToReview.setCreateOrders(formattedDate);
+                productToReview.setProductId(orderDetailEntity.getId().getProductId());
+                productToReview.setProductName(orderDetailEntity.getProductEntity().getProductName());
+                productToReview.setQuantity(orderDetailEntity.getQuantity());
+                productToReview.setIsReview(orderDetailEntity.getIsReview());
+                productToReviewList.add(productToReview);
+            }
+        }
+        Collections.sort(productToReviewList, new Comparator<ProductToReview>() {
+            @Override
+            public int compare(ProductToReview o1, ProductToReview o2) {
+                if(o1.getIsReview().equals("NO") && o2.getIsReview().equals("YES"))
+                {
+                    return -1;
+                }
+                else if(o1.getIsReview().equals("NO") && o2.getIsReview().equals("YES")){
+                    return 1;
+                }
+                else{
+                    if(o1.getOrderId()< o2.getOrderId())
+                    {
+                        return 1;
+                    }
+                    else{
+                        return 0;
+                    }
+                }
+            }
+        });
+        return productToReviewList;
     }
 
 }

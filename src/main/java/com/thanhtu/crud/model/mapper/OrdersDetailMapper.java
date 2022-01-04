@@ -31,6 +31,7 @@ public class OrdersDetailMapper {
         tmp.setAmount(amountProduct);
         tmp.setIsDelete("NO");
         tmp.setOrdersEntity(orders);
+        tmp.setIsReview("NO");
         tmp.setProductEntity(product);
         return tmp;
     }
