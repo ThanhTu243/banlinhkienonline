@@ -49,6 +49,10 @@ public class CartController {
     public ResponseEntity<?> getCartByCustomer(@PathVariable int customerId)
     {
         CartByCustomerDto cartByCustomer=cartService.getCartByCustomer(customerId);
+        if(cartByCustomer.getCartEntities().size()==0)
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Giỏ hàng trống");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(cartByCustomer);
     }
 

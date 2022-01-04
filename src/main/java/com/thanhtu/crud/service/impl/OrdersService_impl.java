@@ -3,10 +3,7 @@ package com.thanhtu.crud.service.impl;
 
 import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.exception.NotFoundException;
-import com.thanhtu.crud.model.dto.OrderDetailView;
-import com.thanhtu.crud.model.dto.OrdersDto;
-import com.thanhtu.crud.model.dto.OrdersIdDto;
-import com.thanhtu.crud.model.dto.ProductToOrder;
+import com.thanhtu.crud.model.dto.*;
 import com.thanhtu.crud.model.mapper.CartIdKeyMapper;
 import com.thanhtu.crud.model.mapper.OrdersDetailMapper;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
@@ -21,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -191,25 +190,30 @@ public class OrdersService_impl implements OrdersService {
 
     @Override
     public List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest) {
-        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(id,"NO");
-        List<OrdersEntity> listOrder=orderRepo.findOrdersEntityByCustomerEntityAndStatusOrder(customer,ordersStatusRequest.getStatusOrder());
         List<OrderDetailView> orderDetailViewList=new ArrayList<OrderDetailView>();
-        for(OrdersEntity orders:listOrder)
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(id,"NO");
+        List<OrdersEntity> ordersEntities=orderRepo.findOrdersEntityByCustomerEntityAndStatusOrder(customer,ordersStatusRequest.getStatusOrder());
+        for(OrdersEntity ordersEntity:ordersEntities)
         {
-            List<OrderDetailEntity> listOrderDetail=ordersDetailRepo.findOrderDetailEntityByOrdersEntity(orders);
+            OrderDetailView orderDetailView= new OrderDetailView();
+            orderDetailView.setOrderId(ordersEntity.getOrderId());
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss");
+            String formattedDate = ordersEntity.getCreateDate().toLocalDateTime().format(myFormatObj);
+            orderDetailView.setCreateDate(formattedDate);
+            orderDetailView.setAmount(ordersEntity.getTotalAmount());
+            List<OrderDetailEntity> listOrderDetail=ordersDetailRepo.findOrderDetailEntityByOrdersEntity(ordersEntity);
+            List<ProductOrder> listProductOrder=new ArrayList<ProductOrder>();
             for(OrderDetailEntity orderDetailEntity:listOrderDetail)
             {
-                OrderDetailView orderDetailView=new OrderDetailView();
-                orderDetailView.setOrderId(orderDetailEntity.getId().getOrderId());
-                orderDetailView.setProducId(orderDetailEntity.getId().getProductId());
-                orderDetailView.setProductName(orderDetailEntity.getProductEntity().getProductName());
-                orderDetailView.setProductImage(orderDetailEntity.getProductEntity().getProductImage());
-                orderDetailView.setQuantity(orderDetailEntity.getQuantity());
-                orderDetailView.setAmount(orderDetailEntity.getAmount());
-                orderDetailViewList.add(orderDetailView);
+                ProductOrder productOrder=new ProductOrder();
+                productOrder.setProducId(orderDetailEntity.getId().getProductId());
+                productOrder.setProductName(orderDetailEntity.getProductEntity().getProductName());
+                productOrder.setQuantity(orderDetailEntity.getQuantity());
+                listProductOrder.add(productOrder);
             }
+            orderDetailView.setListProduct(listProductOrder);
+            orderDetailViewList.add(orderDetailView);
         }
-
         return orderDetailViewList;
     }
 

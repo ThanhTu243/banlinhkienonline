@@ -2,6 +2,7 @@ package com.thanhtu.crud.controller.admin;
 
 import com.thanhtu.crud.model.dto.BestSellingProducts;
 import com.thanhtu.crud.model.dto.BestSellingProductsPage;
+import com.thanhtu.crud.model.dto.GeneralStatiscts;
 import com.thanhtu.crud.model.request.RequestDate;
 import com.thanhtu.crud.service.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,13 @@ import java.util.Optional;
 public class StatisticController {
     @Autowired
     StatisticService statisticService;
+
+    @GetMapping("/general")
+    public ResponseEntity<?> generalStatistict()
+    {
+        GeneralStatiscts generalStatiscts=statisticService.generalStatistict();
+        return ResponseEntity.status(HttpStatus.OK).body(generalStatiscts);
+    }
 
     @GetMapping("/revenue")
     public ResponseEntity<?> revenueStatistics(@RequestBody RequestDate requestDate)

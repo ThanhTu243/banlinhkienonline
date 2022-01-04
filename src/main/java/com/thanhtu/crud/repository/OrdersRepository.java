@@ -18,4 +18,6 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity,Integer>{
     OrdersEntity findOrdersEntityByOrderId(int id);
     OrdersEntity findOrdersEntityByOrderIdAndStatusOrder(int id,String status);
     List<OrdersEntity> findOrdersEntityByCreateDateBetweenAndStatusOrder(Timestamp from,Timestamp to,String status);
+    List<OrdersEntity> findOrdersEntityByCreateDateBetweenAndNote(Timestamp from,Timestamp to,String note);
+    Integer countAllByStatusOrder(String status);
 }

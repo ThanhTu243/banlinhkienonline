@@ -9,4 +9,5 @@ import java.util.List;
 public interface OrdersDetailService {
 
     OrderDetailViewDto detailOrders(Integer id);
+    void cancelOrdersDetail(int orderId,int productId);
 }

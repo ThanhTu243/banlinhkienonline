@@ -9,6 +9,7 @@ import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.OrderCreateRequest;
 import com.thanhtu.crud.model.request.OrdersStatusRequest;
+import com.thanhtu.crud.service.OrdersDetailService;
 import com.thanhtu.crud.service.OrdersService;
 import com.thanhtu.crud.service.impl.PaypalService_impl;
 import com.thanhtu.crud.utils.Utils;
@@ -38,6 +39,8 @@ public class OrderController {
     @Autowired
     OrdersService ordersService;
     @Autowired
+    OrdersDetailService ordersDetailService;
+    @Autowired
     PaypalService_impl paypalService;
 
     @PostMapping("")
@@ -58,10 +61,14 @@ public class OrderController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
         List<OrderDetailView> ordersDto=ordersService.getOrderDetailByCustomerIdAndStatus(id,ordersStatusRequest);
+        if(ordersDto.size()==0)
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Trống");
+        }
         return ResponseEntity.ok(ordersDto);
     }
     @PutMapping("/cancel/{id}")
-    public ResponseEntity<?> cancelOrder(@PathVariable("id") Integer id)
+    public ResponseEntity<?> cancelOrderDetail(@PathVariable("id") Integer id)
     {
         ordersService.cancelOrder(id);
         return ResponseEntity.status(HttpStatus.OK).body("Hủy đơn hàng thành công");

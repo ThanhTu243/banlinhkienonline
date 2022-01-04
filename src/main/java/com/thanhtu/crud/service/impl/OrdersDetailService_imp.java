@@ -46,4 +46,26 @@ public class OrdersDetailService_imp implements OrdersDetailService {
         ordersDetailDtos.setList(list);
         return ordersDetailDtos;
     }
+
+    @Override
+    public void cancelOrdersDetail(int orderId, int productId) {
+        OrdersEntity ordersEntity=ordersRepo.findOrdersEntityByOrderId(orderId);
+        if(ordersEntity==null)
+        {
+            throw new NotFoundException("Không có đơn hàng này");
+        }
+        ProductEntity product= proRepo.findProductEntityByProductIdAndIsDelete(productId,"NO");
+        if(product==null)
+        {
+            throw new NotFoundException("Không có sản phẫm này");
+        }
+        OrderDetailEntity orderDetailEntity=ordersDetailRepo.findOrderDetailEntityByOrdersEntityAndProductEntity(ordersEntity,product);
+        orderDetailEntity.setIsDelete("YES");
+        ordersDetailRepo.save(orderDetailEntity);
+        if(ordersDetailRepo.countAllByOrdersEntity(ordersEntity)==0)
+        {
+            ordersEntity.setStatusOrder("Đã hủy");
+            ordersRepo.save(ordersEntity);
+        }
+    }
 }
