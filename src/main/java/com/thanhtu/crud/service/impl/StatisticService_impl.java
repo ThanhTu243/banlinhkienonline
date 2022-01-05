@@ -3,9 +3,10 @@ package com.thanhtu.crud.service.impl;
 import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.exception.NotFoundException;
-import com.thanhtu.crud.model.dto.BestSellingProducts;
 import com.thanhtu.crud.model.dto.BestSellingProductsPage;
 import com.thanhtu.crud.model.dto.GeneralStatiscts;
+import com.thanhtu.crud.model.dto.ProductDto;
+import com.thanhtu.crud.model.mapper.ProductMapper;
 import com.thanhtu.crud.model.request.RequestDate;
 import com.thanhtu.crud.repository.CustomerRepository;
 import com.thanhtu.crud.repository.OrdersDetailRepository;
@@ -47,7 +48,7 @@ public class StatisticService_impl implements StatisticService {
     public BestSellingProductsPage bestSellingProducts(RequestDate requestDate, int page) {
         List<OrdersEntity> list=ordersRepo.findOrdersEntityByCreateDateBetweenAndStatusOrder(Timestamp.valueOf(requestDate.getFrom()),Timestamp.valueOf(requestDate.getTo()),"Đã giao");
         List<OrderDetailEntity> listDetail=new ArrayList<OrderDetailEntity>();
-        Map<String,BestSellingProducts> listBestSellingProducts=new HashMap<String,BestSellingProducts>();
+        Map<String,ProductDto> listBestSellingProducts=new HashMap<String,ProductDto>();
         for(OrdersEntity order:list)
         {
             List<OrderDetailEntity> listDetailUnit= ordersDetailRepo.findOrderDetailEntityByOrdersEntity(order);
@@ -61,29 +62,28 @@ public class StatisticService_impl implements StatisticService {
             String nameProduct=orderDetail.getProductEntity().getProductName();
             if(listBestSellingProducts.containsKey(nameProduct))
             {
-                BestSellingProducts productUpdate=listBestSellingProducts.get(nameProduct);
+                ProductDto productUpdate=listBestSellingProducts.get(nameProduct);
                 productUpdate.setQuantity(productUpdate.getQuantity()+orderDetail.getQuantity());
                 listBestSellingProducts.put(nameProduct,productUpdate);
             }
             else{
-                BestSellingProducts newProduct=new BestSellingProducts();
-                newProduct.setProductName(nameProduct);
+                ProductDto newProduct=ProductMapper.toProductDto(orderDetail.getProductEntity());
                 newProduct.setQuantity(orderDetail.getQuantity());
                 listBestSellingProducts.put(nameProduct,newProduct);
             }
         }
-        Set<Map.Entry<String,BestSellingProducts>> entries=listBestSellingProducts.entrySet();
-        Comparator<Map.Entry<String, BestSellingProducts>> comparator = new Comparator<Map.Entry<String, BestSellingProducts>>() {
+        Set<Map.Entry<String,ProductDto>> entries=listBestSellingProducts.entrySet();
+        Comparator<Map.Entry<String, ProductDto>> comparator = new Comparator<Map.Entry<String, ProductDto>>() {
             @Override
-            public int compare(Map.Entry<String, BestSellingProducts> o1, Map.Entry<String, BestSellingProducts> o2) {
+            public int compare(Map.Entry<String, ProductDto> o1, Map.Entry<String, ProductDto> o2) {
                 int quantity1=o1.getValue().getQuantity();
                 int quantity2=o2.getValue().getQuantity();
                 return quantity2-quantity1;
             }
         };
-        List<Map.Entry<String,BestSellingProducts>> listEntries=new ArrayList<>(entries);
+        List<Map.Entry<String,ProductDto>> listEntries=new ArrayList<>(entries);
         Collections.sort(listEntries,comparator);
-        LinkedHashMap<String, BestSellingProducts> sortedMap = new LinkedHashMap<>(listEntries.size());
+        LinkedHashMap<String, ProductDto> sortedMap = new LinkedHashMap<>(listEntries.size());
 //        for (Map.Entry<String, BestSellingProducts> entry : listEntries) {
 //            sortedMap.put(entry.getKey(), entry.getValue());
 //        }
@@ -125,9 +125,9 @@ public class StatisticService_impl implements StatisticService {
 
     @Override
     public BestSellingProductsPage top10BestSellingProducts() {
-        List<OrdersEntity> list=ordersRepo.findOrdersEntityByStatusOrder("Đã giao");
+        List<OrdersEntity> list=ordersRepo.findOrdersEntityByNote("Đã thanh toán");
         List<OrderDetailEntity> listDetail=new ArrayList<OrderDetailEntity>();
-        Map<String,BestSellingProducts> listBestSellingProducts=new HashMap<String,BestSellingProducts>();
+        Map<String, ProductDto> listBestSellingProducts=new HashMap<String,ProductDto>();
         for(OrdersEntity order:list)
         {
             List<OrderDetailEntity> listDetailUnit= ordersDetailRepo.findOrderDetailEntityByOrdersEntity(order);
@@ -141,29 +141,28 @@ public class StatisticService_impl implements StatisticService {
             String nameProduct=orderDetail.getProductEntity().getProductName();
             if(listBestSellingProducts.containsKey(nameProduct))
             {
-                BestSellingProducts productUpdate=listBestSellingProducts.get(nameProduct);
+                ProductDto productUpdate=listBestSellingProducts.get(nameProduct);
                 productUpdate.setQuantity(productUpdate.getQuantity()+orderDetail.getQuantity());
                 listBestSellingProducts.put(nameProduct,productUpdate);
             }
             else{
-                BestSellingProducts newProduct=new BestSellingProducts();
-                newProduct.setProductName(nameProduct);
+                ProductDto newProduct= ProductMapper.toProductDto(orderDetail.getProductEntity());
                 newProduct.setQuantity(orderDetail.getQuantity());
                 listBestSellingProducts.put(nameProduct,newProduct);
             }
         }
-        Set<Map.Entry<String,BestSellingProducts>> entries=listBestSellingProducts.entrySet();
-        Comparator<Map.Entry<String, BestSellingProducts>> comparator = new Comparator<Map.Entry<String, BestSellingProducts>>() {
+        Set<Map.Entry<String,ProductDto>> entries=listBestSellingProducts.entrySet();
+        Comparator<Map.Entry<String, ProductDto>> comparator = new Comparator<Map.Entry<String, ProductDto>>() {
             @Override
-            public int compare(Map.Entry<String, BestSellingProducts> o1, Map.Entry<String, BestSellingProducts> o2) {
+            public int compare(Map.Entry<String, ProductDto> o1, Map.Entry<String, ProductDto> o2) {
                 int quantity1=o1.getValue().getQuantity();
                 int quantity2=o2.getValue().getQuantity();
                 return quantity2-quantity1;
             }
         };
-        List<Map.Entry<String,BestSellingProducts>> listEntries=new ArrayList<>(entries);
+        List<Map.Entry<String,ProductDto>> listEntries=new ArrayList<>(entries);
         Collections.sort(listEntries,comparator);
-        LinkedHashMap<String, BestSellingProducts> sortedMap = new LinkedHashMap<>(listEntries.size());
+        LinkedHashMap<String, ProductDto> sortedMap = new LinkedHashMap<>(listEntries.size());
 //        for (Map.Entry<String, BestSellingProducts> entry : listEntries) {
 //            sortedMap.put(entry.getKey(), entry.getValue());
 //        }

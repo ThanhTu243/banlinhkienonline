@@ -8,5 +8,5 @@ import java.util.Map;
 public class BestSellingProductsPage {
     private Integer currentPage;
     private Integer totalPage;
-    Map<String,BestSellingProducts> map;
+    Map<String,ProductDto> map;
 }

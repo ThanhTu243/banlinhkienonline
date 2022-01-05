@@ -2,10 +2,7 @@ package com.thanhtu.crud.controller.customer;
 
 import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.entity.ReviewsEntity;
-import com.thanhtu.crud.model.dto.BestSellingProductsPage;
-import com.thanhtu.crud.model.dto.ProductDto;
-import com.thanhtu.crud.model.dto.ProductViewByIdDto;
-import com.thanhtu.crud.model.dto.ReviewsDto;
+import com.thanhtu.crud.model.dto.*;
 import com.thanhtu.crud.model.mapper.ProductMapper;
 import com.thanhtu.crud.model.request.product.ProductByCategoryRequest;
 import com.thanhtu.crud.service.*;
@@ -48,7 +45,7 @@ public class ProductController {
     @GetMapping("/10bestproduct")
     public ResponseEntity <?> getTop10BestSellerProduct()
     {
-        BestSellingProductsPage list=statisticService.top10BestSellingProducts();
+        BestSellingProductsPage list =statisticService.top10BestSellingProducts();
         return ResponseEntity.ok(list) ;
     }
 

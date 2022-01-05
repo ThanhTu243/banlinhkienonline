@@ -63,8 +63,13 @@ public class CartController {
         {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
-        CartDto cartDto= cartService.createCart(cartRequest);
-        return new ResponseEntity<>(cartDto,HttpStatus.CREATED);
+        cartService.createCart(cartRequest);
+        CartByCustomerDto cartByCustomer=cartService.getCartByCustomer(cartRequest.getCustomerId());
+        if(cartByCustomer.getCartEntities().size()==0)
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Giỏ hàng trống");
+        }
+        return new ResponseEntity<>(cartByCustomer,HttpStatus.OK);
     }
     @PutMapping("")
     public ResponseEntity<?> updateCart(@Valid @RequestBody CartRequest cartRequest, BindingResult bindingResult)
@@ -73,8 +78,13 @@ public class CartController {
         {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
-        CartDto cartDto= cartService.updateCart(cartRequest);
-        return new ResponseEntity<>(cartDto,HttpStatus.OK);
+        cartService.updateCart(cartRequest);
+        CartByCustomerDto cartByCustomer=cartService.getCartByCustomer(cartRequest.getCustomerId());
+        if(cartByCustomer.getCartEntities().size()==0)
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Giỏ hàng trống");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(cartByCustomer);
     }
     @DeleteMapping("")
     public ResponseEntity<?> deleteCart(@Valid @RequestBody CartRequest cartRequest, BindingResult bindingResult)
@@ -83,8 +93,13 @@ public class CartController {
         {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
-        CartDto cartDto= cartService.deleteCart(cartRequest);
-        return new ResponseEntity<>(cartDto,HttpStatus.OK);
+        cartService.deleteCart(cartRequest);
+        CartByCustomerDto cartByCustomer=cartService.getCartByCustomer(cartRequest.getCustomerId());
+        if(cartByCustomer.getCartEntities().size()==0)
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Giỏ hàng trống");
+        }
+        return new ResponseEntity<>(cartByCustomer,HttpStatus.OK);
     }
 
 }
