@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 //@PreAuthorize("hasAuthority('ADMIN')")
+@CrossOrigin(origins = "http://localhost:4004/")
 @RequestMapping("admin/admin")
 public class AdminsManagementController {
     @Autowired

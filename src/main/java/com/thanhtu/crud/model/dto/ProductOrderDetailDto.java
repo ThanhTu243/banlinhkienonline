@@ -7,7 +7,7 @@ public class ProductOrderDetailDto {
    private Integer productId;
    private String nameProduct;
    private String productImage;
-   private Integer priceAfterDiscount;
+   private Long priceAfterDiscount;
    private Integer quantity;
    private Long amount;
 }

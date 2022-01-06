@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+//@PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin(origins = "http://localhost:4004/")
 @RequestMapping("/admin/customer")
 public class CustomerManagementController {

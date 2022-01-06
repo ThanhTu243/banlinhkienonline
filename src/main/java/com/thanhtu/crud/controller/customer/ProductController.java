@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4006/")
 @RequestMapping("view/product")
 public class ProductController {
     @Autowired

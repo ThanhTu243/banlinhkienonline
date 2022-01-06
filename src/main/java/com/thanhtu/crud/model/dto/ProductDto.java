@@ -16,7 +16,7 @@ public class ProductDto {
     private String productImage;
     private Integer discount;
     private Integer unitPrice;
-    private Integer priceAfterDiscount;
+    private Long priceAfterDiscount;
     private String descriptionProduct;
     private CategoryFKDto categoryFKDto;
     private SupplierFKDto supplierFKDto;

@@ -28,6 +28,7 @@ import java.util.List;
 
 @RestController
 //@PreAuthorize("hasAuthority('CUSTOMER')")
+@CrossOrigin(origins = "http://localhost:4006/")
 @RequestMapping("/cart")
 public class CartController {
     @Autowired CartService cartService;

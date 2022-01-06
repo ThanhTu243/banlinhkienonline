@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Set;
 
 public class ProductMapper {
-    public static ProductOrderDetailDto totoProductOrderDetailDto(OrderDetailEntity orderDetail)
+    public static ProductOrderDetailDto toProductOrderDetailDto(OrderDetailEntity orderDetail)
     {
         ProductOrderDetailDto tmp=new ProductOrderDetailDto();
         tmp.setProductId(orderDetail.getProductEntity().getProductId());
         tmp.setNameProduct(orderDetail.getProductEntity().getProductName());
         tmp.setProductImage(orderDetail.getProductEntity().getProductImage());
-        tmp.setPriceAfterDiscount((int) (orderDetail.getAmount()/orderDetail.getQuantity()));
+        tmp.setPriceAfterDiscount(Long.valueOf(orderDetail.getProductEntity().getUnitPrice())*Long.valueOf(100-orderDetail.getProductEntity().getDiscount())/100);
         tmp.setQuantity(orderDetail.getQuantity());
         tmp.setAmount(orderDetail.getAmount());
         return tmp;
@@ -34,7 +34,7 @@ public class ProductMapper {
         tmp.setProductImage(productDto.getProductImage());
         tmp.setDiscount(productDto.getDiscount());
         tmp.setUnitPrice(productDto.getUnitPrice());
-        tmp.setPriceAfterDiscount(Long.valueOf(100-productDto.getDiscount())*productDto.getUnitPrice()/100);
+        tmp.setPriceAfterDiscount(Long.valueOf(productDto.getPriceAfterDiscount()));
         tmp.setDescriptionProduct(productDto.getDescriptionProduct());
         tmp.setRating(rating);
         tmp.setListReviews(list);
@@ -62,7 +62,7 @@ public class ProductMapper {
         tmp.setProductImage(productEntity.getProductImage());
         tmp.setDiscount(productEntity.getDiscount());
         tmp.setUnitPrice(productEntity.getUnitPrice());
-        tmp.setPriceAfterDiscount((100-productEntity.getDiscount())* productEntity.getUnitPrice()/100);
+        tmp.setPriceAfterDiscount(Long.valueOf(productEntity.getUnitPrice())*Long.valueOf(100-productEntity.getDiscount())/100);
         tmp.setDescriptionProduct(productEntity.getDescriptionProduct());
         tmp.setCategoryFKDto(CategoryMapper.toCategoryViewDto(productEntity.getCategoryEntity()));
         tmp.setSupplierFKDto(SupplierMapper.toSupplierViewDto(productEntity.getSupplierEntity()));

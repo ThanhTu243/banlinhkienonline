@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+//@PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin(origins = "http://localhost:4004/")
 @RequestMapping("admin/statistic")
 public class StatisticController {

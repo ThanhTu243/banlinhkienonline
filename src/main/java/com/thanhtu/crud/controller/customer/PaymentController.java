@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+//@PreAuthorize("hasAuthority('CUSTOMER')")
+@CrossOrigin(origins = "http://localhost:4006/")
 @RequestMapping("/payment/")
 public class PaymentController {
     public static final String URL_PAYPAL_SUCCESS = "payment/success";

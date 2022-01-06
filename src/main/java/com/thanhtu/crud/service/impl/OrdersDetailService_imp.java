@@ -37,7 +37,7 @@ public class OrdersDetailService_imp implements OrdersDetailService {
         List<ProductOrderDetailDto> list=new ArrayList<ProductOrderDetailDto>();
         for(OrderDetailEntity orderDetailEntity:orderDetailEntities)
         {
-            list.add(ProductMapper.totoProductOrderDetailDto(orderDetailEntity));
+            list.add(ProductMapper.toProductOrderDetailDto(orderDetailEntity));
         }
         OrderDetailViewDto ordersDetailDtos=new OrderDetailViewDto();
         ordersDetailDtos.setOrderId(id);

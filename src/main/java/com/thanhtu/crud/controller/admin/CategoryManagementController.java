@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+//@PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin(origins = "http://localhost:4004/")
 @RequestMapping("/admin/category")
 public class CategoryManagementController {
