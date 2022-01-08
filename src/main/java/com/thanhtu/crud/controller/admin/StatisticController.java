@@ -24,13 +24,13 @@ public class StatisticController {
         return ResponseEntity.status(HttpStatus.OK).body(generalStatiscts);
     }
 
-    @GetMapping("/revenue")
+    @PostMapping("/revenue")
     public ResponseEntity<?> revenueStatistics(@RequestBody RequestDate requestDate)
     {
         long sumRevenue=statisticService.revenueStatistics(requestDate);
         return ResponseEntity.status(HttpStatus.OK).body(sumRevenue);
     }
-    @GetMapping("/bestsellingproducts")
+    @PostMapping("/bestsellingproducts")
     public ResponseEntity<?> bestSellingProducts(@RequestBody RequestDate requestDate,
                                                  @RequestParam(value = "page",required = false) Integer page)
     {

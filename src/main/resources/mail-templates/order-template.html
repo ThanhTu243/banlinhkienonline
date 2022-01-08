@@ -34,16 +34,16 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
                 <tr>
                     <td class="header" align="center">
-                        <h3>Order # <span th:text="${order.getOrderId()}" th:remove="tag"></span></h3>
+                        <h3>Đơn hàng # <span th:text="${order.getOrderId()}" th:remove="tag"></span></h3>
                     </td>
                     <td class="header" align="center">
-                        <img src="https://i.ibb.co/6YNPHCd/LOGO3.jpg" style="width: 180px; border-radius: 5px;"/>
+                        <img src="https://bom.so/O4HTWd" style="width: 180px; border-radius: 5px;"/>
                     </td>
                 </tr>
             </table>
             <hr/>
             <h3 style="text-align: center">Chào <span th:text="${fullname}" th:remove="tag"></span>!</h3>
-            <p style="text-align: center">Cảm ơn bạn đã mua hàng của Shoplinhkien PT </p>
+            <p style="text-align: center">Cảm ơn bạn đã mua hàng của ShopDienTu PT </p>
             <hr/>
             <div class="text-left">
                 <p><b>Mã đơn hàng: <span th:text="${order.getOrderId()}" th:remove="tag"></span></b></p>
@@ -55,7 +55,7 @@
                 <p><b>Số điện thoại:</b> <span th:text="${order.getPhoneNumber()}" th:remove="tag"></span></p>
             </div>
             <hr/>
-            <h3>Tổng đơn hàng <span th:text="${order.getTotalAmount()}" th:remove="tag"></span> vnđ</h3>
+            <h3>Tổng đơn hàng <span th:text="${#numbers.formatDecimal(order.getTotalAmount(), 0, 'COMMA', 0, 'POINT')}"th:remove="tag"> </span> VND</h3>
         </td>
     </tr>
 </table>

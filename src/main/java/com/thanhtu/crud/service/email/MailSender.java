@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
@@ -27,6 +28,10 @@ public class MailSender {
     public void sendMessageHtml(String to, String subject, String template, Map<String, Object> attributes) throws MessagingException {
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(attributes);
+        if(!thymeleafTemplateEngine.isInitialized())
+        {
+            thymeleafTemplateEngine.addDialect(new Java8TimeDialect());
+        }
         String htmlBody = thymeleafTemplateEngine.process(template, thymeleafContext);
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
