@@ -96,7 +96,12 @@ public class StatisticService_impl implements StatisticService {
         }
         else if(entries.size()==0)
         {
-            throw new NotFoundException("Không có đơn hàng nào");
+            LinkedHashMap<String,ProductDto> mapEmpty=new LinkedHashMap<>(0);
+            BestSellingProductsPage bestSellingProductsPage=new BestSellingProductsPage();
+            bestSellingProductsPage.setCurrentPage(0);
+            bestSellingProductsPage.setTotalPage(0);
+            bestSellingProductsPage.setMap(mapEmpty);
+            return bestSellingProductsPage;
         }
         else
         {
