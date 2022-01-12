@@ -10,6 +10,6 @@ public class CartFKViewDto {
     private Integer quantity;
     private Integer discount;
     private Integer unitPrice;
-    private Integer priceAfterDiscount;
+    private Long priceAfterDiscount;
     private Long cost;
 }

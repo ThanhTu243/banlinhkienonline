@@ -94,6 +94,10 @@ public class StatisticService_impl implements StatisticService {
             double totalPageInt=entries.size()/10;
             totalPage=totalPageDouble>totalPageInt?(int)totalPageInt+1:(int)totalPageInt;
         }
+        else if(entries.size()==0)
+        {
+            throw new NotFoundException("Không có đơn hàng nào");
+        }
         else
         {
             totalPage=1;
