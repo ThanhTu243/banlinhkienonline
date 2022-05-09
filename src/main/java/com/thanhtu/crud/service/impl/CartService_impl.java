@@ -1,7 +1,6 @@
 package com.thanhtu.crud.service.impl;
 
 import com.thanhtu.crud.entity.CartEntity;
-import com.thanhtu.crud.entity.CartIDKey;
 import com.thanhtu.crud.entity.CustomerEntity;
 import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.exception.NotEnoughQuantityException;
@@ -35,11 +34,10 @@ public class    CartService_impl implements CartService {
     CustomerRepository customerRepo;
     @Override
     public CartDto createCart(CartRequest cartRequest) {
-        CartIDKey cartIDKey=new CartIDKey();
-        cartIDKey.setProductId(cartRequest.getProductId());
-        cartIDKey.setCustomerId(cartRequest.getCustomerId());
-        CartEntity cart=cartRepo.findCartEntityById(cartIDKey);
+        CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
+        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
+
         if(product==null)
         {
             throw new NotFoundException("Không tìm thấy sản phẫm có id: "+cartRequest.getProductId());
@@ -51,7 +49,6 @@ public class    CartService_impl implements CartService {
 
         if(cart==null)
         {
-            CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
             CartEntity cartEntity=cartRepo.save(CartMapper.toCartEntity(cartRequest,product,customer));
             return CartMapper.toCartDto(cartEntity);
         }
@@ -66,8 +63,9 @@ public class    CartService_impl implements CartService {
 
     @Override
     public CartDto updateCart(CartRequest cartRequest) {
+        CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
-        CartEntity cart=cartRepo.findCartEntityById(CartIdKeyMapper.toCartIdKey(cartRequest));
+        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
         if(cart==null)
         {
             throw new NotFoundException("Không tìm thấy sản phẫm có id: "+cartRequest.getProductId());
@@ -84,8 +82,9 @@ public class    CartService_impl implements CartService {
 
     @Override
     public CartDto deleteCart(CartRequest cartRequest) {
+        CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
-        CartEntity cart=cartRepo.findCartEntityById(CartIdKeyMapper.toCartIdKey(cartRequest));
+        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
         if(cart==null)
         {
             throw new NotFoundException("Không có mặt hàng này trong giỏ");
@@ -112,7 +111,7 @@ public class    CartService_impl implements CartService {
         Set<CartFKViewDto> set=new HashSet<CartFKViewDto>();
         for(CartEntity cart:listCart)
         {
-            ProductEntity product= proRepo.findProductEntityByProductIdAndIsDelete(cart.getId().getProductId(),"NO");
+            ProductEntity product= proRepo.findProductEntityByProductIdAndIsDelete(cart.getProductEntity().getProductId(),"NO");
             set.add(CartMapper.toCartFKViewDto(product,cart));
         }
         cartByCustomerDto.setCartEntities(set);
@@ -135,7 +134,7 @@ public class    CartService_impl implements CartService {
             {
                 throw new NotFoundException("Không tìm thấy sản phẫm có Id "+productSelectCartRequest.getProductId());
             }
-            CartEntity cart=cartRepo.findCartEntityById(CartIdKeyMapper.toCartIdKey(customer,product));
+            CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
             if(cart==null)
             {
                 throw new NotFoundException("Không có trong giỏ hàng");

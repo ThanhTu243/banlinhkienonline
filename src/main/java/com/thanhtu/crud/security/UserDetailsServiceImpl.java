@@ -1,7 +1,6 @@
 package com.thanhtu.crud.security;
 
 import com.thanhtu.crud.entity.AccountsEntity;
-import com.thanhtu.crud.entity.AdminsEntity;
 import com.thanhtu.crud.exception.DuplicateRecoredException;
 import com.thanhtu.crud.repository.AccountsRepository;
 import com.thanhtu.crud.repository.AdminsRepository;

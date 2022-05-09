@@ -10,7 +10,6 @@ public class CartMapper {
     public static CartEntity toCartEntity(CartRequest cartRequest, ProductEntity productEntity, CustomerEntity customerEntity)
     {
         CartEntity tmp=new CartEntity();
-        tmp.setId(CartIdKeyMapper.toCartIdKey(customerEntity,productEntity));
         tmp.setQuantity(cartRequest.getQuantity());
         tmp.setCustomerEntity(customerEntity);
         tmp.setProductEntity(productEntity);

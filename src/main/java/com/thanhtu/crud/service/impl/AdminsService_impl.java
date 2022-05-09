@@ -1,7 +1,6 @@
 package com.thanhtu.crud.service.impl;
 
 import com.thanhtu.crud.entity.AccountsEntity;
-import com.thanhtu.crud.entity.AdminsEntity;
 import com.thanhtu.crud.exception.DuplicateRecoredException;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.exception.SelfDestructionExeption;
@@ -25,9 +24,9 @@ public class AdminsService_impl implements AdminsService {
     AccountsRepository accountsRepo;
     @Override
     public List<AdminsDto> getListAdmin() {
-        List<AdminsEntity> adminsEntityList=adminsRepo.findAdminsEntitiesByIsDelete("NO");
+        List<AccountsEntity> accountsEntityList=adminsRepo.findAccountsEntitiesByRolesAndActiveAccount("ADMIN","NO");
         List<AdminsDto> adminsDtos=new ArrayList<AdminsDto>();
-        for(AdminsEntity adminsEntity:adminsEntityList)
+        for(AccountsEntity adminsEntity:accountsEntityList)
         {
             adminsDtos.add(AdminsMapper.toAdminDto(adminsEntity));
         }
@@ -36,7 +35,7 @@ public class AdminsService_impl implements AdminsService {
 
     @Override
     public AdminsDto getAdminById(int id) {
-        AdminsEntity adminsEntity=adminsRepo.findAdminsEntitiesByAdminIdAndIsDelete(id,"NO");
+        AccountsEntity adminsEntity=adminsRepo.findAccountsEntitiesByAccountIdAndRolesAndActiveAccount(id,"ADMIN","NO");
         if(adminsEntity==null)
         {
             throw new NotFoundException("Không tìm thấy quản trị viên có id: "+id);
@@ -58,21 +57,20 @@ public class AdminsService_impl implements AdminsService {
                 throw new DuplicateRecoredException("Trùng Mail rồi");
             }
         }
-        AdminsEntity adminsEntity=adminsRepo.save(AdminsMapper.toAdminEntity(adminsRequest));
-        accountsRepo.save(AccountMapper.toAdminAccountEntity(adminsRequest));
-        return AdminsMapper.toAdminDto(adminsEntity);
+        AccountsEntity newAdmin=accountsRepo.save(AccountMapper.toAdminAccountEntity(adminsRequest));
+        return AdminsMapper.toAdminDto(newAdmin);
     }
 
     @Override
     public AdminsDto updateAdmin(Integer id, AdminsRequest adminsRequest) {
-        AdminsEntity adminsEntity=adminsRepo.findAdminsEntitiesByAdminIdAndIsDelete(id,"NO");
+        AccountsEntity adminsEntity=adminsRepo.findAccountsEntitiesByAccountIdAndRolesAndActiveAccount(id,"ADMIN","NO");
         if(adminsEntity==null)
         {
             throw new NotFoundException("Không tìm thấy quản trị viên có id: "+id);
         }
-        AccountsEntity accounts=accountsRepo.findAccountsEntitiesByUsername(adminsEntity.getUserAdmin());
+        AccountsEntity accounts=accountsRepo.findAccountsEntitiesByUsername(adminsEntity.getUsername());
         List<AccountsEntity> list=accountsRepo.findAll();
-        if(!adminsEntity.getUserAdmin().equals(adminsRequest.getUserAdmin()))
+        if(!adminsEntity.getUsername().equals(adminsRequest.getUserAdmin()))
         {
             for(AccountsEntity account:list)
             {
@@ -82,7 +80,7 @@ public class AdminsService_impl implements AdminsService {
                 }
             }
         }
-        else if(!adminsEntity.getGmailAdmin().equals(adminsRequest.getGmailAdmin()))
+        else if(!adminsEntity.getGmail().equals(adminsRequest.getGmailAdmin()))
         {
             for(AccountsEntity account:list)
             {
@@ -92,29 +90,25 @@ public class AdminsService_impl implements AdminsService {
                 }
             }
         }
-        AdminsEntity admins=adminsRepo.save(AdminsMapper.toUpdateAdminEntity(adminsEntity,adminsRequest));
-        accountsRepo.save(AccountMapper.toUpdateAccountAdminEntity(accounts,adminsRequest));
+        AccountsEntity updateAdmin= accountsRepo.save(AccountMapper.toUpdateAccountAdminEntity(accounts,adminsRequest));
 
-        return AdminsMapper.toAdminDto(admins);
+        return AdminsMapper.toAdminDto(updateAdmin);
     }
 
     @Override
     public AdminsDto deleteAdmin(Integer id) {
-        AdminsEntity adminsEntity=adminsRepo.findAdminsEntitiesByAdminIdAndIsDelete(id,"NO");
-        if(adminsEntity==null)
+        AccountsEntity admin=adminsRepo.findAccountsEntitiesByAccountIdAndRolesAndActiveAccount(id,"ADMIN","NO");
+        if(admin==null)
         {
             throw new NotFoundException("Không tìm thấy quản trị viên có id: "+id);
         }
-        AccountsEntity account=accountsRepo.findAccountsEntitiesByUsername(adminsEntity.getUserAdmin());
-        adminsEntity.setIsDelete("YES");
-        account.setActiveAccount("NOT ACTIVE");
-        adminsRepo.save(adminsEntity);
-        accountsRepo.save(account);
+        admin.setActiveAccount("NOT ACTIVE");
+        accountsRepo.save(admin);
         return null;
     }
 
     @Override
-    public AdminsEntity findAdminsByUsername(String username) {
-        return adminsRepo.findAdminsEntitiesByUserAdmin(username);
+    public AccountsEntity findAdminsByUsername(String username) {
+        return adminsRepo.findAccountsEntitiesByUsernameAndRoles(username,"ADMIN");
     }
 }

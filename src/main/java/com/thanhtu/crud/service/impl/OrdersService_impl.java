@@ -118,7 +118,7 @@ public class OrdersService_impl implements OrdersService {
         for(ProductToOrder productToOrder:productToOrderList)
         {
             ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
-            CartEntity cartDelete= cartRepo.findCartEntityById(CartIdKeyMapper.toCartIdKey(customer,product));
+            CartEntity cartDelete= cartRepo.findCartEntitiesByCartId(orderCreateRequest.getId());
             cartRepo.delete(cartDelete);
             ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
             int quantityUpdate=product.getQuantity()-productToOrder.getQuantity();
@@ -157,7 +157,7 @@ public class OrdersService_impl implements OrdersService {
         for(ProductToOrder productToOrder:productToOrderList)
         {
             ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
-            CartEntity cartDelete= cartRepo.findCartEntityById(CartIdKeyMapper.toCartIdKey(customer,product));
+            CartEntity cartDelete= cartRepo.findCartEntitiesByCartId(orderCreateRequest.getId());
             cartRepo.delete(cartDelete);
             ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
             int quantityUpdate=product.getQuantity()-productToOrder.getQuantity();

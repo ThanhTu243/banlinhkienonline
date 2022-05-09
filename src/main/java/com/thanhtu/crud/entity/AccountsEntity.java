@@ -22,11 +22,12 @@ public class AccountsEntity {
     private String username;
     private String passwords;
     private String gmail;
+    private String fullname;
+    private String address;
+    private String phonenumber;
     private String activationCode;
     private String passwordresetCode;
     private String activeAccount;
     private String provider;
     private String roles;
-
-
 }

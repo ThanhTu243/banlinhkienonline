@@ -1,7 +1,6 @@
 package com.thanhtu.crud.security;
 
 import com.thanhtu.crud.entity.AccountsEntity;
-import com.thanhtu.crud.entity.AdminsEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

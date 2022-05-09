@@ -1,5 +1,5 @@
 package com.thanhtu.crud.controller.admin;
-import com.thanhtu.crud.entity.AdminsEntity;
+
 import com.thanhtu.crud.exception.SelfDestructionExeption;
 import com.thanhtu.crud.model.dto.AdminsDto;
 import com.thanhtu.crud.model.request.AdminIdRequest;

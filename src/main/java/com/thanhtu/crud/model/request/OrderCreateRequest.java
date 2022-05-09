@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class OrderCreateRequest {
+    private Integer id;
     private Integer customerId;
     private String address;
     private String phoneNumber;

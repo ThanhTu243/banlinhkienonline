@@ -41,9 +41,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         String id="";
         if(role.equals("ADMIN"))
         {
-            AdminsEntity admins=adminsRepo.findAdminsEntitiesByUserAdmin(username);
-            id=admins.getAdminId().toString();
-
+            id=account.getAccountId().toString();
         }
         else if(role.equals("CUSTOMER")){
             CustomerEntity customer=customerRepo.findCustomerEntityByUserCustomer(username);
