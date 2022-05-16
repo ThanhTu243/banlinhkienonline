@@ -16,11 +16,12 @@ import java.io.Serializable;
 @Entity
 @Table(name = "cart")
 public class CartEntity{
-    @EmbeddedId
-    private CartIDKey id;
-
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
+    private int cartId;
     private Integer quantity;
-
+    private String isDelete;
     @ManyToOne
     @JoinColumn (name = "customer_id", nullable = false,referencedColumnName = "customer_id",insertable=false, updatable=false)
     @JsonBackReference

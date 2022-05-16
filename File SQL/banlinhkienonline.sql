@@ -5,168 +5,155 @@ CREATE DATABASE banlinhkienonline;
 USE banlinhkienonline;
 
 CREATE TABLE ACCOUNTS (
-     account_id INT AUTO_INCREMENT,
-	 username VARCHAR(50) UNIQUE,
-	 passwords VARCHAR(150),
-     gmail varchar(50) UNIQUE,
-     activation_code VARCHAR(100),
-     passwordreset_code VARCHAR(50),
-     active_account VARCHAR(50),
-     provider VARCHAR(10),
-     roles VARCHAR(10),
-     CONSTRAINT OR_rolesACCOUNT_CHK CHECK (roles IN ('ADMIN','SHIPPER', 'CUSTOMER')),
-     CONSTRAINT OR_activeACCOUNT_CHK CHECK (active_account IN ('ACTIVE','NOT ACTIVE')),
-	 CONSTRAINT AC_maACC_PK PRIMARY KEY(account_id)
+                          account_id INT AUTO_INCREMENT,
+                          username VARCHAR(50) UNIQUE,
+                          passwords VARCHAR(150),
+                          gmail varchar(50) UNIQUE,
+                          fullname NVARCHAR(50),
+                          address NVARCHAR(50),
+                          phonenumber VARCHAR(50) UNIQUE,
+                          activation_code VARCHAR(100),
+                          passwordreset_code VARCHAR(50),
+                          active_account VARCHAR(50),
+                          provider VARCHAR(10),
+                          roles VARCHAR(10),
+                          CONSTRAINT OR_rolesACCOUNT_CHK CHECK (roles IN ('ADMIN','SHIPPER', 'CUSTOMER')),
+                          CONSTRAINT OR_activeACCOUNT_CHK CHECK (active_account IN ('ACTIVE','NOT ACTIVE')),
+                          CONSTRAINT AC_maACC_PK PRIMARY KEY(account_id)
 );
-     
-CREATE TABLE ADMINS (
-     admin_id INT AUTO_INCREMENT,
-	 user_admin VARCHAR(50) UNIQUE,
-	 fullname_admin NVARCHAR(40),
-	 gmail_admin VARCHAR(50) UNIQUE,
-     is_delete VARCHAR(20),
-     CONSTRAINT OR_isDeleteADMINS_CHK CHECK (is_delete IN ('NO','YES')),
-	 CONSTRAINT AD_maAdmin_PK PRIMARY KEY(admin_id)
-);
-
 CREATE TABLE CUSTOMER(
-	 customer_id INT AUTO_INCREMENT,
-     user_customer VARCHAR(50) UNIQUE,
-	 fullname_customer NVARCHAR(50),
-     address NVARCHAR(50),
-	 gmail_customer VARCHAR(50) UNIQUE,
-     phonenumber_customer VARCHAR(50) UNIQUE,
-     is_delete VARCHAR(20),
-     CONSTRAINT OR_isDeleteCUSTOMER_CHK CHECK (is_delete IN ('NO','YES')),
-	 CONSTRAINT CUSTOMER_maCustomer_PK PRIMARY KEY(customer_id)
+                         customer_id INT AUTO_INCREMENT,
+                         user_customer VARCHAR(50) UNIQUE,
+                         fullname_customer NVARCHAR(50),
+                         address NVARCHAR(50),
+                         gmail_customer VARCHAR(50) UNIQUE,
+                         phonenumber_customer VARCHAR(50) UNIQUE,
+                         is_delete VARCHAR(20),
+                         CONSTRAINT OR_isDeleteCUSTOMER_CHK CHECK (is_delete IN ('NO','YES')),
+                         CONSTRAINT CUSTOMER_maCustomer_PK PRIMARY KEY(customer_id)
 );
 
 CREATE TABLE CATEGORY
 (
-	 category_id INT AUTO_INCREMENT,
-	 category_name NVARCHAR(50),
-     is_delete VARCHAR(20),
-	 CONSTRAINT OR_isDeleteCATEGORY_CHK CHECK (is_delete IN ('NO','YES')),
-	 CONSTRAINT CATE_maCategory_PK PRIMARY KEY(category_id)
+    category_id INT AUTO_INCREMENT,
+    category_name NVARCHAR(50),
+    is_delete VARCHAR(20),
+    CONSTRAINT OR_isDeleteCATEGORY_CHK CHECK (is_delete IN ('NO','YES')),
+    CONSTRAINT CATE_maCategory_PK PRIMARY KEY(category_id)
 );
 CREATE TABLE SUPPLIER
 (
-	supplier_id INT AUTO_INCREMENT,
+    supplier_id INT AUTO_INCREMENT,
     supplier_name NVARCHAR(50),
     supplier_image VARCHAR(500),
     is_delete VARCHAR(20),
-	CONSTRAINT OR_isDeleteSUPPLIER_CHK CHECK (is_delete IN ('NO','YES')),
+    CONSTRAINT OR_isDeleteSUPPLIER_CHK CHECK (is_delete IN ('NO','YES')),
     CONSTRAINT SUP_maSUPPLIER_PK PRIMARY KEY(supplier_id)
 );
 
 CREATE TABLE PRODUCT
 (
-	 product_id INT AUTO_INCREMENT,
-	 product_name NVARCHAR(150),
-	 quantity INT,
-	 product_image VARCHAR(500),
-     productimage_description VARCHAR(500),
-     discount INT,
-     unit_price INT,
-     description_product varchar(5000),
-     category_id INT,
-     supplier_id INT,
-     is_delete VARCHAR(10),
-	 CONSTRAINT OR_isDeletePRODUCT_CHK CHECK (is_delete IN ('NO','YES')),
-	 CONSTRAINT PR_maPRODUCT_PK PRIMARY KEY(product_id),
-	 CONSTRAINT PR_maCATEGORY_FK FOREIGN KEY (category_id) REFERENCES CATEGORY(category_id) ON DELETE CASCADE,
-     CONSTRAINT PR_maSUPPLIER_FK FOREIGN KEY (supplier_id) REFERENCES SUPPLIER(supplier_id) ON DELETE CASCADE
+    product_id INT AUTO_INCREMENT,
+    product_name NVARCHAR(150),
+    quantity INT,
+    product_image VARCHAR(500),
+    productimage_description VARCHAR(500),
+    discount INT,
+    unit_price INT,
+    description_product varchar(5000),
+    category_id INT,
+    supplier_id INT,
+    is_delete VARCHAR(10),
+    CONSTRAINT OR_isDeletePRODUCT_CHK CHECK (is_delete IN ('NO','YES')),
+    CONSTRAINT PR_maPRODUCT_PK PRIMARY KEY(product_id),
+    CONSTRAINT PR_maCATEGORY_FK FOREIGN KEY (category_id) REFERENCES CATEGORY(category_id) ON DELETE CASCADE,
+    CONSTRAINT PR_maSUPPLIER_FK FOREIGN KEY (supplier_id) REFERENCES SUPPLIER(supplier_id) ON DELETE CASCADE
 );
 
 CREATE TABLE CART
 (
-	 customer_id INT,
-	 product_id INT,
-     quantity INT,
-     
-	 CONSTRAINT CA_maCART_PK PRIMARY KEY(customer_id, product_id),
-	 CONSTRAINT CA_maPRODUCT_FK FOREIGN KEY (product_id) REFERENCES PRODUCT(product_id) ON DELETE NO ACTION,
-     CONSTRAINT CA_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id) ON DELETE CASCADE
+    cart_id INT,
+    quantity INT,
+    is_delete VARCHAR(10),
+    customer_id INT,
+    product_id INT,
+    CONSTRAINT OR_isDeleteCart_CHK CHECK (is_delete IN ('NO','YES')),
+    CONSTRAINT PR_maCART_PK PRIMARY KEY(cart_id),
+    CONSTRAINT CA_maPRODUCT_FK FOREIGN KEY (product_id) REFERENCES PRODUCT(product_id) ON DELETE NO ACTION,
+    CONSTRAINT CA_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id) ON DELETE CASCADE
 );
 
 CREATE TABLE ORDERS
 (
-	 order_id INT AUTO_INCREMENT,
-	 address NVARCHAR(100),
-	 phone_number VARCHAR(15),
-     create_date TIMESTAMP,
-     total_amount LONG,
-     note NVARCHAR(20),
-	 status_order NVARCHAR(10),
-     customer_id INT,
-     CONSTRAINT OR_activeORDER_CHK CHECK (status_order IN ('Chưa duyệt','Đã duyệt', 'Đã giao','Đã hủy')),
-	 CONSTRAINT OR_maOR_PK PRIMARY KEY(order_id),
-	 CONSTRAINT OR_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id) ON DELETE CASCADE
+    order_id INT AUTO_INCREMENT,
+    address NVARCHAR(100),
+    phone_number VARCHAR(15),
+    create_date TIMESTAMP,
+    total_amount LONG,
+    note NVARCHAR(20),
+    status_order NVARCHAR(10),
+    customer_id INT,
+    CONSTRAINT OR_activeORDER_CHK CHECK (status_order IN ('Chưa duyệt','Đã duyệt', 'Đã giao','Đã hủy')),
+    CONSTRAINT OR_maOR_PK PRIMARY KEY(order_id),
+    CONSTRAINT OR_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id) ON DELETE CASCADE
 );
 
 CREATE TABLE ORDERDETAIL(
-	 order_id INT,
-	 product_id INT,
-	 quantity INT(10),
-	 amount LONG,
-     is_delete VARCHAR(10),
-     is_review VARCHAR(10),
-     CONSTRAINT OR_isReviewORDERDETAIL_CHK CHECK (is_review IN ('NO','YES')),
-	 CONSTRAINT OR_isDeleteORDERDETAIL_CHK CHECK (is_delete IN ('NO','YES')),
-	 CONSTRAINT OD_maORDERDETAIL_PK PRIMARY KEY(order_id, product_id),
-	 CONSTRAINT OD_maORDER_FK FOREIGN KEY(order_id) REFERENCES ORDERS(order_id) ON DELETE CASCADE,
-	 CONSTRAINT OD_maPRODUCT_FK FOREIGN KEY(product_id) REFERENCES PRODUCT (product_id) ON DELETE CASCADE
+                            order_id INT,
+                            product_id INT,
+                            quantity INT(10),
+                            amount LONG,
+                            is_delete VARCHAR(10),
+                            is_review VARCHAR(10),
+                            CONSTRAINT OR_isReviewORDERDETAIL_CHK CHECK (is_review IN ('NO','YES')),
+                            CONSTRAINT OR_isDeleteORDERDETAIL_CHK CHECK (is_delete IN ('NO','YES')),
+                            CONSTRAINT OD_maORDERDETAIL_PK PRIMARY KEY(order_id, product_id),
+                            CONSTRAINT OD_maORDER_FK FOREIGN KEY(order_id) REFERENCES ORDERS(order_id) ON DELETE CASCADE,
+                            CONSTRAINT OD_maPRODUCT_FK FOREIGN KEY(product_id) REFERENCES PRODUCT (product_id) ON DELETE CASCADE
 );
 
 CREATE TABLE REVIEWS(
-	  order_id INT,
-      product_id INT,
-      customer_id INT,
-      comments NVARCHAR(255),
-      rating double,
-      CONSTRAINT RE_maREVIEWS_PK PRIMARY KEY(order_id, product_id,customer_id),
-	  CONSTRAINT RE_maORDER_FK FOREIGN KEY(order_id) REFERENCES ORDERS(order_id),
-	  CONSTRAINT RE_maPRODUCT_FK FOREIGN KEY(product_id) REFERENCES PRODUCT(product_id),
-      CONSTRAINT RE_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id)
+                        order_id INT,
+                        product_id INT,
+                        customer_id INT,
+                        comments NVARCHAR(255),
+                        rating double,
+                        CONSTRAINT RE_maREVIEWS_PK PRIMARY KEY(order_id, product_id,customer_id),
+                        CONSTRAINT RE_maORDER_FK FOREIGN KEY(order_id) REFERENCES ORDERS(order_id),
+                        CONSTRAINT RE_maPRODUCT_FK FOREIGN KEY(product_id) REFERENCES PRODUCT(product_id),
+                        CONSTRAINT RE_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id)
 );
 
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("huynhphucadmin","$2y$12$n1Ea46fRM5OHjcldln9FCeDNKGWPlBTon6QSLWFiZQ70Jz7up77d.","huynhphucadmin@gmail.com","ACTIVE","LOCAL","ADMIN");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles)  
-VALUES("thanhtuadmin","$2y$12$vlL2nNxUnnFgwPYZ3DwS2.DukpDpA3K7ZzPwnBzxlATAX.wHp48dO","thanhtuadmin@gmail.com","ACTIVE","LOCAL","ADMIN");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("ngoctinhadmin","$2y$12$E08DvJWGdIWEhAxFVoUVNu7MKtI2cCpCBRtPuV/cnkumAvrpIXHAW","ngoctinhadmin@gmail.com","ACTIVE","LOCAL","ADMIN");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("huynhngocphuc@gmail.com","$2y$12$0FFBQhnloHEL3Jkn/FdzTO9zEZJmMdXW4wMSubG/FwatiVm/XyWX6","huynhngocphuc@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("nguyenthanhtu@gmail.com","$2y$12$syXsrDwQo9qhYW6a9XZHkexaZDautIUFDyrxJC.NBRGl1smhkFVy6","nguyenthanhtu@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("ntthanhthao31@gmail.com","$2y$12$c3e35UG2lL4lhTM1iCcS7OaNQRimhgijW7Fn/NrTjXZu3YfxAFEvO","ntthanhthao31@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("chaugiakiet55533395@gmail.com","$2y$12$bbLhM88F0bKdOYGKg4vMKOZ20NLsllTDLKpK.FMxkKDkoH9/eI0Ma","chaugiakiet55533395@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("halamhy@gmail.com","$2y$12$L6G1I3WH/99ZL0y5B0WYzOOxicSniPe1vy8/tC75ev8FeqKg00a5u","halamhy@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("trantrietvien@gmail.com","$2y$12$MyMaqVtRK9d39.aoJhKBS.pp0I7aoHCWmhPdA5Jr7P9eslPh6reGW","trantrietvien@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("tumongkhiet@gmail.com","$2y$12$Wb9boDgvXQKuSLl0Gy3JN.qUJ24.b/iXGoF/QLrcwOxNuf0Zx1VjC","tumongkhiet@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("thanhlong@gmail.com","$2y$12$GD9bewiDJoSgISxzXIpZF.fJPsicaBHT4CKc5i2vHdRSEJMN.tPNe","thanhlong@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("vuongtrachhien@gmail.com","$2y$12$P2.cuN6ZABetZgDIZfNY6uUWWlVM2k/Laq1RG.PUx53ub3DY9vedm","vuongtrachhien@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("vuongnhatlam@gmail.com","$2y$12$v/3DMekr0H8LmtzpbzPVkuu2mHdjUVtop76Ep3fYtm/tygXvl7Inm","vuongnhatlam@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("vuonganvu@gmail.com","$2y$12$GY8rHWAFPwBkKvAko.NylOFoMQAuRkLT80vvWQ/dzaqk0fD8f.0GK","vuonganvu@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-INSERT INTO ACCOUNTS(username, passwords,gmail, active_account,provider, roles) 
-VALUES("huonghamchi@gmail.com","$2y$12$/CeNbvY00r3WlcoudUbiPeZpv31VAq5tI6sxMgoTuzLftVLjc0Lb6","huonghamchi@gmail.com","ACTIVE","LOCAL","CUSTOMER");
-
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("huynhphucadmin","Huỳnh Ngọc Phúc","huynhphucadmin@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("thanhtuadmin","Nguyễn Thanh Tú","thanhtuadmin@gmail.com","NO");
-INSERT INTO ADMINS(user_admin, fullname_admin,gmail_admin, is_delete)
-VALUES("ngoctinhadmin","Nguyễn Ngọc Tình","ngoctinhadmin@gmail.com","NO");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("huynhphucadmin","$2y$12$n1Ea46fRM5OHjcldln9FCeDNKGWPlBTon6QSLWFiZQ70Jz7up77d.","Huỳnh Ngọc Phúc","huynhphucadmin@gmail.com","ACTIVE","LOCAL","ADMIN","Quận 9","0322000568");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("thanhtuadmin","$2y$12$vlL2nNxUnnFgwPYZ3DwS2.DukpDpA3K7ZzPwnBzxlATAX.wHp48dO","Nguyễn Thanh Tú","thanhtuadmin@gmail.com","ACTIVE","LOCAL","ADMIN","Quận 10","0322010568");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("ngoctinhadmin","$2y$12$E08DvJWGdIWEhAxFVoUVNu7MKtI2cCpCBRtPuV/cnkumAvrpIXHAW","Nguyễn Ngọc Tình","ngoctinhadmin@gmail.com","ACTIVE","LOCAL","ADMIN","Quận 11","0322100568");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("huynhngocphuc@gmail.com","$2y$12$0FFBQhnloHEL3Jkn/FdzTO9zEZJmMdXW4wMSubG/FwatiVm/XyWX6","Huỳnh Ngọc Phúc","huynhngocphuc@gmail.com","ACTIVE","LOCAL","CUSTOMER","Buôn Mê Thuột","0326000587");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("nguyenthanhtu@gmail.com","$2y$12$syXsrDwQo9qhYW6a9XZHkexaZDautIUFDyrxJC.NBRGl1smhkFVy6","Nguyễn Thanh Tú","nguyenthanhtu@gmail.com","ACTIVE","LOCAL","CUSTOMER","Quảng Nam","0326010587");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("ntthanhthao31@gmail.com","$2y$12$c3e35UG2lL4lhTM1iCcS7OaNQRimhgijW7Fn/NrTjXZu3YfxAFEvO","Nguyễn Thị Thanh Thảo","ntthanhthao31@gmail.com","ACTIVE","LOCAL","CUSTOMER","Quảng Nam","0867832447");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("chaugiakiet55533395@gmail.com","$2y$12$bbLhM88F0bKdOYGKg4vMKOZ20NLsllTDLKpK.FMxkKDkoH9/eI0Ma","Châu Gia Kiệt","chaugiakiet55533395@gmail.com","ACTIVE","LOCAL","CUSTOMER","Tam Ky","032111587");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("halamhy@gmail.com","$2y$12$L6G1I3WH/99ZL0y5B0WYzOOxicSniPe1vy8/tC75ev8FeqKg00a5u","halamhy@gmail.com","Hạ Lâm Hy","ACTIVE","LOCAL","CUSTOMER","Tam Thái","0333000698");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("trantrietvien@gmail.com","$2y$12$MyMaqVtRK9d39.aoJhKBS.pp0I7aoHCWmhPdA5Jr7P9eslPh6reGW","Trần Triết Viễn","trantrietvien@gmail.com","ACTIVE","LOCAL","CUSTOMER","Bạc Liêu","0333100698");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("tumongkhiet@gmail.com","$2y$12$Wb9boDgvXQKuSLl0Gy3JN.qUJ24.b/iXGoF/QLrcwOxNuf0Zx1VjC","Từ Mông Khiết","tumongkhiet@gmail.com","ACTIVE","LOCAL","CUSTOMER","Bến Tre","0333110698");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("thanhlong@gmail.com","$2y$12$GD9bewiDJoSgISxzXIpZF.fJPsicaBHT4CKc5i2vHdRSEJMN.tPNe","Thành Long","thanhlong@gmail.com","ACTIVE","LOCAL","CUSTOMER","Bình Dương ","0334000698");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("vuongtrachhien@gmail.com","$2y$12$P2.cuN6ZABetZgDIZfNY6uUWWlVM2k/Laq1RG.PUx53ub3DY9vedm","Vương Trách Hiện","vuongtrachhien@gmail.com","ACTIVE","LOCAL","CUSTOMER","Hồ Chí Minh","0333200698");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("vuongnhatlam@gmail.com","$2y$12$v/3DMekr0H8LmtzpbzPVkuu2mHdjUVtop76Ep3fYtm/tygXvl7Inm","Vương Nhất Lâm","vuongnhatlam@gmail.com","ACTIVE","LOCAL","CUSTOMER","Vũng Tàu","0343000698");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("vuonganvu@gmail.com","$2y$12$GY8rHWAFPwBkKvAko.NylOFoMQAuRkLT80vvWQ/dzaqk0fD8f.0GK","Vương An Vũ","vuonganvu@gmail.com","ACTIVE","LOCAL","CUSTOMER","Tam An","0333000608");
+INSERT INTO ACCOUNTS(username, passwords,fullname,gmail, active_account,provider, roles,address,phonenumber)
+VALUES("huonghamchi@gmail.com","$2y$12$/CeNbvY00r3WlcoudUbiPeZpv31VAq5tI6sxMgoTuzLftVLjc0Lb6","Hướng Hàm Chi","huonghamchi@gmail.com","ACTIVE","LOCAL","CUSTOMER","Tam Phú","0333111698");
 
 
 INSERT INTO CUSTOMER(user_customer, fullname_customer, address,gmail_customer,phonenumber_customer, is_delete)
@@ -348,7 +335,7 @@ INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_im
 VALUES ( 1, 4, 'Laptop Acer Swift 5 SF514-55T-51NZ', 100,'https://bom.so/2Abjfk','https://bom.so/UrbHzW', 7, 22690000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Dung lượng pin sẵn sàng cho ngày dài, bảo mật vân tay an toàn tuyệt đối',"NO");
 INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
 VALUES ( 1, 4, 'Laptop Gaming Acer Nitro 5 Eagle AN515-57-74NU', 100,'https://bom.so/gaOgM5','https://bom.so/zQHJmn', 7, 27590000, 'Màn hình FHD IPS rộng lớn, tốc độ làm mới 144Hz</br>Bộ vi xử lý thế hệ 11 - Tản nhiệt hiệu suất ấn tượng',"NO");
- 
+
 
 -- MSI GAMING 
 INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)

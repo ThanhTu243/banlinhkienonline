@@ -1,6 +1,6 @@
 package com.thanhtu.crud.service;
 
-import com.thanhtu.crud.entity.AdminsEntity;
+import com.thanhtu.crud.entity.AccountsEntity;
 import com.thanhtu.crud.model.dto.AdminsDto;
 import com.thanhtu.crud.model.request.AdminsRequest;
 
@@ -17,5 +17,5 @@ public interface AdminsService {
 
     AdminsDto deleteAdmin(Integer id);
 
-    AdminsEntity findAdminsByUsername(String username);
+    AccountsEntity findAdminsByUsername(String username);
 }

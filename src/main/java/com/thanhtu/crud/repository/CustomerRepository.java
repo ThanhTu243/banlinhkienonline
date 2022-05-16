@@ -1,6 +1,5 @@
 package com.thanhtu.crud.repository;
 
-import com.thanhtu.crud.entity.AdminsEntity;
 import com.thanhtu.crud.entity.CustomerEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,6 @@
 package com.thanhtu.crud.model.dto;
 
 
-import com.thanhtu.crud.entity.CartIDKey;
 import com.thanhtu.crud.model.dto.fk.CustomerFKDto;
 import com.thanhtu.crud.model.dto.fk.ProductFKDto;
 import com.thanhtu.crud.model.dto.pk.CartIDPKDto;
