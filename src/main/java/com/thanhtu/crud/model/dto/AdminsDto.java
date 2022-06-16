@@ -10,6 +10,7 @@ import lombok.*;
 public class AdminsDto {
     private Integer adminId;
     private String userAdmin;
-    private String fullnameAdmin;
+    private String firstnameAdmin;
+    private String lastnameAdmin;
     private String gmailAdmin;
 }

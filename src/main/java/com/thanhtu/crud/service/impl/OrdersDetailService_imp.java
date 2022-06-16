@@ -41,7 +41,7 @@ public class OrdersDetailService_imp implements OrdersDetailService {
         }
         OrderDetailViewDto ordersDetailDtos=new OrderDetailViewDto();
         ordersDetailDtos.setOrderId(id);
-        ordersDetailDtos.setNameCustomer(ordersEntity.getCustomerEntity().getFullnameCustomer());
+        ordersDetailDtos.setNameCustomer(ordersEntity.getCustomerEntity().getFirstnameCustomer()+" "+ordersEntity.getCustomerEntity().getLastnameCustomer());
         ordersDetailDtos.setTotalAmount(ordersEntity.getTotalAmount());
         ordersDetailDtos.setList(list);
         return ordersDetailDtos;

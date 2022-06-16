@@ -28,6 +28,8 @@ public class OrdersEntity {
     private Timestamp createDate;
     private Long totalAmount;
     private String note;
+    private String paymentMethod;
+    private String paymentStatus;
     private String statusOrder;
 
 

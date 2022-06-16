@@ -22,7 +22,8 @@ public class AccountsEntity {
     private String username;
     private String passwords;
     private String gmail;
-    private String fullname;
+    private String firstname;
+    private String lastname;
     private String address;
     private String phonenumber;
     private String activationCode;

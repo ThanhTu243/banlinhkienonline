@@ -22,7 +22,8 @@ public class CustomerEntity {
     @Column(name = "customer_id")
     private Integer customerId;
     private String userCustomer;
-    private String fullnameCustomer;
+    private String firstnameCustomer;
+    private String lastnameCustomer;
     private String address;
     private String gmailCustomer;
     private String phonenumberCustomer;

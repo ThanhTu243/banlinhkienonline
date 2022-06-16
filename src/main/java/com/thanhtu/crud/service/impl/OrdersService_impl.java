@@ -129,7 +129,7 @@ public class OrdersService_impl implements OrdersService {
         String template = "order-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("order", orderCreate);
-        attributes.put("fullname",customer.getFullnameCustomer());
+        attributes.put("fullname",customer.getFirstnameCustomer()+" "+customer.getLastnameCustomer());
         mailSender.sendMessageHtml(orderCreate.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
         return OrdersMapper.toOrdersDto(orderCreate);
     }
@@ -176,7 +176,7 @@ public class OrdersService_impl implements OrdersService {
         String template = "order-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("order", ordersEntity);
-        attributes.put("fullname",ordersEntity.getCustomerEntity().getFullnameCustomer());
+        attributes.put("fullname",ordersEntity.getCustomerEntity().getFirstnameCustomer()+" "+ordersEntity.getCustomerEntity().getLastnameCustomer());
         mailSender.sendMessageHtml(ordersEntity.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
     }
 

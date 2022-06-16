@@ -104,7 +104,7 @@ public class    CartService_impl implements CartService {
         CartByCustomerDto cartByCustomerDto=new CartByCustomerDto();
         cartByCustomerDto.setCustomerId(customerId);
         cartByCustomerDto.setUserCustomer(customerEntity.getUserCustomer());
-        cartByCustomerDto.setFullnameCustomer(customerEntity.getFullnameCustomer());
+        cartByCustomerDto.setFullnameCustomer(customerEntity.getFirstnameCustomer()+" "+customerEntity.getLastnameCustomer());
         cartByCustomerDto.setGmailCustomer(customerEntity.getGmailCustomer());
         cartByCustomerDto.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
         cartByCustomerDto.setAddress(customerEntity.getAddress());
