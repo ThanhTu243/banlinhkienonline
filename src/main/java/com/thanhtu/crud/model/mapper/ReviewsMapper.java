@@ -22,7 +22,7 @@ public class ReviewsMapper {
     public static ReviewsDto toReviewDto(ReviewsEntity reviews)
     {
         ReviewsDto tmp=new ReviewsDto();
-        tmp.setCustomerName(reviews.getCustomerEntity().getFullnameCustomer());
+        tmp.setCustomerName(reviews.getCustomerEntity().getFirstnameCustomer()+" "+reviews.getCustomerEntity().getLastnameCustomer());
         tmp.setOrderId(reviews.getId().getOrderId());
         tmp.setProductName(reviews.getProductEntity().getProductName());
         tmp.setComments(reviews.getComments());

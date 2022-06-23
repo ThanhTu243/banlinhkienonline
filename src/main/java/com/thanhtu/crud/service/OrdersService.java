@@ -25,7 +25,8 @@ public interface OrdersService {
 
     OrdersDto createOrders(OrderCreateRequest orderCreateRequest);
 
-    OrdersDto createOrdersPaypal(OrderCreateRequest orderCreateRequest);
+    OrdersDto createOrdersOnline(OrderCreateRequest orderCreateRequest,String paymentMethod);
+
 
     void confirmPaymentAndSendMail(int OrderId);
 

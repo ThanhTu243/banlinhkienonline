@@ -20,7 +20,7 @@ public class CustomerMapper {
         tmp.setUserCustomer(customerEntity.getUserCustomer());
         tmp.setAddress(customerEntity.getAddress());
         tmp.setCustomerId(customerEntity.getCustomerId());
-        tmp.setFullnameCustomer(customerEntity.getFullnameCustomer());
+        tmp.setFullnameCustomer(customerEntity.getFirstnameCustomer()+customerEntity.getLastnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
         return tmp;
@@ -31,7 +31,7 @@ public class CustomerMapper {
         CustomerFKDto tmp=new CustomerFKDto();
         tmp.setCustomerId(customerEntity.getCustomerId());
         tmp.setUserCustomer(customerEntity.getUserCustomer());
-        tmp.setFullnameCustomer(customerEntity.getFullnameCustomer());
+        tmp.setFullnameCustomer(customerEntity.getFirstnameCustomer()+" "+customerEntity.getLastnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
         return tmp;
@@ -52,7 +52,8 @@ public class CustomerMapper {
     public static CustomerEntity toUpdateCustomerEntity(CustomerEntity customer,CustomerRequest request)
     {
         customer.setPhonenumberCustomer(request.getPhoneNumber());
-        customer.setFullnameCustomer(request.getFullname());
+        customer.setFirstnameCustomer(request.getFirstname());
+        customer.setLastnameCustomer(request.getLastname());
         customer.setAddress(request.getAddress());
         return customer;
     }

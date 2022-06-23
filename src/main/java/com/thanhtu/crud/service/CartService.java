@@ -12,6 +12,8 @@ public interface CartService{
 
     CartDto deleteCart(CartRequest cartRequest);
 
+    int deleteCartById(int id);
+
     CartByCustomerDto getCartByCustomer(int customerId);
 
     Long selectCart(CartSelectRequest cartSelectRequest);

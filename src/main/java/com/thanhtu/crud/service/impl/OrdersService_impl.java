@@ -9,6 +9,7 @@ import com.thanhtu.crud.model.mapper.OrdersDetailMapper;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.*;
 import com.thanhtu.crud.repository.*;
+import com.thanhtu.crud.service.CartService;
 import com.thanhtu.crud.service.OrdersService;
 import com.thanhtu.crud.service.email.MailSender;
 import lombok.RequiredArgsConstructor;
@@ -99,29 +100,33 @@ public class OrdersService_impl implements OrdersService {
 
     @Override
     public OrdersDto createOrders(OrderCreateRequest orderCreateRequest) {
-        List<ProductToOrder> productToOrderList=new ArrayList<ProductToOrder>();
-        productToOrderList=orderCreateRequest.getList();
-        for(ProductToOrder productToOrder:productToOrderList)
+        List<Integer> cartIdList=orderCreateRequest.getCartItemList();
+        List<CartEntity> listCartItem=new ArrayList<>();
+        for(Integer cartIdItem:cartIdList)
         {
-            ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
-            if(product==null)
+            listCartItem.add(cartRepo.findCartEntitiesByCartIdAndIsDelete(cartIdItem,"NO"));
+        }
+        for(CartEntity cartEntity:listCartItem)
+        {
+            ProductEntity product=cartEntity.getProductEntity();
+            if(cartEntity.getProductEntity().getIsDelete().equals("YES"))
             {
                 throw new NotFoundException(""+product.getProductName()+" không còn bán nữa");
             }
-            if(product.getQuantity()<productToOrder.getQuantity())
+            if(cartEntity.getQuantity()>cartEntity.getProductEntity().getQuantity())
             {
                 throw new NotFoundException(""+product.getProductName()+" không đủ số lượng. Chỉ còn "+product.getQuantity());
             }
         }
-        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(orderCreateRequest.getCustomerId(),"NO");
-        OrdersEntity orderCreate=orderRepo.save(OrdersMapper.toCreateOrders(orderCreateRequest,customer));
-        for(ProductToOrder productToOrder:productToOrderList)
+        CustomerEntity customer=listCartItem.get(0).getCustomerEntity();
+        OrdersEntity orderCreate=orderRepo.save(OrdersMapper.toCreateOrders(orderCreateRequest,customer,"COD"));
+        for(CartEntity cartEntity:listCartItem)
         {
-            ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
-            CartEntity cartDelete= cartRepo.findCartEntitiesByCartId(orderCreateRequest.getId());
-            cartRepo.delete(cartDelete);
-            ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
-            int quantityUpdate=product.getQuantity()-productToOrder.getQuantity();
+            cartEntity.setIsDelete("YES");
+            cartRepo.save(cartEntity);
+            ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(cartEntity,orderCreate));
+            ProductEntity product=cartEntity.getProductEntity();
+            int quantityUpdate=product.getQuantity()-cartEntity.getQuantity();
             product.setQuantity(quantityUpdate);
             productRepo.save(product);
         }
@@ -129,38 +134,40 @@ public class OrdersService_impl implements OrdersService {
         String template = "order-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("order", orderCreate);
-        attributes.put("fullname",customer.getFullnameCustomer());
+        attributes.put("fullname",customer.getFirstnameCustomer()+" "+customer.getLastnameCustomer());
         mailSender.sendMessageHtml(orderCreate.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
         return OrdersMapper.toOrdersDto(orderCreate);
     }
     @Override
-    public OrdersDto createOrdersPaypal(OrderCreateRequest orderCreateRequest)
+    public OrdersDto createOrdersOnline(OrderCreateRequest orderCreateRequest,String methodPayment)
     {
-        List<ProductToOrder> productToOrderList=new ArrayList<ProductToOrder>();
-        productToOrderList=orderCreateRequest.getList();
-        for(ProductToOrder productToOrder:productToOrderList)
+        List<Integer> cartIdList=orderCreateRequest.getCartItemList();
+        List<CartEntity> listCartItem=new ArrayList<>();
+        for(Integer cartIdItem:cartIdList)
         {
-            ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
-            if(product==null)
+            listCartItem.add(cartRepo.findCartEntitiesByCartIdAndIsDelete(cartIdItem,"NO"));
+        }
+        for(CartEntity cartEntity:listCartItem)
+        {
+            ProductEntity product=cartEntity.getProductEntity();
+            if(cartEntity.getProductEntity().getIsDelete().equals("YES"))
             {
                 throw new NotFoundException(""+product.getProductName()+" không còn bán nữa");
             }
-            if(product.getQuantity()<productToOrder.getQuantity())
+            if(cartEntity.getQuantity()>cartEntity.getProductEntity().getQuantity())
             {
                 throw new NotFoundException(""+product.getProductName()+" không đủ số lượng. Chỉ còn "+product.getQuantity());
             }
         }
-        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(orderCreateRequest.getCustomerId(),"NO");
-        OrdersEntity orders=OrdersMapper.toCreateOrders(orderCreateRequest,customer);
-        orders.setNote("Chưa thanh toán");
-        OrdersEntity orderCreate=orderRepo.save(orders);
-        for(ProductToOrder productToOrder:productToOrderList)
+        CustomerEntity customer=listCartItem.get(0).getCustomerEntity();
+        OrdersEntity orderCreate=orderRepo.save(OrdersMapper.toCreateOrders(orderCreateRequest,customer,"VNPAY"));
+        for(CartEntity cartEntity:listCartItem)
         {
-            ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productToOrder.getProductId(),"NO");
-            CartEntity cartDelete= cartRepo.findCartEntitiesByCartId(orderCreateRequest.getId());
-            cartRepo.delete(cartDelete);
-            ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(productToOrder,orderCreate,product));
-            int quantityUpdate=product.getQuantity()-productToOrder.getQuantity();
+            cartEntity.setIsDelete("YES");
+            cartRepo.save(cartEntity);
+            ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(cartEntity,orderCreate));
+            ProductEntity product=cartEntity.getProductEntity();
+            int quantityUpdate=product.getQuantity()-cartEntity.getQuantity();
             product.setQuantity(quantityUpdate);
             productRepo.save(product);
         }
@@ -170,13 +177,13 @@ public class OrdersService_impl implements OrdersService {
     @Override
     public void confirmPaymentAndSendMail(int orderId) {
         OrdersEntity ordersEntity=orderRepo.findOrdersEntityByOrderId(orderId);
-        ordersEntity.setNote("Đã thanh toán");
+        ordersEntity.setPaymentStatus("Đã thanh toán");
         orderRepo.save(ordersEntity);
         String subject = "Đơn hàng #" + orderId;
         String template = "order-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("order", ordersEntity);
-        attributes.put("fullname",ordersEntity.getCustomerEntity().getFullnameCustomer());
+        attributes.put("fullname",ordersEntity.getCustomerEntity().getFirstnameCustomer()+" "+ordersEntity.getCustomerEntity().getLastnameCustomer());
         mailSender.sendMessageHtml(ordersEntity.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
     }
 

@@ -12,10 +12,15 @@ import javax.validation.constraints.*;
 @Setter
 public class CustomerRequest {
 
+    @NotNull(message = "Nhập họ khách hàng")
+    @NotEmpty(message = "Nhập họ khách hàng")
+    @Size(max =100,message = "Nhập họ khách hàng nhỏ hơn 100 ký tự")
+    private String firstname;
+
     @NotNull(message = "Nhập tên khách hàng")
     @NotEmpty(message = "Nhập tên khách hàng")
-    @Size(max =100,message = "Nhập tên khách hàng nhỏ hơn 10 ký tự")
-    private String fullname;
+    @Size(max =100,message = "Nhập tên khách hàng nhỏ hơn 100 ký tự")
+    private String lastname;
 
     @NotNull(message = "Nhập địa chỉ khách hàng")
     @NotEmpty(message = "Nhập địa chỉ khách hàng")

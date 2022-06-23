@@ -11,7 +11,8 @@ public class AdminsMapper {
         AdminsDto tmp=new AdminsDto();
         tmp.setAdminId(accountsEntity.getAccountId());
         tmp.setUserAdmin(accountsEntity.getUsername());
-        tmp.setFullnameAdmin(accountsEntity.getFullname());
+        tmp.setFirstnameAdmin(accountsEntity.getFirstname());
+        tmp.setLastnameAdmin(accountsEntity.getLastname());
         tmp.setGmailAdmin(accountsEntity.getGmail());
         return tmp;
     }

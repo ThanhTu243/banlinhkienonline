@@ -82,7 +82,8 @@ public class AuthenticationService_impl implements AuthenticationService {
 
         CustomerEntity customerRegister=new CustomerEntity();
         customerRegister.setUserCustomer(request.getGmail());
-        customerRegister.setFullnameCustomer(request.getFullname());
+        customerRegister.setFirstnameCustomer(request.getFirstname());
+        customerRegister.setLastnameCustomer(request.getLastname());
         customerRegister.setAddress(request.getAddress());
         customerRegister.setGmailCustomer(request.getGmail());
         customerRegister.setPhonenumberCustomer(request.getPhonenumber());
@@ -92,7 +93,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         String subject = "Mã xác thực đăng kí tài khoản";
         String template = "registration-template";
         Map<String, Object> attributes = new HashMap<>();
-        attributes.put("fullname", request.getFullname());
+        attributes.put("fullname", request.getFirstname()+" "+request.getLastname());
         attributes.put("registrationUrl", "http://" + hostname + "/activate/" + accountRegister.getActivationCode());
         mailSender.sendMessageHtml(request.getGmail(), subject, template, attributes);
     }
@@ -130,7 +131,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         String subject = "Đặt lại mật khẩu";
         String template = "password-reset-template";
         Map<String, Object> attributes = new HashMap<>();
-        attributes.put("fullname", customer.getFullnameCustomer());
+        attributes.put("fullname", customer.getFirstnameCustomer()+" "+customer.getLastnameCustomer());
         attributes.put("resetUrl", "http://" + hostname + "/reset/" + account.getPasswordresetCode());
         mailSender.sendMessageHtml(account.getGmail(), subject, template, attributes);
         return true;

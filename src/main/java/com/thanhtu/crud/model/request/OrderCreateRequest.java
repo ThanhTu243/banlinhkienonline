@@ -14,5 +14,5 @@ public class OrderCreateRequest {
     private String phoneNumber;
     private Long total;
     @NotEmpty(message = "Vui lòng chọn mặt hàng để ")
-    private List<ProductToOrder> list;
+    private List cartItemList;
 }
