@@ -46,7 +46,7 @@ public class OrdersMapper {
         tmp.setStatusOrder(ordersEntity.getStatusOrder());
         return tmp;
     }
-    public static OrdersEntity toCreateOrders(OrderCreateRequest orderCreateRequest, CustomerEntity customer)
+    public static OrdersEntity toCreateOrders(OrderCreateRequest orderCreateRequest, CustomerEntity customer,String paymentMehtod)
     {
         OrdersEntity tmp=new OrdersEntity();
         tmp.setAddress(orderCreateRequest.getAddress());
@@ -54,7 +54,9 @@ public class OrdersMapper {
         tmp.setCreateDate(Timestamp.valueOf(LocalDateTime.now()));
         tmp.setTotalAmount(orderCreateRequest.getTotal());
         tmp.setStatusOrder("Chưa duyệt");
-        tmp.setNote("Chưa thanh toán");
+        tmp.setNote("");
+        tmp.setPaymentMethod(paymentMehtod);
+        tmp.setPaymentStatus("Chưa thanh toán");
         tmp.setCustomerEntity(customer);
         return tmp;
     }

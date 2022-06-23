@@ -44,8 +44,8 @@ import java.util.*;
 @CrossOrigin(origins = "http://localhost:4006/")
 @RequestMapping("/payment/")
 public class PaymentController {
-    public static final String URL_SUCCESS = "payment/success";
-    public static final String URL_CANCEL = "payment/cancel";
+    public static final String URL_SUCCESS = "payment/paypal/success";
+    public static final String URL_CANCEL = "payment/paypal/cancel";
     @Autowired
     CustomerService customerService;
     @Value("${hostname.paypalreturn}")
@@ -67,7 +67,7 @@ public class PaymentController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
 
-        OrdersDto order=ordersService.createOrdersPaypal(orderCreateRequest);
+        OrdersDto order=ordersService.createOrdersOnline(orderCreateRequest,"PAYPAL");
         String cancelUrl = hostname+"/" + URL_CANCEL;
         String successUrl = hostname+ "/" + URL_SUCCESS +"/"+order.getOrderId();
         OrderDetailViewDto orderDetailViewDto=ordersDetailService.detailOrders(order.getOrderId());
@@ -119,6 +119,12 @@ public class PaymentController {
     @PostMapping("/vnpay")
     public ResponseEntity<?> payByVNPay(HttpServletRequest request,@Valid @RequestBody OrderCreateRequest orderCreateRequest,
                                         BindingResult bindingResult) {
+        if(bindingResult.hasErrors())
+        {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        OrdersDto order=ordersService.createOrdersOnline(orderCreateRequest,"VNPAY");
         CustomerEntity customer=customerService.getCustomerById(orderCreateRequest.getCustomerId());
 //        String vnp_OrderInfo = paymentRequest.getDecription();
 //        String orderType = req.getParameter("ordertype");
@@ -134,12 +140,12 @@ public class PaymentController {
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", VnPayUtils.vnp_currCode);
 //        String bank_code = orderCreateRequest.getBankCode();
-        String bank_code="";
+        String bank_code="NCB";
         if (bank_code != null && !bank_code.isEmpty()) {
             vnp_Params.put("vnp_BankCode", bank_code);
         }
         vnp_Params.put("vnp_TxnRef", VnPayUtils.getRandomNumber(8));
-        vnp_Params.put("vnp_OrderInfo", "Ahihi");
+        vnp_Params.put("vnp_OrderInfo", "payment");
         vnp_Params.put("vnp_OrderType", VnPayUtils.vnp_orderType);
 
         String locate = request.getParameter("language");
@@ -148,6 +154,7 @@ public class PaymentController {
         } else {
             vnp_Params.put("vnp_Locale", VnPayUtils.location);
         }
+        VnPayUtils.vnp_Returnurl+="/"+order.getOrderId();
         vnp_Params.put("vnp_ReturnUrl", VnPayUtils.vnp_Returnurl);
         vnp_Params.put("vnp_IpAddr", VnPayUtils.getIpAddress(request));
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -165,11 +172,13 @@ public class PaymentController {
         vnp_Params.put("vnp_Bill_Email", customer.getGmailCustomer());
 
         String fullName=customer.getFirstnameCustomer()+customer.getLastnameCustomer();
+        /*vnp_Params.put("vnp_Bill_FirstName",customer.getFirstnameCustomer());
+        vnp_Params.put("vnp_Bill_LastName", customer.getLastnameCustomer());*/
         vnp_Params.put("vnp_Bill_FirstName","Nguyen");
-        vnp_Params.put("vnp_Bill_LastName", "Thanh Tu");
+        vnp_Params.put("vnp_Bill_LastName", "Thanh");
 
 
-        vnp_Params.put("vnp_Bill_Address", customer.getAddress());
+        vnp_Params.put("vnp_Bill_Address", "HCM");
         vnp_Params.put("vnp_Bill_City", "HCM");
         vnp_Params.put("vnp_Bill_Country", "Viet Nam");
 //        if (req.getParameter("txt_bill_state") != null && !req.getParameter("txt_bill_state").isEmpty()) {
@@ -218,12 +227,24 @@ public class PaymentController {
 //        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(paymentUrl)).build();
 
     }
-    @GetMapping("/cancel")
-    public ResponseEntity<?> cancelPay(){
+    @GetMapping("/vnpay/{orderId}")
+    public ResponseEntity<?> resultVnPay(@RequestParam("vnp_ResponseCode") String responseCode,@PathVariable int orderId)
+    {
+        if(responseCode.equals("00"))
+        {
+            ordersService.confirmPaymentAndSendMail(orderId);
+            return ResponseEntity.status(HttpStatus.OK).body("Thanh toán thành công");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thanh toán thất bại");
+        }
+    }
+    @GetMapping("/paypal/cancel")
+    public ResponseEntity<?> cancelPaypal(){
         throw new NotFoundException("Thanh toán thất bại");
     }
-    @GetMapping("/success/{orderId}")
-    public ResponseEntity<?> successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId,@PathVariable int orderId){
+    @GetMapping("/paypal/success/{orderId}")
+    public ResponseEntity<?> successPaypal(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId,@PathVariable int orderId){
         try {
             Payment payment = paypalService.executePayment(paymentId, payerId);
             if(payment.getState().equals("approved")){

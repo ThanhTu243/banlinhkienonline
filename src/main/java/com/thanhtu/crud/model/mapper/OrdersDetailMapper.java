@@ -1,14 +1,8 @@
 package com.thanhtu.crud.model.mapper;
 
 import com.thanhtu.crud.entity.*;
-import com.thanhtu.crud.model.dto.OrderDetailViewDto;
 import com.thanhtu.crud.model.dto.OrdersDetailDto;
 import com.thanhtu.crud.model.dto.ProductToOrder;
-import org.hibernate.mapping.Array;
-import org.hibernate.mapping.List;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 public class OrdersDetailMapper {
     public static OrdersDetailDto toOrdersDetailDto(OrderDetailEntity orderDetailEntity, ProductEntity productEntity)
@@ -21,18 +15,18 @@ public class OrdersDetailMapper {
         tmp.setProductFKDto(ProductMapper.toProductFKDto(productEntity));
         return tmp;
     }
-    public static OrderDetailEntity toOrderDetailEntity(ProductToOrder productToOrder, OrdersEntity orders,ProductEntity product)
+    public static OrderDetailEntity toOrderDetailEntity(CartEntity cartEntity, OrdersEntity orders)
     {
         OrderDetailEntity tmp=new OrderDetailEntity();
-        tmp.setId(OrderDetailIdKeyMapper.toOrderDetailIDKey(orders.getOrderId(), productToOrder.getProductId()));
-        tmp.setQuantity(productToOrder.getQuantity());
-        Long priceAfterDiscount=product.getUnitPrice().longValue()*(100-product.getDiscount())/100;
-        Long amountProduct=productToOrder.getQuantity().longValue()*priceAfterDiscount;
+        tmp.setId(OrderDetailIdKeyMapper.toOrderDetailIDKey(orders.getOrderId(),cartEntity.getProductEntity().getProductId()));
+        tmp.setQuantity(cartEntity.getQuantity());
+        Long priceAfterDiscount=cartEntity.getProductEntity().getUnitPrice().longValue()*(100-cartEntity.getProductEntity().getDiscount())/100;
+        Long amountProduct=cartEntity.getQuantity().longValue()*priceAfterDiscount;
         tmp.setAmount(amountProduct);
         tmp.setIsDelete("NO");
         tmp.setOrdersEntity(orders);
         tmp.setIsReview("NO");
-        tmp.setProductEntity(product);
+        tmp.setProductEntity(cartEntity.getProductEntity());
         return tmp;
     }
 }

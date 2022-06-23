@@ -94,6 +94,14 @@ public class    CartService_impl implements CartService {
     }
 
     @Override
+    public int deleteCartById(int id) {
+        CartEntity cart=cartRepo.findCartEntitiesByCartIdAndIsDelete(id,"NO");
+        cart.setIsDelete("YES");
+        cartRepo.save(cart);
+        return 1;
+    }
+
+    @Override
     public CartByCustomerDto getCartByCustomer(int customerId) {
         CustomerEntity customerEntity= customerRepo.findCustomerEntityByCustomerIdAndIsDelete(customerId,"NO");
         if(customerEntity==null)
