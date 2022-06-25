@@ -1,21 +1,25 @@
 package com.thanhtu.crud.controller.customer;
 
+import com.mservice.allinone.models.CaptureMoMoRequest;
+import com.mservice.allinone.models.CaptureMoMoResponse;
+import com.mservice.shared.constants.Parameter;
+import com.mservice.shared.sharedmodels.HttpResponse;
+import com.mservice.shared.utils.Encoder;
+import com.mservice.shared.utils.Execute;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.PayPalRESTException;
 import com.thanhtu.crud.entity.CustomerEntity;
-import com.thanhtu.crud.entity.ProductEntity;
+import com.thanhtu.crud.exception.InputFieldException;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.PaypalDto;
 import com.thanhtu.crud.model.dto.OrderDetailViewDto;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.dto.ProductOrderDetailDto;
-import com.thanhtu.crud.model.dto.ProductToOrder;
 import com.thanhtu.crud.model.request.OrderCreateRequest;
 import com.thanhtu.crud.service.CustomerService;
 import com.thanhtu.crud.service.OrdersDetailService;
 import com.thanhtu.crud.service.OrdersService;
 import com.thanhtu.crud.service.impl.PaypalService_impl;
-import com.thanhtu.crud.utils.Utils;
 import com.thanhtu.crud.utils.VnPayUtils;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -24,19 +28,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.mservice.shared.sharedmodels.AbstractProcess.getGson;
 
 
 @RestController
@@ -227,10 +229,127 @@ public class PaymentController {
 //        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(paymentUrl)).build();
 
     }
+
+    @PostMapping("/momo")
+    public ResponseEntity<CaptureMoMoResponse> payByMoMo(HttpServletRequest request, @Valid @RequestBody OrderCreateRequest orderCreateRequest,
+                                                         BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors())
+        {
+            throw new InputFieldException(bindingResult);
+        }
+        OrdersDto order=ordersService.createOrdersOnline(orderCreateRequest,"MOMO");
+        int requestId=new Random().nextInt(9000000)+1000000;
+        String returnURL="http://localhost:8080/payment/momo/"+order.getOrderId();
+        String notifyURL="http://localhost:8080/payment/momo/";
+        return ResponseEntity.ok(this.process(order.getOrderId().toString(),String.valueOf(requestId),
+                String.valueOf(orderCreateRequest.getTotal()), "Thanh toán đơn hàng",
+                returnURL, notifyURL, "1"));
+    }
+    public CaptureMoMoResponse process(String orderId, String requestId, String amount, String orderInfo, String returnURL, String notifyURL, String extraData) throws Exception {
+        try {
+
+            CaptureMoMoRequest captureMoMoRequest = this.createPaymentCreationRequest(orderId, requestId, amount, orderInfo, returnURL, notifyURL, extraData);
+            CaptureMoMoResponse captureMoMoResponse = this.execute(captureMoMoRequest);
+
+            return captureMoMoResponse;
+        } catch (Exception exception) {
+            System.out.println("process error");
+        }
+        return null;
+    }
+
+    public CaptureMoMoResponse execute(CaptureMoMoRequest request) {
+        try {
+
+            JSONObject json = new JSONObject();
+            json.put("partnerCode", request.getPartnerCode());
+            json.put("accessKey", request.getAccessKey());
+            json.put("requestId", request.getRequestId());
+            json.put("amount", request.getAmount());
+            json.put("orderId", request.getOrderId());
+            json.put("orderInfo", request.getOrderInfo());
+            json.put("returnUrl", request.getReturnUrl());
+            json.put("notifyUrl", request.getNotifyUrl());
+            json.put("extraData", request.getExtraData());
+            json.put("requestType", "captureMoMoWallet");
+            json.put("signature", request.getSignature());
+            Execute execute = new Execute();
+            HttpResponse response = execute.sendToMoMo("https://test-payment.momo.vn/gw_payment/transactionProcessor", json.toString());
+
+            if (response.getStatus() != 200) {
+                System.out.println("execute error");
+            }
+
+//            System.out.println("uweryei7rye8wyreow8: "+ response.getData());
+
+            CaptureMoMoResponse captureMoMoResponse = getGson().fromJson(response.getData(), CaptureMoMoResponse.class);
+
+//            errorMoMoProcess(captureMoMoResponse.getErrorCode());
+
+            String responserawData = Parameter.REQUEST_ID + "=" + captureMoMoResponse.getRequestId() +
+                    "&" + Parameter.ORDER_ID + "=" + captureMoMoResponse.getOrderId() +
+                    "&" + Parameter.MESSAGE + "=" + captureMoMoResponse.getMessage() +
+                    "&" + Parameter.LOCAL_MESSAGE + "=" + captureMoMoResponse.getLocalMessage() +
+                    "&" + Parameter.PAY_URL + "=" + captureMoMoResponse.getPayUrl() +
+                    "&" + Parameter.ERROR_CODE + "=" + captureMoMoResponse.getErrorCode() +
+                    "&" + Parameter.REQUEST_TYPE + "=" + "captureWallet";
+
+            String signResponse = Encoder.signHmacSHA256(responserawData, "5jtHrTwBLBFlClny5lBiPvPVrHZ25LF4");
+//            LogUtils.info("[CaptureMoMoResponse] rawData: " + responserawData + ", [Signature] -> " + signResponse + ", [MoMoSignature] -> " + captureMoMoResponse.getSignature());
+            System.out.println("signResponse success");
+            return captureMoMoResponse;
+        } catch (Exception exception) {
+//            LogUtils.error("[CaptureMoMoResponse] "+ exception);
+            throw new IllegalArgumentException("Invalid params capture MoMo Request");
+        }
+
+    }
+
+    public CaptureMoMoRequest createPaymentCreationRequest(String orderId, String requestId, String amount, String
+            orderInfo, String returnUrl, String notifyUrl, String extraData) {
+
+        try {
+            String requestRawData = new StringBuilder()
+                    .append(Parameter.PARTNER_CODE).append("=").append("MOMOGV3H20220623").append("&")
+                    .append(Parameter.ACCESS_KEY).append("=").append("9Cdpmwfyuz7G1O7o").append("&")
+//                    .append(Parameter.PARTNER_NAME).append("=").append("DouBH Store").append("&")
+//                    .append(Parameter.STORE_ID).append("=").append("1").append("&")
+                    .append(Parameter.REQUEST_ID).append("=").append(requestId).append("&")
+                    .append(Parameter.AMOUNT).append("=").append(amount).append("&")
+                    .append(Parameter.ORDER_ID).append("=").append(orderId).append("&")
+                    .append(Parameter.ORDER_INFO).append("=").append(orderInfo).append("&")
+                    .append(Parameter.RETURN_URL).append("=").append(returnUrl).append("&")
+                    .append(Parameter.NOTIFY_URL).append("=").append(notifyUrl).append("&")
+                    .append(Parameter.EXTRA_DATA).append("=").append(extraData)
+                    .toString();
+
+            String signRequest = Encoder.signHmacSHA256(requestRawData, "5jtHrTwBLBFlClny5lBiPvPVrHZ25LF4");
+//            LogUtils.debug("[CaptureMoMoRequest] rawData: " + requestRawData + ", [Signature] -> " + signRequest);
+
+            return new CaptureMoMoRequest("MOMOGV3H20220623", orderId, orderInfo, "9Cdpmwfyuz7G1O7o", amount, signRequest, extraData, requestId, notifyUrl, returnUrl, "captureWallet");
+        } catch (Exception e) {
+            System.out.println("createPaymentCreationRequest error");
+        }
+
+        return null;
+    }
+
     @GetMapping("/vnpay/{orderId}")
     public ResponseEntity<?> resultVnPay(@RequestParam("vnp_ResponseCode") String responseCode,@PathVariable int orderId)
     {
         if(responseCode.equals("00"))
+        {
+            ordersService.confirmPaymentAndSendMail(orderId);
+            return ResponseEntity.status(HttpStatus.OK).body("Thanh toán thành công");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thanh toán thất bại");
+        }
+    }
+    @GetMapping("/momo/{orderId}")
+    public ResponseEntity<?> resultMomo(@RequestParam("errorCode") String errorCode,@PathVariable int orderId)
+    {
+        if(errorCode.equals("0"))
         {
             ordersService.confirmPaymentAndSendMail(orderId);
             return ResponseEntity.status(HttpStatus.OK).body("Thanh toán thành công");
