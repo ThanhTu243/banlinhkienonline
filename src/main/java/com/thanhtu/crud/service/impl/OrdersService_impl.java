@@ -160,7 +160,7 @@ public class OrdersService_impl implements OrdersService {
             }
         }
         CustomerEntity customer=listCartItem.get(0).getCustomerEntity();
-        OrdersEntity orderCreate=orderRepo.save(OrdersMapper.toCreateOrders(orderCreateRequest,customer,"VNPAY"));
+        OrdersEntity orderCreate=orderRepo.save(OrdersMapper.toCreateOrders(orderCreateRequest,customer,methodPayment));
         for(CartEntity cartEntity:listCartItem)
         {
             cartEntity.setIsDelete("YES");
