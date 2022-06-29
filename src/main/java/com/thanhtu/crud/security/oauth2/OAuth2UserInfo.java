@@ -1,4 +1,4 @@
-package com.gmail.merikbest2015.ecommerce.security.oauth2;
+package com.thanhtu.crud.security.oauth2;
 
 import java.util.Map;
 
@@ -21,4 +21,6 @@ public abstract class OAuth2UserInfo {
     public abstract String getLastName();
 
     public abstract String getEmail();
+
+    public abstract String getImageUrl();
 }

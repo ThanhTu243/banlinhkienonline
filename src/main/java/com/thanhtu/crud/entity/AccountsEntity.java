@@ -14,6 +14,7 @@ import java.util.Collection;
 @Table(name="accounts")
 @Getter
 @Setter
+@ToString
 public class AccountsEntity {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)

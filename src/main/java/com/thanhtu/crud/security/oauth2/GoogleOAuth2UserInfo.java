@@ -1,4 +1,4 @@
-package com.gmail.merikbest2015.ecommerce.security.oauth2;
+package com.thanhtu.crud.security.oauth2;
 
 import java.util.Map;
 
@@ -26,5 +26,9 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
     @Override
     public String getEmail() {
         return (String) attributes.get("email");
+    }
+    @Override
+    public String getImageUrl() {
+        return (String) attributes.get("picture");
     }
 }

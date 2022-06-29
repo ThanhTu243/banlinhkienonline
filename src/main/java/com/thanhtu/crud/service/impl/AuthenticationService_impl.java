@@ -8,6 +8,7 @@ import com.thanhtu.crud.repository.AccountsRepository;
 import com.thanhtu.crud.repository.AdminsRepository;
 import com.thanhtu.crud.repository.CustomerRepository;
 import com.thanhtu.crud.security.JwtProvider;
+import com.thanhtu.crud.security.oauth2.OAuth2UserInfo;
 import com.thanhtu.crud.service.AuthenticationService;
 import com.thanhtu.crud.service.email.MailSender;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -150,5 +148,35 @@ public class AuthenticationService_impl implements AuthenticationService {
         account.setPasswordresetCode(null);
         accountsRepo.save(account);
         return "Mật khẩu đã thay đổi thành công";
+    }
+
+    @Override
+    public AccountsEntity registerOauth2User(String provider, OAuth2UserInfo oAuth2UserInfo) {
+        AccountsEntity account = new AccountsEntity();
+        account.setUsername(oAuth2UserInfo.getEmail());
+        account.setGmail(oAuth2UserInfo.getEmail());
+        account.setFirstname(oAuth2UserInfo.getFirstName());
+        account.setLastname(oAuth2UserInfo.getLastName());
+        account.setActiveAccount("ACTIVE");
+        account.setRoles("CUSTOMER");
+        account.setProvider(AuthProvider.valueOf(provider.toUpperCase()).toString());
+        accountsRepo.save(account);
+
+        CustomerEntity customerRegister=new CustomerEntity();
+        customerRegister.setUserCustomer(oAuth2UserInfo.getEmail());
+        customerRegister.setFirstnameCustomer(oAuth2UserInfo.getFirstName());
+        customerRegister.setLastnameCustomer(oAuth2UserInfo.getLastName());
+        customerRegister.setGmailCustomer(oAuth2UserInfo.getEmail());
+        customerRegister.setIsDelete("NO");
+        customerRepo.save(customerRegister);
+        return account;
+    }
+
+    @Override
+    public AccountsEntity updateOauth2User(AccountsEntity accounts, String provider, OAuth2UserInfo oAuth2UserInfo) {
+        accounts.setFirstname(oAuth2UserInfo.getFirstName());
+        accounts.setLastname(oAuth2UserInfo.getLastName());
+        accounts.setProvider(AuthProvider.valueOf(provider.toUpperCase()).toString());
+        return accountsRepo.save(accounts);
     }
 }
