@@ -108,7 +108,7 @@ public class CartService_impl implements CartService {
         {
             throw new NotFoundException("Không tìm thấy khách hàng có Id: "+customerId);
         }
-        List<CartEntity> listCart=cartRepo.findCartEntityByCustomerEntity(customerEntity);
+        List<CartEntity> listCart=cartRepo.findCartEntityByCustomerEntityAndIsDelete(customerEntity,"NO");
         CartByCustomerDto cartByCustomerDto=new CartByCustomerDto();
         cartByCustomerDto.setCustomerId(customerId);
         cartByCustomerDto.setUserCustomer(customerEntity.getUserCustomer());
