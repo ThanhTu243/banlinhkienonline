@@ -36,7 +36,7 @@ public class CartService_impl implements CartService {
     public CartDto createCart(CartRequest cartRequest) {
         CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(cartRequest.getCustomerId(),"NO");
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
-        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
+        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntityAndIsDelete(customer,product,"NO");
 
         if(product==null)
         {
@@ -65,7 +65,7 @@ public class CartService_impl implements CartService {
     public CartDto updateCart(CartRequest cartRequest) {
         CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(cartRequest.getCustomerId(),"NO");
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
-        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
+        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntityAndIsDelete(customer,product,"NO");
         if(cart==null)
         {
             throw new NotFoundException("Không tìm thấy sản phẫm có id: "+cartRequest.getProductId());
@@ -84,7 +84,7 @@ public class CartService_impl implements CartService {
     public CartDto deleteCart(CartRequest cartRequest) {
         CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
-        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
+        CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntityAndIsDelete(customer,product,"NO");
         if(cart==null)
         {
             throw new NotFoundException("Không có mặt hàng này trong giỏ");
@@ -142,7 +142,7 @@ public class CartService_impl implements CartService {
             {
                 throw new NotFoundException("Không tìm thấy sản phẫm có Id "+productSelectCartRequest.getProductId());
             }
-            CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
+            CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntityAndIsDelete(customer,product,"NO");
             if(cart==null)
             {
                 throw new NotFoundException("Không có trong giỏ hàng");

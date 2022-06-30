@@ -11,5 +11,5 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<CartEntity,Integer> {
     CartEntity findCartEntitiesByCartIdAndIsDelete(int id,String status);
     List<CartEntity> findCartEntityByCustomerEntityAndIsDelete(CustomerEntity customer,String status);
-    CartEntity findCartEntitiesByCustomerEntityAndProductEntity(CustomerEntity customer, ProductEntity product);
+    CartEntity findCartEntitiesByCustomerEntityAndProductEntityAndIsDelete(CustomerEntity customer, ProductEntity product,String status);
 }
