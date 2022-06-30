@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class    CartService_impl implements CartService {
+public class CartService_impl implements CartService {
     @Autowired
     CartRepository cartRepo;
     @Autowired
@@ -34,7 +34,7 @@ public class    CartService_impl implements CartService {
     CustomerRepository customerRepo;
     @Override
     public CartDto createCart(CartRequest cartRequest) {
-        CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(cartRequest.getCustomerId(),"NO");
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
         CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
 
@@ -49,8 +49,8 @@ public class    CartService_impl implements CartService {
 
         if(cart==null)
         {
-            CartEntity cartEntity=cartRepo.save(CartMapper.toCartEntity(cartRequest,product,customer));
-            return CartMapper.toCartDto(cartEntity);
+            cartRepo.save(CartMapper.toCartEntity(cartRequest,product,customer));
+            return null;
         }
         else{
             int quantityUpdate=cart.getQuantity()+cartRequest.getQuantity();
@@ -63,7 +63,7 @@ public class    CartService_impl implements CartService {
 
     @Override
     public CartDto updateCart(CartRequest cartRequest) {
-        CustomerEntity customer=customerRepo.getById(cartRequest.getCustomerId());
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(cartRequest.getCustomerId(),"NO");
         ProductEntity product=proRepo.findProductEntityByProductIdAndIsDelete(cartRequest.getProductId(), "NO");
         CartEntity cart=cartRepo.findCartEntitiesByCustomerEntityAndProductEntity(customer,product);
         if(cart==null)

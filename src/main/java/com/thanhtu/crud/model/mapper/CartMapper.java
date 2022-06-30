@@ -13,6 +13,7 @@ public class CartMapper {
         tmp.setQuantity(cartRequest.getQuantity());
         tmp.setCustomerEntity(customerEntity);
         tmp.setProductEntity(productEntity);
+        tmp.setIsDelete("NO");
         return tmp;
     }
     public static CartDto toCartDto(CartEntity cartEntity)

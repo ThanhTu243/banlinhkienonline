@@ -19,16 +19,16 @@ public class CartEntity{
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    private int cartId;
+    private Integer cartId;
     private Integer quantity;
     private String isDelete;
     @ManyToOne
-    @JoinColumn (name = "customer_id", nullable = false,referencedColumnName = "customer_id",insertable=false, updatable=false)
+    @JoinColumn (name = "customer_id", nullable = false,referencedColumnName = "customer_id")
     @JsonBackReference
     private CustomerEntity customerEntity;
 
     @ManyToOne
-    @JoinColumn (name = "product_id", nullable = false,referencedColumnName = "product_id",insertable=false, updatable=false)
+    @JoinColumn (name = "product_id", nullable = false,referencedColumnName = "product_id")
     @JsonBackReference
     private ProductEntity productEntity;
 
