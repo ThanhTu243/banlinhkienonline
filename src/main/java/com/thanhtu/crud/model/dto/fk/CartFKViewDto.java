@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CartFKViewDto {
+    private Integer cartId;
     private Integer productId;
     private String nameProduct;
     private String productImage;

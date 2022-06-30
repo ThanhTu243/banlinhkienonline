@@ -28,6 +28,7 @@ public class CartMapper {
     public static CartFKViewDto toCartFKViewDto(ProductEntity product,CartEntity cart)
     {
         CartFKViewDto tmp=new CartFKViewDto();
+        tmp.setCartId(cart.getCartId());
         tmp.setProductId(product.getProductId());
         tmp.setNameProduct(product.getProductName());
         tmp.setUnitPrice(product.getUnitPrice());
