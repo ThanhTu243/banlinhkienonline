@@ -21,6 +21,7 @@ public class AuthenticationMapper {
         response.setId(Integer.parseInt(resultMap.get("id")));
         response.setUsername(resultMap.get("username"));
         response.setToken(resultMap.get("token"));
+        response.setCustomerId(Integer.parseInt(resultMap.get("customerId")));
         response.setUserRole(resultMap.get("userRole"));
         return response;
     }

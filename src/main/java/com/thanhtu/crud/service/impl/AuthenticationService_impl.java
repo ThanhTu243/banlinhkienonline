@@ -37,13 +37,15 @@ public class AuthenticationService_impl implements AuthenticationService {
     public Map<String, String> login(String username,String role) {
         AccountsEntity account = accountsRepo.findAccountsEntitiesByUsernameAndRoles(username,role);
         String id="";
+        String customerId="";
         if(role.equals("ADMIN"))
         {
             id=account.getAccountId().toString();
         }
         else if(role.equals("CUSTOMER")){
             CustomerEntity customer=customerRepo.findCustomerEntityByUserCustomer(username);
-            id=customer.getCustomerId().toString();
+            id=account.getAccountId().toString();
+            customerId=customer.getCustomerId().toString();
         }
 
         String userRole = account.getRoles().toString();
@@ -51,6 +53,7 @@ public class AuthenticationService_impl implements AuthenticationService {
 
         Map<String, String> response = new HashMap<>();
         response.put("id",id);
+        response.put("customerId",customerId);
         response.put("username", username);
         response.put("token", token);
         response.put("userRole", userRole);
