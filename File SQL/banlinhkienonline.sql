@@ -74,7 +74,7 @@ CREATE TABLE PRODUCT
 
 CREATE TABLE CART
 (
-    cart_id INT,
+    cart_id INT AUTO_INCREMENT,
     quantity INT,
     is_delete VARCHAR(10),
     customer_id INT,
