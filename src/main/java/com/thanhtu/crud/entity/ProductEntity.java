@@ -21,7 +21,6 @@ public class ProductEntity {
     private Integer productId;
     private String productName;
     private Integer quantity;
-    private String productImage;
     private Integer discount;
     private Integer unitPrice;
     private String descriptionProduct;

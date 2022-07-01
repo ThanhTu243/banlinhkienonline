@@ -35,7 +35,6 @@ public class CartMapper {
         tmp.setDiscount(product.getDiscount());
         tmp.setPriceAfterDiscount(Long.valueOf(100-product.getDiscount())*Long.valueOf(product.getUnitPrice())/100);
         tmp.setQuantity(cart.getQuantity());
-        tmp.setProductImage(product.getProductImage());
 
         tmp.setCost(Long.valueOf(tmp.getPriceAfterDiscount()* cart.getQuantity()));
         return tmp;

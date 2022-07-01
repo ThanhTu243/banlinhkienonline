@@ -19,7 +19,6 @@ public class ProductMapper {
         ProductOrderDetailDto tmp=new ProductOrderDetailDto();
         tmp.setProductId(orderDetail.getProductEntity().getProductId());
         tmp.setNameProduct(orderDetail.getProductEntity().getProductName());
-        tmp.setProductImage(orderDetail.getProductEntity().getProductImage());
         tmp.setPriceAfterDiscount(Long.valueOf(orderDetail.getProductEntity().getUnitPrice())*Long.valueOf(100-orderDetail.getProductEntity().getDiscount())/100);
         tmp.setQuantity(orderDetail.getQuantity());
         tmp.setAmount(orderDetail.getAmount());
@@ -59,7 +58,6 @@ public class ProductMapper {
         tmp.setProductId(productEntity.getProductId());
         tmp.setProductName(productEntity.getProductName());
         tmp.setQuantity(productEntity.getQuantity());
-        tmp.setProductImage(productEntity.getProductImage());
         tmp.setDiscount(productEntity.getDiscount());
         tmp.setUnitPrice(productEntity.getUnitPrice());
         tmp.setPriceAfterDiscount(Long.valueOf(productEntity.getUnitPrice())*Long.valueOf(100-productEntity.getDiscount())/100);
@@ -73,7 +71,6 @@ public class ProductMapper {
         ProductEntity tmp=new ProductEntity();
         tmp.setProductName(productRequest.getProductName());
         tmp.setQuantity(productRequest.getQuantity());
-        tmp.setProductImage(productRequest.getProductImage());
         tmp.setDiscount(productRequest.getDiscount());
         tmp.setUnitPrice(productRequest.getUnitPrice());
         tmp.setDescriptionProduct(productRequest.getDescriptionProduct());
@@ -86,7 +83,6 @@ public class ProductMapper {
     {
         product.setProductName(productRequest.getProductName());
         product.setQuantity(productRequest.getQuantity());
-        product.setProductImage(productRequest.getProductImage());
         product.setDiscount(productRequest.getDiscount());
         product.setUnitPrice(productRequest.getUnitPrice());
         product.setDescriptionProduct(productRequest.getDescriptionProduct());
@@ -108,7 +104,6 @@ public class ProductMapper {
                 tmp.setProductId(product.getProductId());
                 tmp.setProductName(product.getProductName());
                 tmp.setQuantity(product.getQuantity());
-                tmp.setProductImage(product.getProductImage());
                 tmp.setDiscount(product.getDiscount());
                 tmp.setUnitPrice(product.getUnitPrice());
                 tmp.setDescriptionProduct(product.getDescriptionProduct());
@@ -122,9 +117,7 @@ public class ProductMapper {
     {
         ProductFKDto tmp=new ProductFKDto();
         tmp.setProductId(productEntity.getProductId());
-        tmp.setProductName(productEntity.getProductImage());
         tmp.setQuantity(productEntity.getQuantity());
-        tmp.setProductImage(productEntity.getProductImage());
         tmp.setDiscount(productEntity.getDiscount());
         tmp.setUnitPrice(productEntity.getUnitPrice());
         tmp.setDescriptionProduct(productEntity.getDescriptionProduct());

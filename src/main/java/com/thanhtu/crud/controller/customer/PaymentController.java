@@ -239,8 +239,8 @@ public class PaymentController {
         }
         OrdersDto order=ordersService.createOrdersOnline(orderCreateRequest,"MOMO");
         int requestId=new Random().nextInt(9000000)+1000000;
-        String returnURL="http://localhost:8080/payment/momo/"+order.getOrderId();
-        String notifyURL="http://localhost:8080/payment/momo/";
+        String returnURL="http://localhost:4006/payment/momo/"+order.getOrderId();
+        String notifyURL="http://localhost:4006/payment/momo/";
         return ResponseEntity.ok(this.process(order.getOrderId().toString(),String.valueOf(requestId),
                 String.valueOf(orderCreateRequest.getTotal()), "Thanh toán đơn hàng",
                 returnURL, notifyURL, "1"));

@@ -27,6 +27,7 @@ CREATE TABLE CUSTOMER(
                          user_customer VARCHAR(50) UNIQUE,
                          firstname_customer NVARCHAR(50),
                          lastname_customer NVARCHAR(50),
+                         image_customer NVARCHAR(100),
                          address NVARCHAR(50),
                          gmail_customer VARCHAR(50) UNIQUE,
                          phonenumber_customer VARCHAR(50) UNIQUE,
@@ -34,6 +35,26 @@ CREATE TABLE CUSTOMER(
                          CONSTRAINT OR_isDeleteCUSTOMER_CHK CHECK (is_delete IN ('NO','YES')),
                          CONSTRAINT CUSTOMER_maCustomer_PK PRIMARY KEY(customer_id)
 );
+CREATE TABLE DELIVERYADDRESS (
+                                 deliveryaddress_id INT AUTO_INCREMENT,
+                                 deliveryaddress VARCHAR(500),
+                                 is_delete VARCHAR(10),
+                                 CONSTRAINT DA_isDeleteIMAGE_CHK CHECK (is_delete IN ('NO','YES')),
+                                 CONSTRAINT DA_maDELIVERYADDRESS_PK PRIMARY KEY(deliveryaddress_id)
+);
+
+CREATE TABLE CUSTOMERDELIVERYADDRESS(
+                                        customerdeliveryaddress_id INT AUTO_INCREMENT,
+                                        customer_id INT,
+                                        deliveryaddress_id INT,
+                                        is_delete VARCHAR(10),
+                                        CONSTRAINT OR_isDeleteCUSTOMERDELIVERYADDRESS_CHK CHECK (is_delete IN ('NO','YES')),
+                                        CONSTRAINT CDA_maCUSTOMERDELIVERYADDRESS_PK PRIMARY KEY(customerdeliveryaddress_id),
+                                        CONSTRAINT CDA_maCUSTOMER_FK FOREIGN KEY (customer_id) REFERENCES CUSTOMER(customer_id) ON DELETE CASCADE,
+                                        CONSTRAINT CDA_maDELIVERYADDRESS_FK FOREIGN KEY (deliveryaddress_id) REFERENCES DELIVERYADDRESS(deliveryaddress_id) ON DELETE CASCADE
+);
+
+
 
 CREATE TABLE CATEGORY
 (
@@ -58,18 +79,35 @@ CREATE TABLE PRODUCT
     product_id INT AUTO_INCREMENT,
     product_name NVARCHAR(150),
     quantity INT,
-    product_image VARCHAR(500),
-    productimage_description VARCHAR(500),
     discount INT,
     unit_price INT,
     description_product varchar(5000),
     category_id INT,
     supplier_id INT,
     is_delete VARCHAR(10),
-    CONSTRAINT OR_isDeletePRODUCT_CHK CHECK (is_delete IN ('NO','YES')),
+    CONSTRAINT PR_isDeletePRODUCT_CHK CHECK (is_delete IN ('NO','YES')),
     CONSTRAINT PR_maPRODUCT_PK PRIMARY KEY(product_id),
     CONSTRAINT PR_maCATEGORY_FK FOREIGN KEY (category_id) REFERENCES CATEGORY(category_id) ON DELETE CASCADE,
     CONSTRAINT PR_maSUPPLIER_FK FOREIGN KEY (supplier_id) REFERENCES SUPPLIER(supplier_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IMAGE(
+                      image_id INT AUTO_INCREMENT,
+                      image VARCHAR(500),
+                      is_delete VARCHAR(10),
+                      CONSTRAINT I_isDeleteIMAGE_CHK CHECK (is_delete IN ('NO','YES')),
+                      CONSTRAINT I_maIMAGE_PK PRIMARY KEY(image_id)
+);
+
+CREATE TABLE PRODUCTIMAGE(
+                             productimage_id INT AUTO_INCREMENT,
+                             product_id INT,
+                             image_id INT,
+                             is_delete VARCHAR(10),
+                             CONSTRAINT PI_isDeletePRODUCTIMAGE_CHK CHECK (is_delete IN ('NO','YES')),
+                             CONSTRAINT PI_maPRODUCTIMAGE_PK PRIMARY KEY(productimage_id),
+                             CONSTRAINT PI_maPRODUCT_FK FOREIGN KEY (product_id) REFERENCES PRODUCT(product_id) ON DELETE CASCADE,
+                             CONSTRAINT PI_maIMAGE_FK FOREIGN KEY (image_id) REFERENCES IMAGE(image_id) ON DELETE CASCADE
 );
 
 CREATE TABLE CART
@@ -226,302 +264,1124 @@ VALUES ('Kingston','https://bom.so/cMpx2Z',"NO");
 INSERT INTO SUPPLIER (supplier_name,supplier_image,is_delete)
 VALUES ('Kingmax','https://bom.so/UZwyyg',"NO");
 
-
--- HP LAPTOP
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP 14-DQ2055WM 39K15UA', 100,'https://bom.so/QrJEfJ','https://bom.so/ejRBre', 10, 12490000, 'Phủ nhôm bền bỉ, không gian trải nghiệm đủ đầy</br>Hiệu năng lấp đầy nhu cầu người dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP 15S-FQ2602TU 4B6D3PA', 100,'https://bom.so/P6Bbhi','https://bom.so/JCDxUm', 0, 16390000, 'Cấu hình ổn định với chip intel thế hệ 11</br>Kích thước màn hình 15,6 inches và độ phân giải Full HD',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP Pavilion x360 14-DW1018TU 2H3N6PA', 100,'https://bom.so/6qJgSA','https://bom.so/rL01II', 6, 17990000, 'Màn hình 14 inch nhỏ gọn, hỗ trợ gập lên đến 360 độ</br>Chip Intel 5 thế hệ 11, ổ cứng SSD 512GB',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP 15-DY2045 2Q1H3UA', 100,'https://bom.so/pNK7gy','https://bom.so/AbzTeF', 6, 17490000, 'Thiết kế cứng cáp, trải nghiệm hình ảnh không gian lớn</br>Chip Intel thế hệ 11 và RAM lớn cho sức mạnh ấn tượng, pin thời lượng cực lâu',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP Probook 430 G8 2H0N6PA', 100,'https://bom.so/9lI02c','https://bom.so/jcXXXb', 0, 18590000, 'Laptop HP Probook 430 G8- Thiết kế màu bạc sang trọng, gọn nhẹ</br>Hỗ trợ đầy đủ các cổng kết nối</br>Màn hình rộng full HD và viền màn hình siêu mỏng</br>Dung lượng pin lớn - Kết nối không dây siêu tốc',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP Envy 13 AQ1022TU 8QN69PA', 100,'https://bom.so/r8EdhU','https://bom.so/q25XbL', 0, 22690000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP Zbook Firefly 14 G8 1A2F1AV', 100,'https://bom.so/FVWYUk','https://bom.so/MM23wQ', 10, 31490000, 'Thiết kế mỏng nhẹ, màn hình 14 inch nhỏ gọn, độ sáng cao</br>Hiệu năng ổn định với chip Intel thế hệ 11, SSD 512GB',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP 340S G7 36A37PA', 100,'https://bom.so/f3zD2o','https://bom.so/SptA1I', 5, 20890000, 'Thiết kế gọn nhẹ, màn hình 14 inch nhỏ gọn, hiển thị sắc nét</br>Hiệu năng siêu mạnh với CPU i7 thế hệ 10, SSD dung lượng cao',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 1, 'Laptop HP 348 G7 9PH23PA', 100,'https://bom.so/fl7m7W','https://bom.so/YXcaSr', 3, 22130000, 'Bộ não Intel Core i7 10510U, Ram DDR4 8GB</br>Siêu bền bỉ tiêu chuẩn quân đội, bảo mật an toàn',"NO");
+-- LAPTOPHP
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP 14-DQ2055WM 39K15UA', 100, 10, 12490000, 'Phủ nhôm bền bỉ, không gian trải nghiệm đủ đầy</br>Hiệu năng lấp đầy nhu cầu người dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP 15S-FQ2602TU 4B6D3PA', 100, 0, 16390000, 'Cấu hình ổn định với chip intel thế hệ 11</br>Kích thước màn hình 15,6 inches và độ phân giải Full HD',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP Pavilion x360 14-DW1018TU 2H3N6PA', 100, 6, 17990000, 'Màn hình 14 inch nhỏ gọn, hỗ trợ gập lên đến 360 độ</br>Chip Intel 5 thế hệ 11, ổ cứng SSD 512GB',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP 15-DY2045 2Q1H3UA', 100, 6, 17490000, 'Thiết kế cứng cáp, trải nghiệm hình ảnh không gian lớn</br>Chip Intel thế hệ 11 và RAM lớn cho sức mạnh ấn tượng, pin thời lượng cực lâu',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP Probook 430 G8 2H0N6PA', 100, 0, 18590000, 'Laptop HP Probook 430 G8- Thiết kế màu bạc sang trọng, gọn nhẹ</br>Hỗ trợ đầy đủ các cổng kết nối</br>Màn hình rộng full HD và viền màn hình siêu mỏng</br>Dung lượng pin lớn - Kết nối không dây siêu tốc',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP Envy 13 AQ1022TU 8QN69PA', 100, 0, 22690000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP Zbook Firefly 14 G8 1A2F1AV', 100, 10, 31490000, 'Thiết kế mỏng nhẹ, màn hình 14 inch nhỏ gọn, độ sáng cao</br>Hiệu năng ổn định với chip Intel thế hệ 11, SSD 512GB',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP 340S G7 36A37PA', 100, 5, 20890000, 'Thiết kế gọn nhẹ, màn hình 14 inch nhỏ gọn, hiển thị sắc nét</br>Hiệu năng siêu mạnh với CPU i7 thế hệ 10, SSD dung lượng cao',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 1, 'Laptop HP 348 G7 9PH23PA', 100, 3, 22130000, 'Bộ não Intel Core i7 10510U, Ram DDR4 8GB</br>Siêu bền bỉ tiêu chuẩn quân đội, bảo mật an toàn',"NO");
 -- Dell Laptop
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Inspiron 3501 5580BLK', 100,'https://bom.so/PcOhwD','https://bom.so/w5pPd1', 7, 18590000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'LAPTOP DELL INSPIRON 3505 i3505-A542BLK', 100,'https://bom.so/p2tC9S','https://bom.so/yh8rEU', 12, 16690000, 'Thiết kế mỏng nhẹ, màn hình kích thước lớn với viền siêu mỏng</br>Hiệu năng ổn định trong tầm giá với con chip AMD Ryzen 5 và SSD PCIE',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Inspiron 7306 N3I5202W', 100,'https://bom.so/C3arw5','https://bom.so/pm4mfH', 6, 26590000, 'Màn hình FHD 13.3 inch nhỏ gọn, tần số quét 60 Hz, góc cạnh bo tròn</br>Hiệu năng mạnh mẽ với Intel Core i5-1135G7',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Inspiron 3501 5580BLK', 100, 7, 18590000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'LAPTOP DELL INSPIRON 3505 i3505-A542BLK', 100, 12, 16690000, 'Thiết kế mỏng nhẹ, màn hình kích thước lớn với viền siêu mỏng</br>Hiệu năng ổn định trong tầm giá với con chip AMD Ryzen 5 và SSD PCIE',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Inspiron 7306 N3I5202W', 100, 6, 26590000, 'Màn hình FHD 13.3 inch nhỏ gọn, tần số quét 60 Hz, góc cạnh bo tròn</br>Hiệu năng mạnh mẽ với Intel Core i5-1135G7',"NO");
 
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Vostro 3405 V4R53500U003W', 100,'https://bom.so/QJiuh0','https://bom.so/2DjKif', 8, 1699000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Vostro 3500 P112F002ABL', 100,'https://bom.so/YntcSX','https://bom.so/hLabbJ', 3, 22190000, 'Thiết kế đơn giản với màu đen sang trọng, chất liệu cứng cáp</br>Hiệu năng mạnh mẽ với bộ vi xử lý khỏe, bộ nhớ SSD dung lượng cao',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Vostro 3400 70234073', 100,'https://bom.so/8kbYAD','https://bom.so/hI36wa', 4, 18590000, 'Mỏng nhẹ tinh tế, màn hình chất lượng</br>Hiệu năng hàng đầu',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Vostro 3510 P112F002BBL', 100,'https://bom.so/dwldjN','https://bom.so/cFJJXs', 4, 21990000, 'Thiết kế gọn gàng, mỏng nhẹ</br>Cấu hình mạnh mẽ, ổn định</br>Hình ảnh đặc sắc, âm thanh ấn tượng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Vostro 5510 70253901', 100,'https://bom.so/zCYSYw','https://bom.so/ltyR7v', 5, 21690000, 'Kiểu dáng tinh tế, màn hình rộng lớn</br>Hiệu năng phù hợp công việc kiêm học tập',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Vostro 5402 V5402A', 100,'https://bom.so/cvyjAU','https://bom.so/xa4Qey', 5, 21790000, 'Laptop mỏng nhẹ, màn hình 14 inch nhỏ gọn</br>Hiệu năng mượt mà với chip Intel thế hệ 11',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Vostro 3405 V4R53500U003W', 100, 8, 1699000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Vostro 3500 P112F002ABL', 100, 3, 22190000, 'Thiết kế đơn giản với màu đen sang trọng, chất liệu cứng cáp</br>Hiệu năng mạnh mẽ với bộ vi xử lý khỏe, bộ nhớ SSD dung lượng cao',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Vostro 3400 70234073', 100, 4, 18590000, 'Mỏng nhẹ tinh tế, màn hình chất lượng</br>Hiệu năng hàng đầu',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Vostro 3510 P112F002BBL', 100, 4, 21990000, 'Thiết kế gọn gàng, mỏng nhẹ</br>Cấu hình mạnh mẽ, ổn định</br>Hình ảnh đặc sắc, âm thanh ấn tượng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Vostro 5510 70253901', 100, 5, 21690000, 'Kiểu dáng tinh tế, màn hình rộng lớn</br>Hiệu năng phù hợp công việc kiêm học tập',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Vostro 5402 V5402A', 100, 5, 21790000, 'Laptop mỏng nhẹ, màn hình 14 inch nhỏ gọn</br>Hiệu năng mượt mà với chip Intel thế hệ 11',"NO");
 
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Gaming G5 5500 P89F003', 100,'https://bom.so/DnFgd9','https://bom.so/1AxVab', 3, 33610000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Gaming G15 5511 P105F006BGR', 100,'https://bom.so/mVN4iF','https://bom.so/3QlgcH', 7, 33990000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Gaming G15 5515 P105F004DGR', 100,'https://bom.so/oElsL8','https://bom.so/RIvLEo', 5, 27190000, 'Thiết kế đậm chất gaming, màn hình 120Hz mượt mà</br>Hoạt động ổn định với CPU AMD kết hợp card đồ họa chuyên nghiệp',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Alienware M15 R6 70262923', 100,'https://bom.so/swU6bM','https://bom.so/jz0Xos', 7, 64090000, 'Thiết kế cao cấp với khả năng tản nhiệt vượt trội</br>Màn hình chuẩn 2K sắc nét, cùng hiệu suất vượt trội',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 2, 'Laptop Dell Gaming G3 G3500CW', 100,'https://bom.so/bYX2AS','https://bom.so/xrD1ND', 7, 2590000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Gaming G5 5500 P89F003', 100, 3, 33610000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Gaming G15 5511 P105F006BGR', 100, 7, 33990000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Gaming G15 5515 P105F004DGR', 100, 5, 27190000, 'Thiết kế đậm chất gaming, màn hình 120Hz mượt mà</br>Hoạt động ổn định với CPU AMD kết hợp card đồ họa chuyên nghiệp',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Alienware M15 R6 70262923', 100, 7, 64090000, 'Thiết kế cao cấp với khả năng tản nhiệt vượt trội</br>Màn hình chuẩn 2K sắc nét, cùng hiệu suất vượt trội',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 2, 'Laptop Dell Gaming G3 G3500CW', 100, 7, 2590000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
 
 -- ASUS VIVOBOOK
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS VivoBook 15 A515EA', 100,'https://bom.so/2uhKty','https://bom.so/ACia2v', 0, 15360000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS VivoBook X415MA-BV088T', 100,'https://bom.so/3qPVXq','https://bom.so/73G95C', 0, 9390000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS VivoBook Flip TM420IA-EC031T', 100,'https://bom.so/jT7XSC','https://bom.so/5Tc3XB', 0, 17190000, 'Thiết kế mỏng nhẹ, bản lề quay 360 ấn tượng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS Vivobook R565EA-UH31T', 100,'https://bom.so/1BoTZT','https://bom.so/BRAPak', 16, 12490000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS VivoBook Flip 14 TM420IA-EC227T', 100,'https://bom.so/qKDnhV','https://bom.so/Kw2k0K', 4, 19190000, 'Sử dụng CPU đến từ AMD</br>Màn hình viền mỏng, gọn nhẹ ấn tượng</br>Màu sắc cá tính, sang trọng, trọng lượng nhẹ dễ dàng di chuyển',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS VivoBook S433EA', 100,'https://bom.so/05UwtH','https://bom.so/tv7QDq', 0, 19490000, 'Kích thước nhỏ gọn, màn hình NanoEdge 14 inch Full HD sắc nét</br>Hỗ trợ nhiều cổng kết nối, công nghệ ASUS SonicMaster sống động, pin 3 Cells 50WHrs',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS VivoBook M513UA-L1240T', 100,'https://bom.so/niZw4Q','https://bom.so/uSMPhp', 7, 19690000, 'Thiết kế mỏng nhẹ, linh hoạt cùng màu ánh kim thanh lịch</br>Hiệu năng khỏe khoắn với chip AMD Ryzen, ổ cứng SSD đọc ghi dữ liệu tốc độ cao',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS VivoBook 14 A415EA-EB360T', 100,'https://bom.so/DiuzJv','https://bom.so/vKrTDg', 7, 18290000, 'Trọng lượng chỉ 1.4kg, màn hình NanoEdge 14 inches</br>Sở hữu hiệu năng tốt: Intel Core-i5, VGA Iris Xe Graphics, 8GB RAM',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS VivoBook 15 A515EA', 100, 0, 15360000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS VivoBook X415MA-BV088T', 100, 0, 9390000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS VivoBook Flip TM420IA-EC031T', 100, 0, 17190000, 'Thiết kế mỏng nhẹ, bản lề quay 360 ấn tượng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS Vivobook R565EA-UH31T', 100, 16, 12490000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS VivoBook Flip 14 TM420IA-EC227T', 100, 4, 19190000, 'Sử dụng CPU đến từ AMD</br>Màn hình viền mỏng, gọn nhẹ ấn tượng</br>Màu sắc cá tính, sang trọng, trọng lượng nhẹ dễ dàng di chuyển',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS VivoBook S433EA', 100, 0, 19490000, 'Kích thước nhỏ gọn, màn hình NanoEdge 14 inch Full HD sắc nét</br>Hỗ trợ nhiều cổng kết nối, công nghệ ASUS SonicMaster sống động, pin 3 Cells 50WHrs',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS VivoBook M513UA-L1240T', 100, 7, 19690000, 'Thiết kế mỏng nhẹ, linh hoạt cùng màu ánh kim thanh lịch</br>Hiệu năng khỏe khoắn với chip AMD Ryzen, ổ cứng SSD đọc ghi dữ liệu tốc độ cao',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS VivoBook 14 A415EA-EB360T', 100, 7, 18290000, 'Trọng lượng chỉ 1.4kg, màn hình NanoEdge 14 inches</br>Sở hữu hiệu năng tốt: Intel Core-i5, VGA Iris Xe Graphics, 8GB RAM',"NO");
 
 -- ASUS ZENBOOK
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS Zenbook UX425EA', 100,'https://bom.so/WuFMe5','https://bom.so/AqBYU6', 7, 23390000, 'Vẻ ngoài hiện đại và cứng cáp với màn hình 14 inch FHD</br>Vi xử lý mạnh mẽ kèm tiện ích phần cứng lẫn phần mềm',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS ZenBook UX325EA-KG363T', 100,'https://bom.so/pRsBmB','https://bom.so/VNOYCJ', 4, 23290000, 'Bộ vi xử lý vượt trội giúp nâng cao hiệu suất công việc</br>Thiết kế gọn nhẹ, thanh lịch',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS ZenBook Flip UX363EA', 100,'https://bom.so/1wBZOd','https://bom.so/jaMTo8', 2, 26690000, 'Thiết kế cứng cáp & linh hoạt với màn hình xoay ngược 360 độ</br>Vi xử lý Intel Core i5-1135G7, RAM 8GB và 512GB SSD cho hiệu năng làm việc tốt',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS Zenbook Duo 14 UX482EG', 100,'https://bom.so/bD6Vr5','https://bom.so/uPqI3Q', 8, 32990000, 'Thiết kế màn hình kép ScreenPad™ Plus với độ phân giải Full HD sắc nét</br>Vi xử lý Intel Core i5-1135G7 cùng đồ họa GeForce MX450 2GB vận hành mạnh mẽ',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS Zenbook UX425EA', 100, 7, 23390000, 'Vẻ ngoài hiện đại và cứng cáp với màn hình 14 inch FHD</br>Vi xử lý mạnh mẽ kèm tiện ích phần cứng lẫn phần mềm',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS ZenBook UX325EA-KG363T', 100, 4, 23290000, 'Bộ vi xử lý vượt trội giúp nâng cao hiệu suất công việc</br>Thiết kế gọn nhẹ, thanh lịch',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS ZenBook Flip UX363EA', 100, 2, 26690000, 'Thiết kế cứng cáp & linh hoạt với màn hình xoay ngược 360 độ</br>Vi xử lý Intel Core i5-1135G7, RAM 8GB và 512GB SSD cho hiệu năng làm việc tốt',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS Zenbook Duo 14 UX482EG', 100, 8, 32990000, 'Thiết kế màn hình kép ScreenPad™ Plus với độ phân giải Full HD sắc nét</br>Vi xử lý Intel Core i5-1135G7 cùng đồ họa GeForce MX450 2GB vận hành mạnh mẽ',"NO");
 
 -- ASUS GAMING
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS Gaming ROG Strix G15 G513IH-HN015T', 100,'https://bom.so/ty1hJ4','https://bom.so/dDM10I', 5, 22690000, 'Thiết kế sang trọng, logo Gaming ROG, viền màn hình siêu mỏng</br>Hoạt động ổn định với chip H, hệ thống 2 loa chất lượng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS Gaming ROG Zephyrus G14 GA401QH-HZ035T', 100,'https://bom.so/VoZoys','https://bom.so/7fUJ64', 4, 27590000, 'Thiết kế độc đáo, trọng lượng nhẹ</br>Hiệu năng mạnh mẽ với chip xử lý nhanh chóng, dung lượng RAM và ROM lớn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS Gaming FX506LH-HN002T', 100,'https://bom.so/g5EYe1','https://bom.so/PYPJwl', 5, 20890000, 'Kiểu dáng gaming sang trọng, màn hình hỗ trợ 4K, tần số quét 144 Hz</br>Sức mạnh ấn tượng bởi Core i5-10300H, GeForce GTX 1650, 8 GB RAM',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop Asus TUF Gaming F15 FX506HC-HN002T', 100,'https://bom.so/Ef6NkX','https://bom.so/spCcvC', 7, 24390000, 'Hiệu năng đỉnh cao, tần số quét 144Hz</br>Bền bỉ với dung lượng pin dài, tính năng tản nhiệt hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS TUF Gaming FA506IU-AL127T', 100,'https://bom.so/lTp6jy','https://bom.so/FcE1Ki', 3, 25990000, 'Thiết kế sang trọng chất riêng, độ bền đạt chuẩn quân đội Mỹ</br>Màn hình rộng 15.6 inch Full HD 144Hz, Card NVIDIA GeForce GTX 1660Ti 6GB ',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS TUF DASH F15 FX516PC-HN002T', 100,'https://bom.so/R06w33','https://bom.so/cHH0HX', 7, 23890000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop ASUS ExpertBook B9400CEA-KC0790T', 100,'https://bom.so/7ISsER','https://bom.so/rOiZnz', 3, 36990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 3, 'Laptop Asus ExpertBook B5302FEA LF0749W', 100,'https://bom.so/oyEBsB','https://bom.so/QSFFPV', 7, 25900000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS Gaming ROG Strix G15 G513IH-HN015T', 100, 5, 22690000, 'Thiết kế sang trọng, logo Gaming ROG, viền màn hình siêu mỏng</br>Hoạt động ổn định với chip H, hệ thống 2 loa chất lượng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS Gaming ROG Zephyrus G14 GA401QH-HZ035T', 100, 4, 27590000, 'Thiết kế độc đáo, trọng lượng nhẹ</br>Hiệu năng mạnh mẽ với chip xử lý nhanh chóng, dung lượng RAM và ROM lớn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS Gaming FX506LH-HN002T', 100, 5, 20890000, 'Kiểu dáng gaming sang trọng, màn hình hỗ trợ 4K, tần số quét 144 Hz</br>Sức mạnh ấn tượng bởi Core i5-10300H, GeForce GTX 1650, 8 GB RAM',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop Asus TUF Gaming F15 FX506HC-HN002T', 100, 7, 24390000, 'Hiệu năng đỉnh cao, tần số quét 144Hz</br>Bền bỉ với dung lượng pin dài, tính năng tản nhiệt hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS TUF Gaming FA506IU-AL127T', 100, 3, 25990000, 'Thiết kế sang trọng chất riêng, độ bền đạt chuẩn quân đội Mỹ</br>Màn hình rộng 15.6 inch Full HD 144Hz, Card NVIDIA GeForce GTX 1660Ti 6GB ',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS TUF DASH F15 FX516PC-HN002T', 100, 7, 23890000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop ASUS ExpertBook B9400CEA-KC0790T', 100, 3, 36990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 3, 'Laptop Asus ExpertBook B5302FEA LF0749W', 100, 7, 25900000, '',"NO");
 
 -- ACER
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 4, 'Laptop Acer Aspire 3 A315-56-37DV', 100,'https://bom.so/r6JFhG','https://bom.so/YbUsS6', 7, 11490000, 'Thiết kế mỏng nhẹ, cứng cáp</br>Cấu hình ổn định với chip Intel Core i3-1005G1',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 4, 'Laptop Acer Aspire 5 A514-54-540F', 100,'https://bom.so/EQ6ukW','https://bom.so/85tteT', 2, 18090000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 4, 'Laptop Acer Gaming Aspire 7 A715-42G-R4ST', 100,'https://bom.so/FvzSTk','https://bom.so/D94s5G', 7, 18690000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 4, 'Laptop Acer Swift 3 SF314-43-R4X3', 100,'https://bom.so/xNU1gz','https://bom.so/5HCSuB', 4, 19490000, 'Thiết kế mỏng nhẹ, hiện đại cùng màn hình rõ nét</br>Hiệu năng ổn định với chipset AMD Ryzen 5, RAM 16GB',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 4, 'Laptop Acer Swift 3X SF314-510G-57MR', 100,'https://bom.so/Hsryil','https://bom.so/R1dWSj', 10, 20390000, 'Thiết kế nguyên khối – màn hình tràn viền</br>Hiệu năng mạnh với chip Intel thế hệ 11, card vga rời Intel XE Max',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 4, 'Laptop Acer Swift 5 SF514-55T-51NZ', 100,'https://bom.so/2Abjfk','https://bom.so/UrbHzW', 7, 22690000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Dung lượng pin sẵn sàng cho ngày dài, bảo mật vân tay an toàn tuyệt đối',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 4, 'Laptop Gaming Acer Nitro 5 Eagle AN515-57-74NU', 100,'https://bom.so/gaOgM5','https://bom.so/zQHJmn', 7, 27590000, 'Màn hình FHD IPS rộng lớn, tốc độ làm mới 144Hz</br>Bộ vi xử lý thế hệ 11 - Tản nhiệt hiệu suất ấn tượng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 4, 'Laptop Acer Aspire 3 A315-56-37DV', 100, 7, 11490000, 'Thiết kế mỏng nhẹ, cứng cáp</br>Cấu hình ổn định với chip Intel Core i3-1005G1',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 4, 'Laptop Acer Aspire 5 A514-54-540F', 100, 2, 18090000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 4, 'Laptop Acer Gaming Aspire 7 A715-42G-R4ST', 100, 7, 18690000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 4, 'Laptop Acer Swift 3 SF314-43-R4X3', 100, 4, 19490000, 'Thiết kế mỏng nhẹ, hiện đại cùng màn hình rõ nét</br>Hiệu năng ổn định với chipset AMD Ryzen 5, RAM 16GB',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 4, 'Laptop Acer Swift 3X SF314-510G-57MR', 100, 10, 20390000, 'Thiết kế nguyên khối – màn hình tràn viền</br>Hiệu năng mạnh với chip Intel thế hệ 11, card vga rời Intel XE Max',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 4, 'Laptop Acer Swift 5 SF514-55T-51NZ', 100, 7, 22690000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Dung lượng pin sẵn sàng cho ngày dài, bảo mật vân tay an toàn tuyệt đối',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 4, 'Laptop Gaming Acer Nitro 5 Eagle AN515-57-74NU', 100, 7, 27590000, 'Màn hình FHD IPS rộng lớn, tốc độ làm mới 144Hz</br>Bộ vi xử lý thế hệ 11 - Tản nhiệt hiệu suất ấn tượng',"NO");
 
 
 -- MSI GAMING
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Gaming BRAVO 15 A4DCR-270VN', 100,'https://bom.so/AM8PwN','https://bom.so/sKZkjo', 7, 18790000, 'Màn hình 15.6" hỗ trợ công nghệ Freesynce, tần số quét màn hình 144Hz</br>Viền màn hình siêu mỏng, thiết kế vỏ nhôm cao cấp',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Gaming GL75 Leopard 10SCSK 056VN', 100,'https://bom.so/WZzxJW','https://bom.so/dtQmMs', 7, 21090000, 'Thiết kế nhỏ gọn, màn hình đến 17.3 inches</br>Cấu hình mạnh mẽ với Core i5-10200H, 8GB RAM, 512GB SSD, VGA GTX 1650 Ti',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Gaming GF65 THIN 10UE-286VN', 100,'https://bom.so/DGI5lg','https://bom.so/3ple8B', 12, 26490000, 'Thiết kế cứng cáp và hầm hố, màn hình 15.6 inch 144 Hz cho hình ảnh mượt mà</br>Công phá mọi tựa game với CPU Intel Core i5-10500H và đồ họa GeForce RTX 3060',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Gaming Alpha 15 A4DEK-027VN', 100,'https://bom.so/GW7Qa3','https://bom.so/vcvA2w', 20, 27590000, 'Màn hình khủng, tần số quét 144 Hz, bàn phím tùy chỉnh sắc độ</br>Cấu hình mạnh mẽ bởi AMD Ryzen 7, tản nhiệt Cooler Boost 5',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Katana GF66 11UC-641VN', 100,'https://bom.so/gis23h','https://bom.so/RZ0F8X', 7, 28490000, 'Thiết kế sắc bén, màn hình sáng bóng như lưỡi gươm</br>Khai thác toàn bộ tiềm năng của kiếm sĩ',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Creator M16 A11UD-694VN', 100,'https://bom.so/NWWynG','https://bom.so/CXrOGA', 7, 36490000, 'Màu sắc hình ảnh trung thực, sống động</br>Âm thanh sống động, dung lượng pin lớn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Gaming GP76 Leopard 11UG-280VN', 100,'https://bom.so/yRDbs8','https://bom.so/QGQiwp', 12, 46990000, 'Bộ vi xử lý mới nhất, cân mọi tựa game</br>Thiết kế độc đáo, tốc độ làm tươi ấn tượng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Gaming GS66 Stealth 10UE-200VN', 100,'https://bom.so/p5VaIC','https://bom.so/c6GKmd', 13, 51990000, 'Thiết kế mạnh mẽ, pin khủng, hình ảnh âm thanh sống động</br>Chiến game cực mượt với vi xử lý Intel Core i7, kết nối wifi 6 vượt trội',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 5, 'Laptop MSI Gaming Pulse GL66 11UDK-255VN', 100,'https://bom.so/suCSvw','https://bom.so/tK824r', 7, 30990000, 'Màn hình siêu mượt, tản nhiệt siêu mát</br>Hiệu năng siêu mạnh cho mọi tác vụ',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Gaming BRAVO 15 A4DCR-270VN', 100, 7, 18790000, 'Màn hình 15.6" hỗ trợ công nghệ Freesynce, tần số quét màn hình 144Hz</br>Viền màn hình siêu mỏng, thiết kế vỏ nhôm cao cấp',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Gaming GL75 Leopard 10SCSK 056VN', 100, 7, 21090000, 'Thiết kế nhỏ gọn, màn hình đến 17.3 inches</br>Cấu hình mạnh mẽ với Core i5-10200H, 8GB RAM, 512GB SSD, VGA GTX 1650 Ti',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Gaming GF65 THIN 10UE-286VN', 100, 12, 26490000, 'Thiết kế cứng cáp và hầm hố, màn hình 15.6 inch 144 Hz cho hình ảnh mượt mà</br>Công phá mọi tựa game với CPU Intel Core i5-10500H và đồ họa GeForce RTX 3060',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Gaming Alpha 15 A4DEK-027VN', 100, 20, 27590000, 'Màn hình khủng, tần số quét 144 Hz, bàn phím tùy chỉnh sắc độ</br>Cấu hình mạnh mẽ bởi AMD Ryzen 7, tản nhiệt Cooler Boost 5',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Katana GF66 11UC-641VN', 100, 7, 28490000, 'Thiết kế sắc bén, màn hình sáng bóng như lưỡi gươm</br>Khai thác toàn bộ tiềm năng của kiếm sĩ',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Creator M16 A11UD-694VN', 100, 7, 36490000, 'Màu sắc hình ảnh trung thực, sống động</br>Âm thanh sống động, dung lượng pin lớn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Gaming GP76 Leopard 11UG-280VN', 100, 12, 46990000, 'Bộ vi xử lý mới nhất, cân mọi tựa game</br>Thiết kế độc đáo, tốc độ làm tươi ấn tượng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Gaming GS66 Stealth 10UE-200VN', 100, 13, 51990000, 'Thiết kế mạnh mẽ, pin khủng, hình ảnh âm thanh sống động</br>Chiến game cực mượt với vi xử lý Intel Core i7, kết nối wifi 6 vượt trội',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 5, 'Laptop MSI Gaming Pulse GL66 11UDK-255VN', 100, 7, 30990000, 'Màn hình siêu mượt, tản nhiệt siêu mát</br>Hiệu năng siêu mạnh cho mọi tác vụ',"NO");
 
 -- LAPTOP LENOVO
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Ideapad 3 14ALC6', 100,'https://bom.so/Df35xb','https://bom.so/M80qqJ', 7, 14190000, 'Thiết kế mỏng nhẹ, vẻ đẹp tinh tế với màn hình giải trí tuyệt vời</br>Tích hợp hiệu năng mạnh mẽ với các cổng kết nối đầy tiện ích',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Ideapad 5 15ITL05 82FG00M5VN', 100,'https://bom.so/LZK2sm','https://bom.so/cfXpYq', 5, 18890000, 'Ngoại hình sang trọng, hình ảnh sắc nét</brChip Intel Core i5, Ram 8GB mang đến hiệu năng mạnh mẽ',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Ideapad Slim 3 15ARE05 81W4009FVN', 100,'https://bom.so/wNaIKw','https://bom.so/F8N2It', 0, 13290000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Ideapad S340-13IML', 100,'https://bom.so/Tjpgoy','https://bom.so/tyJt3f', 3, 11990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Ideapad 5 Pro 14ACN6 82l7007XVN', 100,'https://bom.so/YXSv3d','https://bom.so/QfBip7', 3, 21990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Ideapad 1 11IGL05', 100,'https://bom.so/yxWsZT','https://bom.so/N2aB0C', 20, 8790000, 'Kiểu dáng xách tay nhẹ gọn, màn hình bắt mắt</brHiệu năng ổn định phục vụ lâu dài',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Thinkbook 15 G2 ITL', 100,'https://bom.so/Vy92ZK','https://bom.so/K3XZEg', 5, 20590000, 'Thời thượng và mỏng gọn, với màn hình 15.6 inch bảo vệ mắt hiện đại</br>Làm việc tối ưu với chip Intel Core i7-1165G7, 512 GB SSD cùng Windows 10',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo ThinkPad E14', 100,'https://bom.so/Bnb9Hz','https://bom.so/XTkzaD', 15, 13490000, 'Dung lượng khá ấn tượng với RAM 8GB và ổ cứng 1TB</br>Màn hình có kích thước 14 inch, sử dụng công nghệ chống chói',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Thinkpad E490S 20NGS01K00', 100,'https://bom.so/tVaa2i','https://bom.so/EiyIO6', 17, 15190000, 'Hình dáng thanh lịch, thiết kế mỏng gọn, tích hợp nhận dạng vân tay</br>Màn hình 14 inch FHD thiết kế viền mỏng giúp quan sát trọn vẹn hình ảnh',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Thinkpad X13 GEN 2', 100,'https://bom.so/DZvRs5','https://bom.so/sjS3kH', 8, 33590000, 'Nhỏ gọn tinh tế, màn hình ấn tượng</br>Sức mạnh bứt phá, trải nghiệm đặc biệt',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Ideapad Gaming 3 15IMH05 81Y400Y8VN', 100,'https://bom.so/RdzhXN','https://bom.so/tCmAti', 8, 20590000, 'Màn hình kích thước lớn, tần số quét 120Hz</br>Cấu hình mạnh với chip Intel core i5 thế hệ 10, SSD 512GB',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Gaming Legion 5 15ARH05 82B500GTVN', 100,'https://bom.so/K5ARbu','https://bom.so/iaTIF7', 7, 24590000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Gaming L340-15IRH 81LK01J3VN', 100,'https://bom.so/7gopPs','https://bom.so/9RX6Dd', 15, 16990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Ideapad Gaming 3 15IMH05 81Y400Y9VN', 100,'https://bom.so/HVwagD','https://bom.so/XOSsQn', 14, 22290000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 1, 6, 'Laptop Lenovo Legion 7 16ACHG6 82N60039VN', 100,'https://bom.so/ZVgtXt','https://bom.so/LUuYIA', 7, 74990000, 'Con chip dòng H mang lại hiệu năng vượt trội</br>Tản nhiệt chất lượng với Legion Coldfront 3.0',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Ideapad 3 14ALC6', 100, 7, 14190000, 'Thiết kế mỏng nhẹ, vẻ đẹp tinh tế với màn hình giải trí tuyệt vời</br>Tích hợp hiệu năng mạnh mẽ với các cổng kết nối đầy tiện ích',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Ideapad 5 15ITL05 82FG00M5VN', 100, 5, 18890000, 'Ngoại hình sang trọng, hình ảnh sắc nét</brChip Intel Core i5, Ram 8GB mang đến hiệu năng mạnh mẽ',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Ideapad Slim 3 15ARE05 81W4009FVN', 100, 0, 13290000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Ideapad S340-13IML', 100, 3, 11990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Ideapad 5 Pro 14ACN6 82l7007XVN', 100, 3, 21990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Ideapad 1 11IGL05', 100, 20, 8790000, 'Kiểu dáng xách tay nhẹ gọn, màn hình bắt mắt</brHiệu năng ổn định phục vụ lâu dài',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Thinkbook 15 G2 ITL', 100, 5, 20590000, 'Thời thượng và mỏng gọn, với màn hình 15.6 inch bảo vệ mắt hiện đại</br>Làm việc tối ưu với chip Intel Core i7-1165G7, 512 GB SSD cùng Windows 10',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo ThinkPad E14', 100, 15, 13490000, 'Dung lượng khá ấn tượng với RAM 8GB và ổ cứng 1TB</br>Màn hình có kích thước 14 inch, sử dụng công nghệ chống chói',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Thinkpad E490S 20NGS01K00', 100, 17, 15190000, 'Hình dáng thanh lịch, thiết kế mỏng gọn, tích hợp nhận dạng vân tay</br>Màn hình 14 inch FHD thiết kế viền mỏng giúp quan sát trọn vẹn hình ảnh',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Thinkpad X13 GEN 2', 100, 8, 33590000, 'Nhỏ gọn tinh tế, màn hình ấn tượng</br>Sức mạnh bứt phá, trải nghiệm đặc biệt',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Ideapad Gaming 3 15IMH05 81Y400Y8VN', 100, 8, 20590000, 'Màn hình kích thước lớn, tần số quét 120Hz</br>Cấu hình mạnh với chip Intel core i5 thế hệ 10, SSD 512GB',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Gaming Legion 5 15ARH05 82B500GTVN', 100, 7, 24590000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Gaming L340-15IRH 81LK01J3VN', 100, 15, 16990000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Ideapad Gaming 3 15IMH05 81Y400Y9VN', 100, 14, 22290000, 'Thiết kế gọn nhẹ, màn hình kích thước lớn</br>Hiệu năng mượt cùng viên pin đủ dùng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 1, 6, 'Laptop Lenovo Legion 7 16ACHG6 82N60039VN', 100, 7, 74990000, 'Con chip dòng H mang lại hiệu năng vượt trội</br>Tản nhiệt chất lượng với Legion Coldfront 3.0',"NO");
 -- TAI NGHE APPLE
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 7, 'Tai nghe Bluetooth Apple AirPods 2', 100,'https://bom.so/WE6FaV','https://bom.so/Ecp1E1', 23, 3990000, 'Dung lượng pin lớn, sử dụng bền bỉ</br>Thiết kế nhỏ gọn, bắt mắt',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 7, 'Tai nghe Bluetooth Apple AirPods Pro', 100,'https://bom.so/gCadB2','https://bom.so/LnUVJV', 37, 7999000, 'Airpod Pro sở hữu thiết kế nhỏ gọn, trọng lượng 5.4 gram</br>Âm thanh trên Apple Airpods Pro rõ nét với công nghệ khử tiếng ồn chủ động',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 7, 'Tai nghe chụp tai chống ồn Apple AirPods Max', 100,'https://bom.so/MAtjQe','https://bom.so/P4Pc2s', 20, 13900000, 'Thiết kế chụp tai sử dụng êm ái, chất liệu cao cấp nổi bật</br>Chất lượng âm thanh cực kỳ cao cấp, chống ồn hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 7, 'Tai nghe Bluetooth Apple AirPods 3', 100,'https://bom.so/iQM8XL','https://bom.so/KzWXio', 0, 4990000, 'TThiết kế sang trọng, nhiều thay đổi so với thế hệ trước</br>Dung lượng pin được cải thiện',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 7, 'Tai nghe Bluetooth Apple AirPods 2', 100, 23, 3990000, 'Dung lượng pin lớn, sử dụng bền bỉ</br>Thiết kế nhỏ gọn, bắt mắt',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 7, 'Tai nghe Bluetooth Apple AirPods Pro', 100, 37, 7999000, 'Airpod Pro sở hữu thiết kế nhỏ gọn, trọng lượng 5.4 gram</br>Âm thanh trên Apple Airpods Pro rõ nét với công nghệ khử tiếng ồn chủ động',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 7, 'Tai nghe chụp tai chống ồn Apple AirPods Max', 100, 20, 13900000, 'Thiết kế chụp tai sử dụng êm ái, chất liệu cao cấp nổi bật</br>Chất lượng âm thanh cực kỳ cao cấp, chống ồn hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 7, 'Tai nghe Bluetooth Apple AirPods 3', 100, 0, 4990000, 'TThiết kế sang trọng, nhiều thay đổi so với thế hệ trước</br>Dung lượng pin được cải thiện',"NO");
 
 -- TAI NGHE SAM SUNG
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 9, 'Tai nghe không dây Samsung Galaxy Buds 2', 100,'https://bom.so/lyXjwh','https://bom.so/wIVnLe', 30, 2990000, '3 micro cùng công nghệ nhận diện giọng nói</br>Kết nối bluetooth chuẩn v5.2',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 9, 'Tai nghe Samsung Galaxy AKG EO-IG955', 100,'https://bom.so/GOfRCs','https://bom.so/GOfRCs', 24, 250000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 9, 'Tai nghe nhét tai Samsung IG935B', 100,'https://bom.so/Mhk7lJ','https://bom.so/M1WBxq', 10, 300000, 'Tai nghe Samsung IG935B thiết kế nhỏ gọn trẻ trung</br>Cảm giác đeo thoải mái của tai nghe samsung IG935B',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 9, 'Tai nghe nhét tai Samsung EG920B', 100,'https://bom.so/mMQZ3l','https://bom.so/k6Opdx', 10, 280000, 'Samsung EG920B - Thiết kế cao su bền bỉ dài 1.2m, kèm theo cặp đệm dạng thường và dạng móc</br>Âm thanh trung thực, độ bass dày, đường kính 12mm trên Samsung EG920B ',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 9, 'Tai nghe không dây Samsung Galaxy Buds 2', 100, 30, 2990000, '3 micro cùng công nghệ nhận diện giọng nói</br>Kết nối bluetooth chuẩn v5.2',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 9, 'Tai nghe Samsung Galaxy AKG EO-IG955', 100, 24, 250000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 9, 'Tai nghe nhét tai Samsung IG935B', 100, 10, 300000, 'Tai nghe Samsung IG935B thiết kế nhỏ gọn trẻ trung</br>Cảm giác đeo thoải mái của tai nghe samsung IG935B',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 9, 'Tai nghe nhét tai Samsung EG920B', 100, 10, 280000, 'Samsung EG920B - Thiết kế cao su bền bỉ dài 1.2m, kèm theo cặp đệm dạng thường và dạng móc</br>Âm thanh trung thực, độ bass dày, đường kính 12mm trên Samsung EG920B ',"NO");
 
 -- TAI NGHE JBL
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 8, 'Tai nghe không dây JBL Live Pro+', 100,'https://bom.so/4mZy9u','https://bom.so/5MeBmI', 0, 2990000, 'Thiết kế nhỏ gọn, hỗ trợ chống nước IPX4</br>Âm thanh JBL Signature Sound chất lượng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 8, 'Tai Nghe Không Dây JBL Tune 120 TWS', 100,'https://bom.so/YpqqRT','https://bom.so/1um9p9', 54, 2390000, 'Thiết kế độc đáo, gọn nhẹ với driver đường kính 5.8mm và màu sắc thời trang</br>JBL Tune 120Tws sử dụng chuẩn kết nối bluetooth 4.2, kết nối trợ lý ảo tiện lợi và nhanh chóng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 8, 'Tai nghe chụp tai JBL Tune 510BT', 100,'https://bom.so/pofSru','https://bom.so/3tVX0j', 28, 1390000, 'Thiết kế đệm tai siêu êm, điều khiển âm thanh tiện lợi</br>Chuẩn chất âm JBL Pure Bass mạnh mẽ với gần 40 giờ nghe liên tục',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 8, 'Tai nghe gaming có dây JBL Quantum 50', 100,'https://bom.so/9cc67K','https://bom.so/VMSCcY', 17, 890000, 'Thiết kế độc đáo và thời trang, nhiều màu sắc để lựa chọn</br>Chất âm JBL QuantumSOUND Signature độc quyền, tương thích với nhiều thiết bị',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 8, 'Tai nghe không dây JBL Live Pro+', 100, 0, 2990000, 'Thiết kế nhỏ gọn, hỗ trợ chống nước IPX4</br>Âm thanh JBL Signature Sound chất lượng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 8, 'Tai Nghe Không Dây JBL Tune 120 TWS', 100, 54, 2390000, 'Thiết kế độc đáo, gọn nhẹ với driver đường kính 5.8mm và màu sắc thời trang</br>JBL Tune 120Tws sử dụng chuẩn kết nối bluetooth 4.2, kết nối trợ lý ảo tiện lợi và nhanh chóng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 8, 'Tai nghe chụp tai JBL Tune 510BT', 100, 28, 1390000, 'Thiết kế đệm tai siêu êm, điều khiển âm thanh tiện lợi</br>Chuẩn chất âm JBL Pure Bass mạnh mẽ với gần 40 giờ nghe liên tục',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 8, 'Tai nghe gaming có dây JBL Quantum 50', 100, 17, 890000, 'Thiết kế độc đáo và thời trang, nhiều màu sắc để lựa chọn</br>Chất âm JBL QuantumSOUND Signature độc quyền, tương thích với nhiều thiết bị',"NO");
 -- TAI NGHE SONY
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 10, 'Tai nghe chụp tai Sony WH-1000XM4', 100,'https://bom.so/0AXsER','https://bom.so/2A9cbP', 23, 8490000, 'Chức năng khử tiếng ồn chủ động, hỗ trợ “Speak to Chat”</br>Khả năng tiêu thụ điện năng thấp, pin sử dụng 40 giờ',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 10, 'Tai nghe không dây chống ồn Sony WF-1000XM3', 100,'https://bom.so/o2zQHP','https://bom.so/xR6npD', 30, 5490000, 'Thiết kế ôm sát không bị trượt ra ngoài, kèm phụ kiện eartip hybrid</br>Cảm biến tiếng ồn kép, bộ xử lý chống ồn HD QN1e ',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 10, 'Tai nghe không dây Sony WF-1000XM4', 100,'https://bom.so/55qibj','https://bom.so/tYhatI', 15, 6490000, 'Hiệu suất chống ồn đỉnh cao, màng loa 6 mm</br>Tích hợp công nghệ hiện đại: Edge-AI, DSEE ExtremeTM  tăng cường âm thanh',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 10, 'Tai nghe Chụp Tai Không Dây Sony WH-CH510', 100,'https://bom.so/ILIkKK','https://bom.so/45LsmV', 16, 1190000, 'Sony WH-CH510 - Thiết kế gọn nhẹ với trọng lượng chỉ 132g cùng nút điều khiển linh hoạt</br>Thời lượng pin 35 giờ cùng âm thanh phát trực tiếp thông qua Bluetooth 5.0',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 2, 10, 'Tai nghe Sony MDR-XB55AP', 100,'https://bom.so/gmqLgs','https://bom.so/ipIcSv', 0, 890000, 'Thiết kế từ nhựa và kim loại cùng với housing góc nghiêng 45o cho cảm giác đeo dễ chịu, thoải mái</br>Nói không với tình trạng rối dây khi dây của tai nghe được thiết dạng dẹt sọc gân nổi',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 10, 'Tai nghe chụp tai Sony WH-1000XM4', 100, 23, 8490000, 'Chức năng khử tiếng ồn chủ động, hỗ trợ “Speak to Chat”</br>Khả năng tiêu thụ điện năng thấp, pin sử dụng 40 giờ',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 10, 'Tai nghe không dây chống ồn Sony WF-1000XM3', 100, 30, 5490000, 'Thiết kế ôm sát không bị trượt ra ngoài, kèm phụ kiện eartip hybrid</br>Cảm biến tiếng ồn kép, bộ xử lý chống ồn HD QN1e ',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 10, 'Tai nghe không dây Sony WF-1000XM4', 100, 15, 6490000, 'Hiệu suất chống ồn đỉnh cao, màng loa 6 mm</br>Tích hợp công nghệ hiện đại: Edge-AI, DSEE ExtremeTM  tăng cường âm thanh',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 10, 'Tai nghe Chụp Tai Không Dây Sony WH-CH510', 100, 16, 1190000, 'Sony WH-CH510 - Thiết kế gọn nhẹ với trọng lượng chỉ 132g cùng nút điều khiển linh hoạt</br>Thời lượng pin 35 giờ cùng âm thanh phát trực tiếp thông qua Bluetooth 5.0',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 2, 10, 'Tai nghe Sony MDR-XB55AP', 100, 0, 890000, 'Thiết kế từ nhựa và kim loại cùng với housing góc nghiêng 45o cho cảm giác đeo dễ chịu, thoải mái</br>Nói không với tình trạng rối dây khi dây của tai nghe được thiết dạng dẹt sọc gân nổi',"NO");
 -- CHUỘT LOGITECH
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 3, 11, 'Chuột không dây Logitech M590', 100,'https://bom.so/iQkuRs','https://bom.so/WI35Pn', 25, 800000, 'Thiết kế thông minh, nhỏ gọn và hiện đại</br>Hoạt động tuyệt vời trong yên lặng, thao tác nhẹ nhàng và chính xác',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 3, 11, 'Chuột không dây Logitech M331', 100,'https://bom.so/4PdrXV','https://bom.so/CCbYAf', 0, 340000, 'Thiết kế bo tròn ôm sát lòng bàn tay, trọng lượng chỉ 101g, chất liệu nhựa cứng</br>Chuột quang độ phân giải lên đến 1000dpi, kết nối không dây với khoảng cách 10m',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 3, 11, 'Chuột không dây Logitech M221', 100,'https://bom.so/25qpct','https://bom.so/QrWJtb', 23, 319000, 'Thiết kế linh hoạt, tốc độ không dây 2.4 GHz</br>Tương thích với hầu hết hệ điều hành, giảm thiểu 90% tiếng ồn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 3, 11, 'Chuột không dây Logitech M238 Marvel Collection', 100,'https://bom.so/7QATbz','https://bom.so/3fyylX', 48, 490000, 'Độ phân giải 1000 DPI, phạm vi kết nối 10m</br>Đầu tín hiệu receiver nano, thời gian sử dụng đến 12 tháng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 3, 11, 'Chuột Gaming Logitech G102 LightSync', 100,'https://bom.so/zFqPfo','https://bom.so/DRgLpB', 32, 599000, 'Thiết kế cổ điển với 6 nút nhấn cùng hệ thống LED RGB</br>DPI lên đến 8.000 với cảm biến cấp độ chơi game cho sở thích riêng',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 3, 11, 'Chuột không dây Logitech MX Anywhere 3', 100,'https://bom.so/1bGtyf','https://bom.so/iouZwp', 19, 1999000, 'Thiết kế không dây với 2 cơ chế kết nối</br>Con cuộn Magspeed ưu việt, tương thích nhiều hệ điều hành',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 3, 11, 'Chuột không dây Logitech MX Master 2S', 100,'https://bom.so/nh4wBH','https://bom.so/EPHj2p', 36, 2490000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 3, 11, 'Chuột chơi game không dây Logitech G502 Lightspeed', 100,'https://bom.so/PNEahF','https://bom.so/PNEahF', 7, 2590000, 'Thiết kế mạnh mẽ, trọng lượng siêu nhẹ</br>Cảm biến Hero độc đáo, độ chính xác tuyệt đối',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 3, 11, 'Chuột không dây Logitech M590', 100, 25, 800000, 'Thiết kế thông minh, nhỏ gọn và hiện đại</br>Hoạt động tuyệt vời trong yên lặng, thao tác nhẹ nhàng và chính xác',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 3, 11, 'Chuột không dây Logitech M331', 100, 0, 340000, 'Thiết kế bo tròn ôm sát lòng bàn tay, trọng lượng chỉ 101g, chất liệu nhựa cứng</br>Chuột quang độ phân giải lên đến 1000dpi, kết nối không dây với khoảng cách 10m',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 3, 11, 'Chuột không dây Logitech M221', 100, 23, 319000, 'Thiết kế linh hoạt, tốc độ không dây 2.4 GHz</br>Tương thích với hầu hết hệ điều hành, giảm thiểu 90% tiếng ồn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 3, 11, 'Chuột không dây Logitech M238 Marvel Collection', 100, 48, 490000, 'Độ phân giải 1000 DPI, phạm vi kết nối 10m</br>Đầu tín hiệu receiver nano, thời gian sử dụng đến 12 tháng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 3, 11, 'Chuột Gaming Logitech G102 LightSync', 100, 32, 599000, 'Thiết kế cổ điển với 6 nút nhấn cùng hệ thống LED RGB</br>DPI lên đến 8.000 với cảm biến cấp độ chơi game cho sở thích riêng',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 3, 11, 'Chuột không dây Logitech MX Anywhere 3', 100, 19, 1999000, 'Thiết kế không dây với 2 cơ chế kết nối</br>Con cuộn Magspeed ưu việt, tương thích nhiều hệ điều hành',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 3, 11, 'Chuột không dây Logitech MX Master 2S', 100, 36, 2490000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 3, 11, 'Chuột chơi game không dây Logitech G502 Lightspeed', 100, 7, 2590000, 'Thiết kế mạnh mẽ, trọng lượng siêu nhẹ</br>Cảm biến Hero độc đáo, độ chính xác tuyệt đối',"NO");
 
 -- SSD SAMSUNG
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 9, 'Ổ cứng SSD Samsung 860 Evo 250GB M.2 2280 SATA 3 - MZ-N6E250BW', 100,'https://bom.so/b1NcAm','https://bom.so/4gYbWQ', 7, 1890000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 9, 'Ổ cứng SSD Samsung 860 Evo 500GB M.2 2280 SATA 3 - MZ-N6E500BW', 100,'https://bom.so/b1NcAm','https://bom.so/4gYbWQ', 7, 2490000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 9, 'Ổ cứng SSD Samsung 970 Pro 512GB M.2 2280 NVMe - MZ-V7P512BW', 100,'https://bom.so/4v1e7h','https://bom.so/voaUiA', 7, 5520000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 9, 'Ổ cứng SSD Samsung 970 Evo Plus 250GB M.2 NVMe - MZ-V7S250BW', 100,'https://bom.so/pQB48V','https://bom.so/kXaq4M', 7, 1790000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 9, 'Ổ cứng SSD Samsung 970 Evo Plus 500GB M.2 NVMe - MZ-V7S500BW', 100,'https://bom.so/YOiCzr','https://bom.so/I8dF9R', 17, 2890000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 9, 'Ổ cứng SSD Samsung 980 PRO 500GB NVMe M.2 PCIe 4.0 (MZ-V8P500BW)', 100,'https://bom.so/uuV79B','https://bom.so/6saHgN', 7, 3990000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 9, 'Ổ cứng SSD Samsung 870 EVO 250GB SATA III 2.5 inch (MZ-77E250BW)', 100,'https://bom.so/C3WfWt','https://bom.so/Fa0pTW', 7, 1890000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 9, 'Ổ cứng SSD Samsung 870 EVO 500GB SATA III 2.5 inch (MZ-77E500BW)', 100,'https://bom.so/C3WfWt','https://bom.so/Fa0pTW', 7, 2350000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 9, 'Ổ cứng SSD Samsung 860 Evo 250GB M.2 2280 SATA 3 - MZ-N6E250BW', 100, 7, 1890000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 9, 'Ổ cứng SSD Samsung 860 Evo 500GB M.2 2280 SATA 3 - MZ-N6E500BW', 100, 7, 2490000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 9, 'Ổ cứng SSD Samsung 970 Pro 512GB M.2 2280 NVMe - MZ-V7P512BW', 100, 7, 5520000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 9, 'Ổ cứng SSD Samsung 970 Evo Plus 250GB M.2 NVMe - MZ-V7S250BW', 100, 7, 1790000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 9, 'Ổ cứng SSD Samsung 970 Evo Plus 500GB M.2 NVMe - MZ-V7S500BW', 100, 17, 2890000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 9, 'Ổ cứng SSD Samsung 980 PRO 500GB NVMe M.2 PCIe 4.0 (MZ-V8P500BW)', 100, 7, 3990000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 9, 'Ổ cứng SSD Samsung 870 EVO 250GB SATA III 2.5 inch (MZ-77E250BW)', 100, 7, 1890000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 9, 'Ổ cứng SSD Samsung 870 EVO 500GB SATA III 2.5 inch (MZ-77E500BW)', 100, 7, 2350000, 'Tối ưu hóa tốc độ lên mức tối đa</br>Cải thiện năng lượng hiệu quả',"NO");
 -- SSD KINGSTON
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 12, 'Ổ cứng SSD Kingston A400 120GB Sata 3 (SA400S37/120G)', 100,'https://bom.so/H6eKl5','https://bom.so/yetk2m', 7, 790000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 12, 'Ổ cứng SSD Kingston A400 240GB Sata 3 (SA400S37/240G)', 100,'https://bom.so/H6eKl5','https://bom.so/yetk2m', 7, 1130000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 12, 'Ổ cứng SSD Kingston A400 480GB Sata 3 (SA400S37/480G)', 100,'https://bom.so/H6eKl5','https://bom.so/yetk2m', 7, 1610000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 12, 'Ổ cứng SSD Kingston KC600 512GB 2.5" SATA 3', 100,'https://bom.so/GYjxmh','https://bom.so/QAD9Wf', 7, 2190000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 12, 'Ổ cứng SSD Kingston KC600 256GB 2.5" SATA 3', 100,'https://bom.so/GYjxmh','https://bom.so/QAD9Wf', 7, 1390000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 12, 'Ổ cứng SSD Kingston A2000 250GB M.2 2280 NVMe PCIe', 100,'https://bom.so/sL5wjy','https://bom.so/BDKG1k', 7, 1490000, '',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 4, 12, 'Ổ cứng SSD Kingston A2000 500GB M.2 2280 NVMe PCIe', 100,'https://bom.so/sL5wjy','https://bom.so/BDKG1k', 7, 2200000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 12, 'Ổ cứng SSD Kingston A400 120GB Sata 3 (SA400S37/120G)', 100, 7, 790000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 12, 'Ổ cứng SSD Kingston A400 240GB Sata 3 (SA400S37/240G)', 100, 7, 1130000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 12, 'Ổ cứng SSD Kingston A400 480GB Sata 3 (SA400S37/480G)', 100, 7, 1610000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 12, 'Ổ cứng SSD Kingston KC600 512GB 2.5" SATA 3', 100, 7, 2190000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 12, 'Ổ cứng SSD Kingston KC600 256GB 2.5" SATA 3', 100, 7, 1390000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 12, 'Ổ cứng SSD Kingston A2000 250GB M.2 2280 NVMe PCIe', 100, 7, 1490000, '',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 4, 12, 'Ổ cứng SSD Kingston A2000 500GB M.2 2280 NVMe PCIe', 100, 7, 2200000, '',"NO");
 
 -- RAM KINGMAX
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM desktop KINGMAX (1x4GB) DDR3 1600MHz', 100,'https://bom.so/gVNC31','https://bom.so/iI0ZAW', 7, 790000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM desktop KINGMAX (1x8GB) DDR3 1600MHz', 100,'https://bom.so/gVNC31','https://bom.so/iI0ZAW', 7, 1250000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM desktop KINGMAX (1x4GB) DDR4 2400MHz', 100,'https://bom.so/gVNC31','https://bom.so/iI0ZAW', 7, 650000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM desktop KINGMAX (1x8GB) DDR4 2400MHz', 100,'https://bom.so/gVNC31','https://bom.so/iI0ZAW', 7, 900000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM desktop KINGMAX HEATSINK (Zeus) (1 x 8GB) DDR4 3200MHz', 100,'https://bom.so/wUf5ki','https://bom.so/MyaCar', 7, 1400000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM desktop KINGMAX HEATSINK (Zeus) (1 x 16GB) DDR4 3200MHz', 100,'https://bom.so/wUf5ki','https://bom.so/MyaCar', 7, 2590000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM laptop KINGMAX Kingmax 16GB (1 x 16GB) DDR4 2666MHz', 100,'https://bom.so/Szjt1D','https://bom.so/5gmhB3', 15, 2350000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM laptop KINGMAX Kingmax 8GB (3200) (1 x 8GB) DDR4 3200MHz', 100,'https://bom.so/s0Cm59','https://bom.so/5gmhB3', 35, 1390000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM laptop KINGMAX Kingmax 16GB (3200) (1 x 16GB) DDR4 3200MHz', 100,'https://bom.so/5gmhB3','https://bom.so/5gmhB3', 20, 2430000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 13, 'RAM laptop KINGMAX Kingmax 32GB (3200) (1 x 32GB) DDR4 3200MHz', 100,'https://bom.so/KmSpsd','https://bom.so/5gmhB3', 12, 4770000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM desktop KINGMAX (1x4GB) DDR3 1600MHz', 100, 7, 790000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM desktop KINGMAX (1x8GB) DDR3 1600MHz', 100, 7, 1250000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM desktop KINGMAX (1x4GB) DDR4 2400MHz', 100, 7, 650000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM desktop KINGMAX (1x8GB) DDR4 2400MHz', 100, 7, 900000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM desktop KINGMAX HEATSINK (Zeus) (1 x 8GB) DDR4 3200MHz', 100, 7, 1400000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM desktop KINGMAX HEATSINK (Zeus) (1 x 16GB) DDR4 3200MHz', 100, 7, 2590000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM laptop KINGMAX Kingmax 16GB (1 x 16GB) DDR4 2666MHz', 100, 15, 2350000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM laptop KINGMAX Kingmax 8GB (3200) (1 x 8GB) DDR4 3200MHz', 100, 35, 1390000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM laptop KINGMAX Kingmax 16GB (3200) (1 x 16GB) DDR4 3200MHz', 100, 20, 2430000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 13, 'RAM laptop KINGMAX Kingmax 32GB (3200) (1 x 32GB) DDR4 3200MHz', 100, 12, 4770000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
 
 -- RAM KINGSTON
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 12, 'RAM desktop KINGSTON FURY Beast Black 32GB (2x16GB) DDR5 5200MHz (2 x 16GB) DDR5 5200MHz (KF552C40BBK2-32)', 100,'https://bom.so/9RBHeq','https://bom.so/XbfiXD', 7, 7999000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 12, 'RAM desktop KINGSTON Fury Beast 32GB (2 x 16GB) DDR4 3600MHz (KF436C18BBK2/32)', 100,'https://bom.so/kRLoAu','https://bom.so/TnpbE4', 7, 5750000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 12, 'RAM desktop KINGSTON Fury Beast RGB (2 x 16GB) DDR4 3600MHz (KF436C18BBAK2/32)', 100,'https://bom.so/iSmvNc','https://bom.so/A7BZ7d', 7, 5390000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 12, 'RAM desktop KINGSTON Fury Renegade RGB 32GB (2 x 16GB) DDR4 3200MHz (KF432C16RB1AK2/32)', 100,'https://bom.so/eHEE5t','https://bom.so/A7BZ7d', 7, 2590000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 12, 'RAM desktop KINGSTON Fury Beast RGB 32GB (2 x 16GB) DDR4 3200MHz (KF432C16BB1AK2/32)', 100,'https://bom.so/eHEE5t','https://bom.so/A7BZ7d', 7, 2590000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 12, 'RAM laptop KINGSTON DDR4 Kingston 16GB (3200) (1 x 16GB) DDR4 3200MHz (KVR32S22D8/16)', 100,'https://bom.so/DFtgJQ','https://bom.so/IiPbb4', 7, 2090000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 12, 'RAM laptop Kingston KVR16LS11/4 (1x4GB) DDR3L 1600MHz', 100,'https://bom.so/yBrmKH','https://bom.so/IiPbb4', 7, 950000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
-INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity, product_image,productimage_description,discount, unit_price, description_product,is_delete)
-VALUES ( 5, 12, 'RAM laptop KINGSTON KCP432SS6/8 (1 x 8GB) DDR4 3200MHz', 100,'https://bom.so/yBrmKH','https://bom.so/IiPbb4', 7, 1290000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 12, 'RAM desktop KINGSTON FURY Beast Black 32GB (2x16GB) DDR5 5200MHz (2 x 16GB) DDR5 5200MHz (KF552C40BBK2-32)', 100, 7, 7999000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 12, 'RAM desktop KINGSTON Fury Beast 32GB (2 x 16GB) DDR4 3600MHz (KF436C18BBK2/32)', 100, 7, 5750000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 12, 'RAM desktop KINGSTON Fury Beast RGB (2 x 16GB) DDR4 3600MHz (KF436C18BBAK2/32)', 100, 7, 5390000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 12, 'RAM desktop KINGSTON Fury Renegade RGB 32GB (2 x 16GB) DDR4 3200MHz (KF432C16RB1AK2/32)', 100, 7, 2590000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 12, 'RAM desktop KINGSTON Fury Beast RGB 32GB (2 x 16GB) DDR4 3200MHz (KF432C16BB1AK2/32)', 100, 7, 2590000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 12, 'RAM laptop KINGSTON DDR4 Kingston 16GB (3200) (1 x 16GB) DDR4 3200MHz (KVR32S22D8/16)', 100, 7, 2090000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 12, 'RAM laptop Kingston KVR16LS11/4 (1x4GB) DDR3L 1600MHz', 100, 7, 950000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+INSERT INTO PRODUCT (category_id,supplier_id, product_name, quantity,discount, unit_price, description_product,is_delete)
+VALUES ( 5, 12, 'RAM laptop KINGSTON KCP432SS6/8 (1 x 8GB) DDR4 3200MHz', 100, 7, 1290000, 'Tính ổn định cao, độ tin cậy và khả năng tương thích</br>Ứng dụng rộng hơn và tiêu thụ điện năng thấp hơn',"NO");
+
+
+-- IMAGES
+
+------------------------------------------
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/QrJEfJ','NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/ejRBre', 'NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/P6Bbhi','NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/JCDxUm','NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/6qJgSA','NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/rL01II','NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/pNK7gy','NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/AbzTeF',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/9lI02c','NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/jcXXXb',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/r8EdhU','NO');
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/q25XbL', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/FVWYUk',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/MM23wQ', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/f3zD2o',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/SptA1I',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/fl7m7W',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/YXcaSr',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/PcOhwD',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/w5pPd1',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/p2tC9S',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/yh8rEU', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/C3arw5',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/pm4mfH',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/QJiuh0',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/2DjKif',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/YntcSX',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/hLabbJ',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/8kbYAD',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/hI36wa', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/dwldjN',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/cFJJXs',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/zCYSYw',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/ltyR7v',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/cvyjAU',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/xa4Qey',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/DnFgd9',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/1AxVab',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/mVN4iF',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/3QlgcH', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/oElsL8',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/RIvLEo',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/swU6bM',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/jz0Xos',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/bYX2AS',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/xrD1ND',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/2uhKty',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/ACia2v',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/3qPVXq',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/73G95C',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/jT7XSC',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/5Tc3XB', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/1BoTZT',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/BRAPak', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/qKDnhV',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Kw2k0K',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/05UwtH',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/tv7QDq', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/niZw4Q',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/uSMPhp',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/DiuzJv',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/vKrTDg',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/WuFMe5',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/AqBYU6',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/pRsBmB',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/VNOYCJ', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/1wBZOd',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/jaMTo8', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/bD6Vr5',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/uPqI3Q', "NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/ty1hJ4',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/dDM10I', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/VoZoys',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/7fUJ64',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/g5EYe1',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/PYPJwl',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Ef6NkX',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/spCcvC', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/lTp6jy',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/FcE1Ki',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/R06w33',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/cHH0HX', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/7ISsER',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/rOiZnz', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/oyEBsB',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/QSFFPV',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/r6JFhG',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/YbUsS6', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/EQ6ukW',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/85tteT',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/FvzSTk',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/D94s5G',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/xNU1gz',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/5HCSuB', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Hsryil',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/R1dWSj',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/2Abjfk',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/UrbHzW',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/gaOgM5',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/zQHJmn', "NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/AM8PwN',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/sKZkjo',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/WZzxJW',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/dtQmMs',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/DGI5lg',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/3ple8B', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/GW7Qa3',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/vcvA2w',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/gis23h',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/RZ0F8X',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/NWWynG',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/CXrOGA', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/yRDbs8',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/QGQiwp', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/p5VaIC',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/c6GKmd',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/suCSvw',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/tK824r',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Df35xb',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/M80qqJ',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/LZK2sm',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/cfXpYq',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/wNaIKw',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/F8N2It',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Tjpgoy',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/tyJt3f',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/YXSv3d',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/QfBip7', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/yxWsZT',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/N2aB0C', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Vy92ZK',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/K3XZEg', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Bnb9Hz',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/XTkzaD', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/tVaa2i',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/EiyIO6', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/DZvRs5',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/sjS3kH',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/RdzhXN',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/tCmAti',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/K5ARbu',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iaTIF7',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/7gopPs',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/9RX6Dd',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/HVwagD',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/XOSsQn',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/ZVgtXt',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/LUuYIA', "NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/WE6FaV',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Ecp1E1',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/gCadB2',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/LnUVJV',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/MAtjQe',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/P4Pc2s', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iQM8XL',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/KzWXio',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/lyXjwh',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/wIVnLe',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/GOfRCs',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/GOfRCs',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Mhk7lJ',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/M1WBxq', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/mMQZ3l',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/k6Opdx', "NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/4mZy9u',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/5MeBmI',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/YpqqRT',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/1um9p9',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/pofSru',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/3tVX0j',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/9cc67K',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/VMSCcY',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/0AXsER',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/2A9cbP',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/o2zQHP',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/xR6npD',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/55qibj',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/tYhatI',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/ILIkKK',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/45LsmV',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/gmqLgs',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/ipIcSv',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iQkuRs',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/WI35Pn',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/4PdrXV',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/CCbYAf',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/25qpct',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/QrWJtb',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/7QATbz',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/3fyylX',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/zFqPfo',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/DRgLpB', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/1bGtyf',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iouZwp', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/nh4wBH',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/EPHj2p',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/PNEahF',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/PNEahF',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/b1NcAm',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/4gYbWQ',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/b1NcAm',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/4gYbWQ',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/4v1e7h',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/voaUiA',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/pQB48V',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/kXaq4M',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/YOiCzr',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/I8dF9R',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/uuV79B',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/6saHgN',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/C3WfWt',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Fa0pTW',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/C3WfWt',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Fa0pTW',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/H6eKl5',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/yetk2m', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/H6eKl5',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/yetk2m',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/H6eKl5',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/yetk2m',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/GYjxmh',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/QAD9Wf',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/GYjxmh',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/QAD9Wf',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/sL5wjy',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/BDKG1k',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/sL5wjy',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/BDKG1k',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/gVNC31',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iI0ZAW',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/gVNC31',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iI0ZAW',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/gVNC31',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iI0ZAW',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/gVNC31',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iI0ZAW',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/wUf5ki',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/MyaCar',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/wUf5ki',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/MyaCar',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/Szjt1D',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/5gmhB3',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/s0Cm59',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/5gmhB3',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/5gmhB3',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/5gmhB3',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/KmSpsd',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/5gmhB3',"NO");
+
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/9RBHeq',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/XbfiXD',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/kRLoAu',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/TnpbE4', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/iSmvNc',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/A7BZ7d',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/eHEE5t',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/A7BZ7d',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/eHEE5t',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/A7BZ7d',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/DFtgJQ',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/IiPbb4',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/yBrmKH',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/IiPbb4', "NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/yBrmKH',"NO");
+INSERT INTO IMAGE (image,is_delete)
+VALUES ('https://bom.so/IiPbb4',"NO");
+
+------------------------------------------------------------------
+-- PRODUCTIMAGE
+
+
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (1,1,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (1,2,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (2,3,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (2,4,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (3,5,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (3,6,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (4,7,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (4,8,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (5,9,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (5,10,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (6,11,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (6,12,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (7,13,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (7,14,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (8,15,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (8,16,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (9,17,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (9,18,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (10,19,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (10,20,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (11,21,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (11,22,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (12,23,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (12,24,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (13,25,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (13,26,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (14,27,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (14,28,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (15,29,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (15,30,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (16,31,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (16,32,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (17,33,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (17,34,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (18,35,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (18,36,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (19,37,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (19,38,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (20,39,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (20,40,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (21,41,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (21,42,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (22,43,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (22,44,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (23,45,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (23,46,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (24,47,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (24,48,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (25,49,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (25,50,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (26,51,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (26,52,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (27,53,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (27,54,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (28,55,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (28,56,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (29,57,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (29,58,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (30,59,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (30,60,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (31,61,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (31,62,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (32,63,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (32,64,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (33,65,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (33,66,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (34,67,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (34,68,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (35,69,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (35,70,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (36,71,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (36,72,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (37,73,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (37,74,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (38,75,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (38,76,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (39,77,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (39,78,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (40,79,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (40,80,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (41,81,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (41,82,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (42,83,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (42,84,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (43,85,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (43,86,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (44,87,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (44,88,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (45,89,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (45,90,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (46,91,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (46,92,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (47,93,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (47,94,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (48,95,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (48,96,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (49,97,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (49,98,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (50,99,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (50,100,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (51,101,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (51,102,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (52,103,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (52,104,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (53,105,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (53,106,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (54,107,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (54,108,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (55,109,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (55,110,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (56,111,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (56,112,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (57,113,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (57,114,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (58,115,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (58,116,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (59,117,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (59,118,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (60,119,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (60,120,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (61,121,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (61,122,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (62,123,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (62,124,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (63,125,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (63,126,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (64,127,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (64,128,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (65,129,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (65,130,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (66,131,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (66,132,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (67,133,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (67,134,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (68,135,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (68,136,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (69,137,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (69,138,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (70,139,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (70,140,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (71,141,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (71,142,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (72,143,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (72,144,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (73,145,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (73,146,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (74,147,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (74,148,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (75,149,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (75,150,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (76,151,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (76,152,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (77,153,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (77,154,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (78,155,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (78,156,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (79,157,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (79,158,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (80,159,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (80,160,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (81,161,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (81,162,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (82,163,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (82,164,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (83,165,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (83,166,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (84,167,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (84,168,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (85,169,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (85,170,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (86,171,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (86,172,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (87,173,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (87,174,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (88,175,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (88,176,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (89,177,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (89,178,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (90,179,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (90,180,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (91,181,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (91,182,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (92,183,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (92,184,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (93,185,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (93,186,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (94,187,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (94,188,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (95,189,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (95,190,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (96,191,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (96,192,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (97,193,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (97,194,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (98,195,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (98,196,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (99,197,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (99,198,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (100,199,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (100,200,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (101,201,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (101,202,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (102,203,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (102,204,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (103,205,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (103,206,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (104,207,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (104,208,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (105,209,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (105,210,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (106,211,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (106,212,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (107,213,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (107,214,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (108,215,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (108,216,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (109,217,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (109,218,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (110,219,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (110,220,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (111,221,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (111,222,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (112,223,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (112,224,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (113,225,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (113,226,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (114,227,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (114,228,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (115,229,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (115,230,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (116,231,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (116,232,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (117,233,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (117,234,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (118,235,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (118,236,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (119,237,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (119,238,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (120,239,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (120,240,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (121,241,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (121,242,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (122,243,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (122,244,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (123,245,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (123,246,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (124,247,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (124,248,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (125,249,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (125,250,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (126,251,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (126,252,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (127,253,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (127,254,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (128,255,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (128,256,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (129,257,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (129,258,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (130,259,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (130,260,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (131,261,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (131,262,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (132,263,"NO");
+INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (132,264,"NO");
+
+
+
+
 
 -- ORDERS
 
