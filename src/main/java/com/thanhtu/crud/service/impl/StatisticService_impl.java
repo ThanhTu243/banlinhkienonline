@@ -35,7 +35,7 @@ public class StatisticService_impl implements StatisticService {
 
     @Override
     public Long revenueStatistics(RequestDate requestDate) {
-        List<OrdersEntity> list=ordersRepo.findOrdersEntityByCreateDateBetweenAndNote(Timestamp.valueOf(requestDate.getFrom()),Timestamp.valueOf(requestDate.getTo()),"Đã thanh toán");
+        List<OrdersEntity> list=ordersRepo.findOrdersEntityByCreateDateBetweenAndPaymentStatus(Timestamp.valueOf(requestDate.getFrom()),Timestamp.valueOf(requestDate.getTo()),"Đã thanh toán");
         Long sumRevenue=Long.valueOf(0);
         for(OrdersEntity ordersEn:list)
         {
@@ -134,7 +134,7 @@ public class StatisticService_impl implements StatisticService {
 
     @Override
     public BestSellingProductsPage top10BestSellingProducts() {
-        List<OrdersEntity> list=ordersRepo.findOrdersEntityByNote("Đã thanh toán");
+        List<OrdersEntity> list=ordersRepo.findOrdersEntityByPaymentStatus("Đã thanh toán");
         List<OrderDetailEntity> listDetail=new ArrayList<OrderDetailEntity>();
         Map<String, ProductDto> listBestSellingProducts=new HashMap<String,ProductDto>();
         for(OrdersEntity order:list)
@@ -211,7 +211,7 @@ public class StatisticService_impl implements StatisticService {
         int numberOfMonth=month.length(Year.now().isLeap());
         String from=dateTimeNow.getYear()+"-"+monthString+"-01 00:00:00";
         String to=dateTimeNow.getYear()+"-"+monthString+"-"+ numberOfMonth+" 00:00:00";
-        List<OrdersEntity> listOrders=ordersRepo.findOrdersEntityByCreateDateBetweenAndNote(Timestamp.valueOf(from),Timestamp.valueOf(to),"Đã thanh toán");
+        List<OrdersEntity> listOrders=ordersRepo.findOrdersEntityByCreateDateBetweenAndPaymentStatus(Timestamp.valueOf(from),Timestamp.valueOf(to),"Đã thanh toán");
         long sum=Long.valueOf(0);
         for(OrdersEntity orders:listOrders)
         {
