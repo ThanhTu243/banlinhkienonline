@@ -29,6 +29,6 @@ public class CustomerDeliveryAddress {
     @ManyToOne
     @JoinColumn (name = "deliveryaddress_id", nullable = false,referencedColumnName = "deliveryaddress_id")
     @JsonBackReference
-    private DeliveryAddressEntity deliveryaddress;
+    private DeliveryAddressEntity deliveryAddressEntity;
 
 }

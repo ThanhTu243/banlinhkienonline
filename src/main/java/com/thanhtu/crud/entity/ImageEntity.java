@@ -23,7 +23,7 @@ public class ImageEntity {
     private String image;
     private String isDelete;
 
-    @OneToMany(mappedBy = "image",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "imageEntity",cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<ProductImage> productImageSet;
 }

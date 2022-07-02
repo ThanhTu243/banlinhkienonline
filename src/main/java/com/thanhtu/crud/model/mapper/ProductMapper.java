@@ -1,9 +1,6 @@
 package com.thanhtu.crud.model.mapper;
 
-import com.thanhtu.crud.entity.CategoryEntity;
-import com.thanhtu.crud.entity.OrderDetailEntity;
-import com.thanhtu.crud.entity.ProductEntity;
-import com.thanhtu.crud.entity.SupplierEntity;
+import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.model.dto.*;
 import com.thanhtu.crud.model.dto.fk.ProductFKDto;
 import com.thanhtu.crud.model.request.product.ProductRequest;
@@ -30,7 +27,7 @@ public class ProductMapper {
         tmp.setProductId(productDto.getProductId());
         tmp.setProductName(productDto.getProductName());
         tmp.setQuantity(productDto.getQuantity());
-        tmp.setProductImage(productDto.getProductImage());
+        tmp.setProductImageList(productDto.getProductImageSet());
         tmp.setDiscount(productDto.getDiscount());
         tmp.setUnitPrice(productDto.getUnitPrice());
         tmp.setPriceAfterDiscount(Long.valueOf(productDto.getPriceAfterDiscount()));
@@ -64,6 +61,15 @@ public class ProductMapper {
         tmp.setDescriptionProduct(productEntity.getDescriptionProduct());
         tmp.setCategoryFKDto(CategoryMapper.toCategoryViewDto(productEntity.getCategoryEntity()));
         tmp.setSupplierFKDto(SupplierMapper.toSupplierViewDto(productEntity.getSupplierEntity()));
+        List<ProductImageDto> productImageDtoList=new ArrayList<>();
+        for(ProductImage productImage:productEntity.getProductImageSet())
+        {
+            ProductImageDto productImageDto=new ProductImageDto();
+            productImageDto.setImageId(productImage.getImageEntity().getImageId());
+            productImageDto.setImage(productImage.getImageEntity().getImage());
+            productImageDtoList.add(productImageDto);
+        }
+        tmp.setProductImageSet(productImageDtoList);
         return tmp;
     }
     public static ProductEntity toProductEntity(ProductRequest productRequest, CategoryEntity categoryEntity, SupplierEntity supplierEntity)

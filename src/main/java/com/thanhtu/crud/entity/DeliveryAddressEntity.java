@@ -23,7 +23,7 @@ public class DeliveryAddressEntity {
     private String deliveryaddress;
     private String isDelete;
 
-    @OneToMany(mappedBy = "deliveryaddress",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "deliveryAddressEntity",cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<CustomerDeliveryAddress> customerDeliveryAddresses;
 }

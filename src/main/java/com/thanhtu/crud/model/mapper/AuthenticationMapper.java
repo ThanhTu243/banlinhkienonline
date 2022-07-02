@@ -18,11 +18,20 @@ public class AuthenticationMapper {
     public AuthenticationResponse login(String username,String role) {
         Map<String, String> resultMap = authenticationService.login(username,role);
         AuthenticationResponse response = new AuthenticationResponse();
-        response.setId(Integer.parseInt(resultMap.get("id")));
-        response.setUsername(resultMap.get("username"));
-        response.setToken(resultMap.get("token"));
-        response.setCustomerId(Integer.parseInt(resultMap.get("customerId")));
-        response.setUserRole(resultMap.get("userRole"));
+        if(role=="CUSTOMER")
+        {
+            response.setId(Integer.parseInt(resultMap.get("id")));
+            response.setUsername(resultMap.get("username"));
+            response.setToken(resultMap.get("token"));
+            response.setCustomerId(Integer.parseInt(resultMap.get("customerId")));
+            response.setUserRole(resultMap.get("userRole"));
+        }
+        else {
+            response.setId(Integer.parseInt(resultMap.get("id")));
+            response.setUsername(resultMap.get("username"));
+            response.setToken(resultMap.get("token"));
+            response.setUserRole(resultMap.get("userRole"));
+        }
         return response;
     }
 

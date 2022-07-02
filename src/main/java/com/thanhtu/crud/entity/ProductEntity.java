@@ -25,11 +25,14 @@ public class ProductEntity {
     private Integer unitPrice;
     private String descriptionProduct;
     private String isDelete;
+
+    @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<ProductImage> productImageSet;
     @ManyToOne
     @JoinColumn (name = "category_id", nullable = false,referencedColumnName = "category_id")
     @JsonBackReference
     private CategoryEntity categoryEntity;
-
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false,referencedColumnName = "supplier_id")
     @JsonBackReference
@@ -41,7 +44,7 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL)
     @JsonBackReference
-    private Set<OrderDetailEntity> productEntities;
+    private Set<OrderDetailEntity> orderDetailEntities;
 
     @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL)
     @JsonManagedReference
