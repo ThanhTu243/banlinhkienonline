@@ -14,4 +14,5 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity,Integer
     Page<CustomerEntity> findCustomerEntityByIsDelete(String status, Pageable page);
     CustomerEntity findCustomerEntityByCustomerIdAndIsDelete(int id,String status);
     Integer countAllByIsDelete(String status);
+    CustomerEntity findCustomerEntitiesByGmailCustomerAndIsDelete(String email,String status);
 }

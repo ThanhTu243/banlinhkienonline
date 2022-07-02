@@ -1,7 +1,10 @@
 package com.thanhtu.crud.security.oauth2;
 
+import com.thanhtu.crud.repository.AccountsRepository;
+import com.thanhtu.crud.repository.CustomerRepository;
 import com.thanhtu.crud.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -17,6 +20,10 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtProvider jwtProvider;
+    @Autowired
+    CustomerRepository customerRepository;
+    @Autowired
+    AccountsRepository accountsRepository;
 
     @Value("${hostname}")
     private String hostname;
@@ -29,8 +36,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = (String) oAuth2User.getAttributes().get("email");
         String token = jwtProvider.createToken(email, "CUSTOMER");
-        String uri = UriComponentsBuilder.fromUriString("http://" + hostname1 + "/oauth2/redirect")
-                .queryParam("token", token)
+        String customerId=customerRepository.findCustomerEntitiesByGmailCustomerAndIsDelete(email,"NO").getCustomerId().toString();
+        String Id=accountsRepository.findAccountsEntitiesByGmail(email).getAccountId().toString();
+        String uri = UriComponentsBuilder.fromUriString("http://" + hostname + "/oauth2/redirect")
+                .queryParam("token", token).queryParam("id",Id).queryParam("customerId",customerId).queryParam("userRoles","CUSTOMER")
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }

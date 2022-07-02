@@ -32,6 +32,11 @@ public class AuthenticationController {
     @Autowired private AuthenticationManager authenticationManager;
     private final AuthenticationMapper authenticationMapper;
 
+    @GetMapping("/oauth/google")
+    public ResponseEntity<?> loginGoogle(@RequestParam("id") String id,@RequestParam("customerId") String customerId) {
+        return ResponseEntity.ok("Đăng nhập thành công");
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest request, BindingResult bindingResult) {
         if(bindingResult.hasErrors())
