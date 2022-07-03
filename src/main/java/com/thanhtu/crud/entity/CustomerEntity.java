@@ -44,7 +44,7 @@ public class CustomerEntity {
 
     @OneToMany(mappedBy = "customerEntity",cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Set<CustomerDeliveryAddress> customerDeliveryAddresses;
+    private Set<DeliveryAddressEntity> deliveryAddressEntities;
 
 
 

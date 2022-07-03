@@ -37,24 +37,15 @@ CREATE TABLE CUSTOMER(
 );
 CREATE TABLE DELIVERYADDRESS (
                                  deliveryaddress_id INT AUTO_INCREMENT,
+                                 fullname NVARCHAR(100),
+                                 phone_number VARCHAR(12),
                                  deliveryaddress VARCHAR(500),
                                  is_delete VARCHAR(10),
+                                 customer_id INT,
                                  CONSTRAINT DA_isDeleteIMAGE_CHK CHECK (is_delete IN ('NO','YES')),
-                                 CONSTRAINT DA_maDELIVERYADDRESS_PK PRIMARY KEY(deliveryaddress_id)
+                                 CONSTRAINT DA_maDELIVERYADDRESS_PK PRIMARY KEY(deliveryaddress_id),
+                                 CONSTRAINT DA_maDELIVERYADDRESS_PK FOREIGN KEY (customer_id) REFERENCES CUSTOMER(customer_id) ON DELETE CASCADE
 );
-
-CREATE TABLE CUSTOMERDELIVERYADDRESS(
-                                        customerdeliveryaddress_id INT AUTO_INCREMENT,
-                                        customer_id INT,
-                                        deliveryaddress_id INT,
-                                        is_delete VARCHAR(10),
-                                        CONSTRAINT OR_isDeleteCUSTOMERDELIVERYADDRESS_CHK CHECK (is_delete IN ('NO','YES')),
-                                        CONSTRAINT CDA_maCUSTOMERDELIVERYADDRESS_PK PRIMARY KEY(customerdeliveryaddress_id),
-                                        CONSTRAINT CDA_maCUSTOMER_FK FOREIGN KEY (customer_id) REFERENCES CUSTOMER(customer_id) ON DELETE CASCADE,
-                                        CONSTRAINT CDA_maDELIVERYADDRESS_FK FOREIGN KEY (deliveryaddress_id) REFERENCES DELIVERYADDRESS(deliveryaddress_id) ON DELETE CASCADE
-);
-
-
 
 CREATE TABLE CATEGORY
 (

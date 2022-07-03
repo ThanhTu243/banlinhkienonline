@@ -1,5 +1,6 @@
 package com.thanhtu.crud.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,10 +21,13 @@ public class DeliveryAddressEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "deliveryaddress_id")
     private Integer deliveryaddressId;
+    private String fullname;
+    private String phoneNumber;
     private String deliveryaddress;
     private String isDelete;
 
-    @OneToMany(mappedBy = "deliveryAddressEntity",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<CustomerDeliveryAddress> customerDeliveryAddresses;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false,referencedColumnName = "customer_id")
+    @JsonBackReference
+    private CustomerEntity customerEntity;
 }
