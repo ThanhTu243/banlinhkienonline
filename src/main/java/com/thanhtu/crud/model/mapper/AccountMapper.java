@@ -3,10 +3,21 @@ package com.thanhtu.crud.model.mapper;
 import com.thanhtu.crud.entity.AccountsEntity;
 import com.thanhtu.crud.model.dto.AccountsDto;
 import com.thanhtu.crud.model.request.AdminsRequest;
+import com.thanhtu.crud.model.request.PasswordAccountRequest;
+import com.thanhtu.crud.model.request.ProfileRequest;
 import com.thanhtu.crud.model.request.ShipperRequest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class AccountMapper {
+
+    public static AccountsEntity toUpdateAccount(AccountsEntity accounts, ProfileRequest request)
+    {
+        accounts.setPhonenumber(request.getPhoneNumber());
+        accounts.setGmail(request.getEmail());
+        accounts.setLastname(request.getLastName());
+        accounts.setFirstname(request.getFirstName());
+        return accounts;
+    }
     public static AccountsDto toAccountsDto(AccountsEntity account)
     {
         AccountsDto tmp=new AccountsDto();
@@ -34,6 +45,12 @@ public class AccountMapper {
         accounts.setUsername(adminsRequest.getUserAdmin());
         accounts.setPasswords(BCrypt.hashpw(adminsRequest.getPasswordAdmin(),BCrypt.gensalt(12)));
         accounts.setGmail(adminsRequest.getGmailAdmin());
+        return accounts;
+    }
+
+    public static AccountsEntity toUpdatePasswordAccountEntity(AccountsEntity accounts, PasswordAccountRequest request)
+    {
+        accounts.setPasswords(BCrypt.hashpw(request.getNewPassword(),BCrypt.gensalt(12)));
         return accounts;
     }
     public static AccountsEntity toShipperAccountEntity(ShipperRequest shipperRequest)

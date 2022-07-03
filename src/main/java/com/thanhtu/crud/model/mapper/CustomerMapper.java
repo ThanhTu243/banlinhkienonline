@@ -8,6 +8,7 @@ import com.thanhtu.crud.model.dto.ProductDto;
 import com.thanhtu.crud.model.dto.ProductPageDto;
 import com.thanhtu.crud.model.dto.fk.CustomerFKDto;
 import com.thanhtu.crud.model.request.CustomerRequest;
+import com.thanhtu.crud.model.request.ProfileRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class CustomerMapper {
         tmp.setFullnameCustomer(customerEntity.getFirstnameCustomer()+customerEntity.getLastnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
+        tmp.setImage(customerEntity.getImageCustomer());
         return tmp;
     }
     public static CustomerFKDto toCustomerFKDto(CustomerEntity customerEntity)
@@ -34,6 +36,7 @@ public class CustomerMapper {
         tmp.setFullnameCustomer(customerEntity.getFirstnameCustomer()+" "+customerEntity.getLastnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
+        tmp.setImage(customerEntity.getImageCustomer());
         return tmp;
     }
     public static CustomerPageDto toCustomerPageDto(List<CustomerEntity> customerList, int totalPage, int currentPage)
@@ -55,6 +58,16 @@ public class CustomerMapper {
         customer.setFirstnameCustomer(request.getFirstname());
         customer.setLastnameCustomer(request.getLastname());
         customer.setAddress(request.getAddress());
+        return customer;
+    }
+    public static CustomerEntity toUpdateCustomerEntity(CustomerEntity customer, ProfileRequest request)
+    {
+        customer.setPhonenumberCustomer(request.getPhoneNumber());
+        customer.setFirstnameCustomer(request.getFirstName());
+        customer.setLastnameCustomer(request.getLastName());
+        customer.setAddress(request.getEmail());
+        customer.setImageCustomer(request.getImage());
+        customer.setGmailCustomer(request.getEmail());
         return customer;
     }
 

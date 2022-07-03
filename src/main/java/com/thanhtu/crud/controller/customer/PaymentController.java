@@ -11,7 +11,7 @@ import com.paypal.base.rest.PayPalRESTException;
 import com.thanhtu.crud.entity.CustomerEntity;
 import com.thanhtu.crud.exception.InputFieldException;
 import com.thanhtu.crud.exception.NotFoundException;
-import com.thanhtu.crud.model.PaypalDto;
+import com.thanhtu.crud.model.dto.PaypalDto;
 import com.thanhtu.crud.model.dto.OrderDetailViewDto;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.dto.ProductOrderDetailDto;

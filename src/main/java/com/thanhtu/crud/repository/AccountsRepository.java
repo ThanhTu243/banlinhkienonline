@@ -11,4 +11,5 @@ public interface AccountsRepository extends JpaRepository<AccountsEntity,Integer
     AccountsEntity findAccountsEntitiesByActivationCode(String code);
     AccountsEntity findAccountsEntitiesByGmail(String email);
     AccountsEntity findAccountsEntitiesByPasswordresetCode(String code);
+    AccountsEntity findAccountsEntitiesByAccountId(int id);
 }

@@ -3,10 +3,9 @@ package com.thanhtu.crud.service.impl;
 import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.CustomerDto;
-import com.thanhtu.crud.model.mapper.CategoryMapper;
 import com.thanhtu.crud.model.mapper.CustomerMapper;
-import com.thanhtu.crud.model.mapper.ProductMapper;
 import com.thanhtu.crud.model.request.CustomerRequest;
+import com.thanhtu.crud.model.request.ProfileRequest;
 import com.thanhtu.crud.repository.AccountsRepository;
 import com.thanhtu.crud.repository.CustomerRepository;
 import com.thanhtu.crud.repository.ProductRepository;
@@ -57,11 +56,21 @@ public class CustomerService_impl implements CustomerService {
     }
 
     @Override
-    public CustomerDto updateCustomer(Integer id, CustomerRequest customerRequest) {
-        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(id,"NO");
+    public CustomerEntity updateProfile(ProfileRequest profileRequest) {
+        CustomerEntity customerEntity=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(profileRequest.getCustomerId(),"NO");
+        if(customerEntity==null)
+        {
+            throw new NotFoundException("Không tồn tại tài khoản với id: "+profileRequest.getCustomerId());
+        }
+        return customerRepo.save(CustomerMapper.toUpdateCustomerEntity(customerEntity,profileRequest));
+    }
+
+    @Override
+    public CustomerDto updateCustomer(int customerId, CustomerRequest customerRequest) {
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(customerId,"NO");
         if(customer==null)
         {
-            throw new NotFoundException("Không tồn tại khách hàng với id: "+id);
+            throw new NotFoundException("Không tồn tại khách hàng với id: "+customerId);
         }
         CustomerEntity customerUpdate=customerRepo.save(CustomerMapper.toUpdateCustomerEntity(customer,customerRequest));
         return CustomerMapper.toCustomerDto(customerUpdate);

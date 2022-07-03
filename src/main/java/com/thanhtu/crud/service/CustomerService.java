@@ -5,6 +5,7 @@ import com.thanhtu.crud.model.dto.CartDto;
 import com.thanhtu.crud.model.dto.CustomerDto;
 import com.thanhtu.crud.model.request.CartRequest;
 import com.thanhtu.crud.model.request.CustomerRequest;
+import com.thanhtu.crud.model.request.ProfileRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,5 +16,8 @@ public interface CustomerService {
 
     void deleteCustomer(Integer id);
 
-    CustomerDto updateCustomer(Integer id, CustomerRequest customerRequest);
+    CustomerEntity updateProfile(ProfileRequest profileRequest);
+
+    CustomerDto updateCustomer(int customerId,CustomerRequest customerRequest);
+
 }

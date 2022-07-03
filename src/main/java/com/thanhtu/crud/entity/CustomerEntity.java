@@ -24,6 +24,7 @@ public class CustomerEntity {
     private String userCustomer;
     private String firstnameCustomer;
     private String lastnameCustomer;
+    private String imageCustomer;
     private String address;
     private String gmailCustomer;
     private String phonenumberCustomer;

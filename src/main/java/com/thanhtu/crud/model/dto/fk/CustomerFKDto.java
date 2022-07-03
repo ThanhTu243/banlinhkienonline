@@ -13,4 +13,5 @@ public class CustomerFKDto {
     private String fullnameCustomer;
     private String gmailCustomer;
     private String phoneNumberCustomer;
+    private String image;
 }
