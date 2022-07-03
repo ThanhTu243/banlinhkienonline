@@ -74,6 +74,31 @@ public class ProductMapper {
         tmp.setProductImageSet(productImageDtoList);
         return tmp;
     }
+
+    public static ProductDto toProductDto(ProductEntity productEntity,List<ImageEntity> list)
+    {
+        ProductDto tmp = new ProductDto();
+        tmp.setProductId(productEntity.getProductId());
+        tmp.setProductName(productEntity.getProductName());
+        tmp.setQuantity(productEntity.getQuantity());
+        tmp.setDiscount(productEntity.getDiscount());
+        tmp.setUnitPrice(productEntity.getUnitPrice());
+        tmp.setPriceAfterDiscount(Long.valueOf(productEntity.getUnitPrice())*Long.valueOf(100-productEntity.getDiscount())/100);
+        tmp.setDescriptionProduct(productEntity.getDescriptionProduct());
+        tmp.setCategoryFKDto(CategoryMapper.toCategoryViewDto(productEntity.getCategoryEntity()));
+        tmp.setSupplierFKDto(SupplierMapper.toSupplierViewDto(productEntity.getSupplierEntity()));
+        List<ProductImageDto> productImageDtoList=new ArrayList<>();
+        for(ImageEntity imageEntity:list)
+        {
+            ProductImageDto productImageDto=new ProductImageDto();
+            productImageDto.setImageId(imageEntity.getImageId());
+            productImageDto.setImage(imageEntity.getImage());
+            productImageDtoList.add(productImageDto);
+        }
+        tmp.setProductImageSet(productImageDtoList);
+        return tmp;
+    }
+
     public static ProductEntity toProductEntity(ProductRequest productRequest, CategoryEntity categoryEntity, SupplierEntity supplierEntity)
     {
         ProductEntity tmp=new ProductEntity();

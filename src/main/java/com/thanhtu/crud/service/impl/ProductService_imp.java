@@ -29,6 +29,8 @@ public class ProductService_imp implements ProductService {
     @Autowired
     ImageRepository imageRepo;
 
+    @Autowired ProductService productService;
+
 
     @Override
     public Page<ProductEntity> getListProduct(Pageable pageable) {
@@ -59,16 +61,18 @@ public class ProductService_imp implements ProductService {
         SupplierEntity supplierEntity=supplierRepo.getById(productRequest.getSupplierId());
         //save ProductEntity
         ProductEntity newProduct=productRepo.save(ProductMapper.toProductEntity(productRequest,categoryEntity,supplierEntity));
+        int productId= newProduct.getProductId();
         //--save imageEntity
+        List<ImageEntity> imageEntities=new ArrayList<>();
         for(ProductImageRequest product:productRequest.getProductImage())
         {
             ImageEntity newImage=new ImageEntity();
             newImage.setImage(product.getName());
             newImage.setIsDelete("NO");
             newImage.setProductEntity(newProduct);
-            imageRepo.save(newImage);
+            imageEntities.add(imageRepo.save(newImage));
         }
-        return null;
+        return ProductMapper.toProductDto(newProduct,imageEntities);
     }
 
     @Override
@@ -93,6 +97,7 @@ public class ProductService_imp implements ProductService {
         SupplierEntity supplierEntity=supplierRepo.getById(productRequest.getSupplierId());
         ProductEntity productEntity1=productRepo.save(ProductMapper.toUpdateProduct(productEntity,productRequest,categoryEntity,supplierEntity));
         //--save imageEntity
+        List<ImageEntity> imageEntities=new ArrayList<>();
         for(ProductImageRequest product:productRequest.getProductImage())
         {
             ImageEntity newImage=new ImageEntity();
@@ -101,7 +106,7 @@ public class ProductService_imp implements ProductService {
             newImage.setProductEntity(productEntity1);
             imageRepo.save(newImage);
         }
-        return null;
+        return ProductMapper.toProductDto(productEntity1,imageEntities);
     }
 
 
