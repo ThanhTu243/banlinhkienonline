@@ -2,6 +2,7 @@ package com.thanhtu.crud.model.request.product;
 
 import lombok.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +23,7 @@ public class ProductRequest {
 
     @NotNull(message = "Vui lòng tải lên hình sản phẫm")
     @NotEmpty(message = "Vui lòng tải lên hình sản phẫm")
-    private String productImage;
+    private List<ProductImageRequest> productImage;
 
     @NotNull(message = "Nhập phần trăm giảm giá")
     @Min(value =0,message = "Nhập số dương")

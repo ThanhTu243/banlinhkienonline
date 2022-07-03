@@ -1,5 +1,6 @@
 package com.thanhtu.crud.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +24,8 @@ public class ImageEntity {
     private String image;
     private String isDelete;
 
-    @OneToMany(mappedBy = "imageEntity",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<ProductImage> productImageSet;
+    @ManyToOne
+    @JoinColumn (name = "product_id", nullable = false,referencedColumnName = "product_id")
+    @JsonBackReference
+    private ProductEntity productEntity;
 }

@@ -1,25 +1,19 @@
 package com.thanhtu.crud.service.impl;
 
-import com.thanhtu.crud.entity.CategoryEntity;
-import com.thanhtu.crud.entity.ProductEntity;
-import com.thanhtu.crud.entity.SupplierEntity;
+import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.exception.DuplicateRecoredException;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.ProductDto;
 import com.thanhtu.crud.model.mapper.ProductMapper;
-import com.thanhtu.crud.model.request.product.ProductByCategoryRequest;
-import com.thanhtu.crud.model.request.product.ProductByNameRequest;
-import com.thanhtu.crud.model.request.product.ProductBySupplierRequest;
-import com.thanhtu.crud.model.request.product.ProductRequest;
-import com.thanhtu.crud.repository.CategoryRepository;
-import com.thanhtu.crud.repository.ProductRepository;
-import com.thanhtu.crud.repository.SupplierRepository;
+import com.thanhtu.crud.model.request.product.*;
+import com.thanhtu.crud.repository.*;
 import com.thanhtu.crud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +26,8 @@ public class ProductService_imp implements ProductService {
     CategoryRepository categoryRepo;
     @Autowired
     SupplierRepository supplierRepo;
+    @Autowired
+    ImageRepository imageRepo;
 
 
     @Override
@@ -61,9 +57,18 @@ public class ProductService_imp implements ProductService {
         }
         CategoryEntity categoryEntity=categoryRepo.getById(productRequest.getCategoryId());
         SupplierEntity supplierEntity=supplierRepo.getById(productRequest.getSupplierId());
-        ProductEntity product=ProductMapper.toProductEntity(productRequest,categoryEntity,supplierEntity);
-        ProductEntity productEntity=productRepo.save(product);
-        return ProductMapper.toProductDto(productEntity);
+        //save ProductEntity
+        ProductEntity newProduct=productRepo.save(ProductMapper.toProductEntity(productRequest,categoryEntity,supplierEntity));
+        //--save imageEntity
+        for(ProductImageRequest product:productRequest.getProductImage())
+        {
+            ImageEntity newImage=new ImageEntity();
+            newImage.setImage(product.getName());
+            newImage.setIsDelete("NO");
+            newImage.setProductEntity(newProduct);
+            imageRepo.save(newImage);
+        }
+        return null;
     }
 
     @Override
@@ -87,7 +92,16 @@ public class ProductService_imp implements ProductService {
         CategoryEntity categoryEntity=categoryRepo.getById(productRequest.getCategoryId());
         SupplierEntity supplierEntity=supplierRepo.getById(productRequest.getSupplierId());
         ProductEntity productEntity1=productRepo.save(ProductMapper.toUpdateProduct(productEntity,productRequest,categoryEntity,supplierEntity));
-        return ProductMapper.toProductDto(productEntity1);
+        //--save imageEntity
+        for(ProductImageRequest product:productRequest.getProductImage())
+        {
+            ImageEntity newImage=new ImageEntity();
+            newImage.setImage(product.getName());
+            newImage.setIsDelete("NO");
+            newImage.setProductEntity(productEntity1);
+            imageRepo.save(newImage);
+        }
+        return null;
     }
 
 

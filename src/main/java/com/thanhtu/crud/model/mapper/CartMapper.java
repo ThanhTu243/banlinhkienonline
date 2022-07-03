@@ -41,11 +41,11 @@ public class CartMapper {
         tmp.setQuantity(cart.getQuantity());
         tmp.setCost(Long.valueOf(tmp.getPriceAfterDiscount()* cart.getQuantity()));
         List<ProductImageDto> productImageDtoList=new ArrayList<>();
-        for(ProductImage productImage:product.getProductImageSet())
+        for(ImageEntity image:product.getImageEntities())
         {
             ProductImageDto productImageDto=new ProductImageDto();
-            productImageDto.setImageId(productImage.getImageEntity().getImageId());
-            productImageDto.setImage(productImage.getImageEntity().getImage());
+            productImageDto.setImageId(image.getImageId());
+            productImageDto.setImage(image.getImage());
             productImageDtoList.add(productImageDto);
         }
         tmp.setProductImageDtoSet(productImageDtoList);

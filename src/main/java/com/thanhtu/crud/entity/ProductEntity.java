@@ -26,9 +26,6 @@ public class ProductEntity {
     private String descriptionProduct;
     private String isDelete;
 
-    @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL)
-    @JsonBackReference
-    private Set<ProductImage> productImageSet;
     @ManyToOne
     @JoinColumn (name = "category_id", nullable = false,referencedColumnName = "category_id")
     @JsonBackReference
@@ -49,6 +46,10 @@ public class ProductEntity {
     @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<ReviewsEntity> reviewsEntities;
+
+    @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<ImageEntity> imageEntities;
 
 
 }

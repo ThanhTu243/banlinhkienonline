@@ -3,8 +3,10 @@ package com.thanhtu.crud.model.mapper;
 import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.model.dto.*;
 import com.thanhtu.crud.model.dto.fk.ProductFKDto;
+import com.thanhtu.crud.model.request.product.ProductImageRequest;
 import com.thanhtu.crud.model.request.product.ProductRequest;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -62,11 +64,11 @@ public class ProductMapper {
         tmp.setCategoryFKDto(CategoryMapper.toCategoryViewDto(productEntity.getCategoryEntity()));
         tmp.setSupplierFKDto(SupplierMapper.toSupplierViewDto(productEntity.getSupplierEntity()));
         List<ProductImageDto> productImageDtoList=new ArrayList<>();
-        for(ProductImage productImage:productEntity.getProductImageSet())
+        for(ImageEntity imageEntity:productEntity.getImageEntities())
         {
             ProductImageDto productImageDto=new ProductImageDto();
-            productImageDto.setImageId(productImage.getImageEntity().getImageId());
-            productImageDto.setImage(productImage.getImageEntity().getImage());
+            productImageDto.setImageId(imageEntity.getImageId());
+            productImageDto.setImage(imageEntity.getImage());
             productImageDtoList.add(productImageDto);
         }
         tmp.setProductImageSet(productImageDtoList);

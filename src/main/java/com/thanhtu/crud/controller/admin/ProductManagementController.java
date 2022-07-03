@@ -143,8 +143,8 @@ public class ProductManagementController {
         {
             return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.NOT_ACCEPTABLE);
         }
-        ProductDto productDto= productService.createProduct(productRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productDto);
+        ProductDto productDto=productService.createProduct(productRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(productDto);
     }
 
     @PutMapping("/{id}")

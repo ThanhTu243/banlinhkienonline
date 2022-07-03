@@ -87,27 +87,18 @@ CREATE TABLE PRODUCT
     is_delete VARCHAR(10),
     CONSTRAINT PR_isDeletePRODUCT_CHK CHECK (is_delete IN ('NO','YES')),
     CONSTRAINT PR_maPRODUCT_PK PRIMARY KEY(product_id),
-    CONSTRAINT PR_maCATEGORY_FK FOREIGN KEY (category_id) REFERENCES CATEGORY(category_id) ON DELETE CASCADE,
-    CONSTRAINT PR_maSUPPLIER_FK FOREIGN KEY (supplier_id) REFERENCES SUPPLIER(supplier_id) ON DELETE CASCADE
+    CONSTRAINT PR_maCATEGORY_FK FOREIGN KEY (category_id) REFERENCES CATEGORY(category_id) ,
+    CONSTRAINT PR_maSUPPLIER_FK FOREIGN KEY (supplier_id) REFERENCES SUPPLIER(supplier_id)
 );
 
 CREATE TABLE IMAGE(
                       image_id INT AUTO_INCREMENT,
                       image VARCHAR(500),
                       is_delete VARCHAR(10),
+                      product_id INT,
                       CONSTRAINT I_isDeleteIMAGE_CHK CHECK (is_delete IN ('NO','YES')),
-                      CONSTRAINT I_maIMAGE_PK PRIMARY KEY(image_id)
-);
-
-CREATE TABLE PRODUCTIMAGE(
-                             productimage_id INT AUTO_INCREMENT,
-                             product_id INT,
-                             image_id INT,
-                             is_delete VARCHAR(10),
-                             CONSTRAINT PI_isDeletePRODUCTIMAGE_CHK CHECK (is_delete IN ('NO','YES')),
-                             CONSTRAINT PI_maPRODUCTIMAGE_PK PRIMARY KEY(productimage_id),
-                             CONSTRAINT PI_maPRODUCT_FK FOREIGN KEY (product_id) REFERENCES PRODUCT(product_id) ON DELETE CASCADE,
-                             CONSTRAINT PI_maIMAGE_FK FOREIGN KEY (image_id) REFERENCES IMAGE(image_id) ON DELETE CASCADE
+                      CONSTRAINT I_maIMAGE_PK PRIMARY KEY(image_id),
+                      CONSTRAINT I_maPRODUCT_FK FOREIGN KEY (product_id) REFERENCES PRODUCT(product_id) ON DELETE CASCADE
 );
 
 CREATE TABLE CART
@@ -564,824 +555,552 @@ VALUES ( 5, 12, 'RAM laptop KINGSTON KCP432SS6/8 (1 x 8GB) DDR4 3200MHz', 100, 7
 -- IMAGES
 
 ------------------------------------------
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/QrJEfJ','NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/ejRBre', 'NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/P6Bbhi','NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/JCDxUm','NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/6qJgSA','NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/rL01II','NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/pNK7gy','NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/AbzTeF',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/9lI02c','NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/jcXXXb',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/r8EdhU','NO');
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/q25XbL', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/FVWYUk',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/MM23wQ', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/f3zD2o',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/SptA1I',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/fl7m7W',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/YXcaSr',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/PcOhwD',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/w5pPd1',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/p2tC9S',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/yh8rEU', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/C3arw5',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/pm4mfH',"NO");
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/QrJEfJ','NO',1);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/ejRBre','NO',1);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/P6Bbhi','NO',2);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/JCDxUm','NO',2);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/6qJgSA','NO',3);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/rL01II','NO',3);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/pNK7gy','NO',4);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/AbzTeF',"NO",4);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/9lI02c','NO',5);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/jcXXXb',"NO",5);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/r8EdhU','NO',6);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/q25XbL', "NO",6);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/FVWYUk',"NO",7);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/MM23wQ', "NO",7);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/f3zD2o',"NO",8);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/SptA1I',"NO",8);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/fl7m7W',"NO",9);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/YXcaSr',"NO",9);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/PcOhwD',"NO",10);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/w5pPd1',"NO",10);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/p2tC9S',"NO",11);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/yh8rEU', "NO",11);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/C3arw5',"NO",12);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/pm4mfH',"NO",12);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/QJiuh0',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/2DjKif',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/YntcSX',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/hLabbJ',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/8kbYAD',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/hI36wa', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/dwldjN',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/cFJJXs',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/zCYSYw',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/ltyR7v',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/cvyjAU',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/xa4Qey',"NO");
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/QJiuh0',"NO",13);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/2DjKif',"NO",13);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/YntcSX',"NO",14);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/hLabbJ',"NO",14);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/8kbYAD',"NO",15);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/hI36wa', "NO",15);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/dwldjN',"NO",16);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/cFJJXs',"NO",16);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/zCYSYw',"NO",17);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/ltyR7v',"NO",17);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/cvyjAU',"NO",18);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/xa4Qey',"NO",18);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/DnFgd9',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/1AxVab',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/mVN4iF',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/3QlgcH', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/oElsL8',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/RIvLEo',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/swU6bM',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/jz0Xos',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/bYX2AS',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/xrD1ND',"NO");
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/DnFgd9',"NO",19);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/1AxVab',"NO",19);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/mVN4iF',"NO",20);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/3QlgcH',"NO",20);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/oElsL8',"NO",21);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/RIvLEo',"NO",21);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/swU6bM',"NO",22);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/jz0Xos',"NO",22);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/bYX2AS',"NO",23);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/xrD1ND',"NO",23);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/2uhKty',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/ACia2v',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/3qPVXq',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/73G95C',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/jT7XSC',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/5Tc3XB', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/1BoTZT',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/BRAPak', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/qKDnhV',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Kw2k0K',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/05UwtH',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/tv7QDq', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/niZw4Q',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/uSMPhp',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/DiuzJv',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/vKrTDg',"NO");
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/2uhKty',"NO",24);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/ACia2v',"NO",24);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/3qPVXq',"NO",25);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/73G95C',"NO",25);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/jT7XSC',"NO",26);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/5Tc3XB', "NO",26);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/1BoTZT',"NO",27);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/BRAPak', "NO",27);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/qKDnhV',"NO",28);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/Kw2k0K',"NO",28);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/05UwtH',"NO",29);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/tv7QDq', "NO",29);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/niZw4Q',"NO",30);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/uSMPhp',"NO",30);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/DiuzJv',"NO",31);
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/vKrTDg',"NO",31);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/WuFMe5',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/AqBYU6',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/pRsBmB',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/VNOYCJ', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/1wBZOd',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/jaMTo8', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/bD6Vr5',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/uPqI3Q', "NO");
+INSERT INTO IMAGE (image,is_delete,product_id)
+VALUES ('https://bom.so/WuFMe5',"NO",32);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/AqBYU6',"NO",32);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/pRsBmB',"NO",33);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/VNOYCJ', "NO",33);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/1wBZOd',"NO",34);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/jaMTo8', "NO",34);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/bD6Vr5',"NO",35);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/uPqI3Q', "NO",35);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/ty1hJ4',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/dDM10I', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/VoZoys',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/7fUJ64',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/g5EYe1',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/PYPJwl',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Ef6NkX',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/spCcvC', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/lTp6jy',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/FcE1Ki',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/R06w33',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/cHH0HX', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/7ISsER',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/rOiZnz', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/oyEBsB',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/QSFFPV',"NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/ty1hJ4',"NO",36);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/dDM10I', "NO",36);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/VoZoys',"NO",37);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/7fUJ64',"NO",37);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/g5EYe1',"NO",38);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/PYPJwl',"NO",38);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Ef6NkX',"NO",39);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/spCcvC', "NO",39);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/lTp6jy',"NO",40);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/FcE1Ki',"NO",40);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/R06w33',"NO",41);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/cHH0HX', "NO",41);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/7ISsER',"NO",42);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/rOiZnz', "NO",42);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/oyEBsB',"NO",43);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/QSFFPV',"NO",43);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/r6JFhG',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/YbUsS6', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/EQ6ukW',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/85tteT',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/FvzSTk',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/D94s5G',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/xNU1gz',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/5HCSuB', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Hsryil',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/R1dWSj',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/2Abjfk',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/UrbHzW',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/gaOgM5',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/zQHJmn', "NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/r6JFhG',"NO",44);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/YbUsS6', "NO",44);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/EQ6ukW',"NO",45);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/85tteT',"NO",45);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/FvzSTk',"NO",46);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/D94s5G',"NO",46);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/xNU1gz',"NO",47);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/5HCSuB',"NO",47);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Hsryil',"NO",48);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/R1dWSj',"NO",48);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/2Abjfk',"NO",49);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/UrbHzW',"NO",49);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/gaOgM5',"NO",50);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/zQHJmn', "NO",50);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/AM8PwN',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/sKZkjo',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/WZzxJW',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/dtQmMs',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/DGI5lg',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/3ple8B', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/GW7Qa3',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/vcvA2w',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/gis23h',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/RZ0F8X',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/NWWynG',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/CXrOGA', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/yRDbs8',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/QGQiwp', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/p5VaIC',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/c6GKmd',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/suCSvw',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/tK824r',"NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/AM8PwN',"NO",51);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/sKZkjo',"NO",51);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/WZzxJW',"NO",52);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/dtQmMs',"NO",52);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/DGI5lg',"NO",53);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/3ple8B',"NO",53);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/GW7Qa3',"NO",54);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/vcvA2w',"NO",54);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/gis23h',"NO",55);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/RZ0F8X',"NO",55);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/NWWynG',"NO",56);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/CXrOGA',"NO",56);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/yRDbs8',"NO",57);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/QGQiwp',"NO",57);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/p5VaIC',"NO",58);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/c6GKmd',"NO",58);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/suCSvw',"NO",59);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/tK824r',"NO",59);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Df35xb',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/M80qqJ',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/LZK2sm',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/cfXpYq',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/wNaIKw',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/F8N2It',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Tjpgoy',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/tyJt3f',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/YXSv3d',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/QfBip7', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/yxWsZT',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/N2aB0C', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Vy92ZK',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/K3XZEg', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Bnb9Hz',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/XTkzaD', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/tVaa2i',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/EiyIO6', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/DZvRs5',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/sjS3kH',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/RdzhXN',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/tCmAti',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/K5ARbu',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iaTIF7',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/7gopPs',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/9RX6Dd',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/HVwagD',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/XOSsQn',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/ZVgtXt',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/LUuYIA', "NO");
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/WE6FaV',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Ecp1E1',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/gCadB2',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/LnUVJV',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/MAtjQe',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/P4Pc2s', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iQM8XL',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/KzWXio',"NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Df35xb',"NO",60);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/M80qqJ',"NO",60);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/LZK2sm',"NO",61);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/cfXpYq',"NO",61);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/wNaIKw',"NO",62);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/F8N2It',"NO",62);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Tjpgoy',"NO",63);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/tyJt3f',"NO",63);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/YXSv3d',"NO",64);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/QfBip7',"NO",64);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/yxWsZT',"NO",65);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/N2aB0C',"NO",65);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Vy92ZK',"NO",66);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/K3XZEg',"NO",66);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Bnb9Hz',"NO",67);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/XTkzaD',"NO",67);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/tVaa2i',"NO",68);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/EiyIO6',"NO",68);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/DZvRs5',"NO",69);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/sjS3kH',"NO",69);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/RdzhXN',"NO",70);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/tCmAti',"NO",70);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/K5ARbu',"NO",71);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iaTIF7',"NO",71);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/7gopPs',"NO",72);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/9RX6Dd',"NO",72);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/HVwagD',"NO",73);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/XOSsQn',"NO",73);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/ZVgtXt',"NO",74);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/LUuYIA',"NO",74);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/lyXjwh',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/wIVnLe',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/GOfRCs',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/GOfRCs',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Mhk7lJ',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/M1WBxq', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/mMQZ3l',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/k6Opdx', "NO");
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/4mZy9u',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/5MeBmI',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/YpqqRT',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/1um9p9',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/pofSru',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/3tVX0j',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/9cc67K',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/VMSCcY',"NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/WE6FaV',"NO",75);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Ecp1E1',"NO",75);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/gCadB2',"NO",76);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/LnUVJV',"NO",76);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/MAtjQe',"NO",77);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/P4Pc2s',"NO",77);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iQM8XL',"NO",78);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/KzWXio',"NO",78);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/lyXjwh',"NO",79);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/wIVnLe',"NO",79);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/GOfRCs',"NO",80);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/GOfRCs',"NO",80);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Mhk7lJ',"NO",81);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/M1WBxq',"NO",81);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/mMQZ3l',"NO",82);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/k6Opdx',"NO",82);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/4mZy9u',"NO",83);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/5MeBmI',"NO",83);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/YpqqRT',"NO",84);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/1um9p9',"NO",84);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/pofSru',"NO",85);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/3tVX0j',"NO",85);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/9cc67K',"NO",86);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/VMSCcY',"NO",86);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/0AXsER',"NO",87);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/2A9cbP',"NO",87);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/o2zQHP',"NO",88);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/xR6npD',"NO",88);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/55qibj',"NO",89);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/tYhatI',"NO",89);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/0AXsER',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/2A9cbP',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/o2zQHP',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/xR6npD',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/55qibj',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/tYhatI',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/ILIkKK',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/45LsmV',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/gmqLgs',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/ipIcSv',"NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/ILIkKK',"NO",90);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/45LsmV',"NO",90);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/gmqLgs',"NO",91);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/ipIcSv',"NO",91);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iQkuRs',"NO",92);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/WI35Pn',"NO",92);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/4PdrXV',"NO",93);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/CCbYAf',"NO",93);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/25qpct',"NO",94);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/QrWJtb',"NO",94);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/7QATbz',"NO",95);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/3fyylX',"NO",95);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/zFqPfo',"NO",96);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/DRgLpB',"NO",96);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/1bGtyf',"NO",97);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iouZwp',"NO",97);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/nh4wBH',"NO",98);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/EPHj2p',"NO",98);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/PNEahF',"NO",99);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/PNEahF',"NO",99);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iQkuRs',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/WI35Pn',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/4PdrXV',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/CCbYAf',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/25qpct',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/QrWJtb',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/7QATbz',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/3fyylX',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/zFqPfo',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/DRgLpB', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/1bGtyf',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iouZwp', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/nh4wBH',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/EPHj2p',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/PNEahF',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/PNEahF',"NO");
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/b1NcAm',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/4gYbWQ',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/b1NcAm',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/4gYbWQ',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/4v1e7h',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/voaUiA',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/pQB48V',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/kXaq4M',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/YOiCzr',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/I8dF9R',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/uuV79B',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/6saHgN',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/C3WfWt',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Fa0pTW',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/C3WfWt',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Fa0pTW',"NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/b1NcAm',"NO",100);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/4gYbWQ',"NO",100);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/b1NcAm',"NO",101);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/4gYbWQ',"NO",101);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/4v1e7h',"NO",102);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/voaUiA',"NO",102);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/pQB48V',"NO",103);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/kXaq4M',"NO",103);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/YOiCzr',"NO",104);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/I8dF9R',"NO",104);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/uuV79B',"NO",105);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/6saHgN',"NO",105);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/C3WfWt',"NO",106);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Fa0pTW',"NO",106);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/C3WfWt',"NO",107);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Fa0pTW',"NO",107);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/H6eKl5',"NO",108);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/yetk2m',"NO",108);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/H6eKl5',"NO",109);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/yetk2m',"NO",109);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/H6eKl5',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/yetk2m', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/H6eKl5',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/yetk2m',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/H6eKl5',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/yetk2m',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/GYjxmh',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/QAD9Wf',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/GYjxmh',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/QAD9Wf',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/sL5wjy',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/BDKG1k',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/sL5wjy',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/BDKG1k',"NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/H6eKl5',"NO",110);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/yetk2m',"NO",110);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/GYjxmh',"NO",111);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/QAD9Wf',"NO",111);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/GYjxmh',"NO",112);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/QAD9Wf',"NO",112);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/sL5wjy',"NO",113);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/BDKG1k',"NO",113);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/sL5wjy',"NO",114);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/BDKG1k',"NO",114);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/gVNC31',"NO",115);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iI0ZAW',"NO",115);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/gVNC31',"NO",116);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iI0ZAW',"NO",116);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/gVNC31',"NO",117);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iI0ZAW',"NO",117);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/gVNC31',"NO",118);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iI0ZAW',"NO",118);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/wUf5ki',"NO",119);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/MyaCar',"NO",119);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/wUf5ki',"NO",120);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/MyaCar',"NO",120);
 
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/gVNC31',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iI0ZAW',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/gVNC31',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iI0ZAW',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/gVNC31',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iI0ZAW',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/gVNC31',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iI0ZAW',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/wUf5ki',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/MyaCar',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/wUf5ki',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/MyaCar',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/Szjt1D',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/5gmhB3',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/s0Cm59',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/5gmhB3',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/5gmhB3',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/5gmhB3',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/KmSpsd',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/5gmhB3',"NO");
-
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/9RBHeq',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/XbfiXD',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/kRLoAu',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/TnpbE4', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/iSmvNc',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/A7BZ7d',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/eHEE5t',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/A7BZ7d',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/eHEE5t',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/A7BZ7d',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/DFtgJQ',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/IiPbb4',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/yBrmKH',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/IiPbb4', "NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/yBrmKH',"NO");
-INSERT INTO IMAGE (image,is_delete)
-VALUES ('https://bom.so/IiPbb4',"NO");
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/Szjt1D',"NO",121);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/5gmhB3',"NO",121);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/s0Cm59',"NO",122);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/5gmhB3',"NO",122);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/5gmhB3',"NO",123);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/5gmhB3',"NO",123);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/KmSpsd',"NO",124);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/5gmhB3',"NO",124);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/9RBHeq',"NO",125);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/XbfiXD',"NO",125);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/kRLoAu',"NO",126);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/TnpbE4', "NO",126);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/iSmvNc',"NO",127);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/A7BZ7d',"NO",127);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/eHEE5t',"NO",128);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/A7BZ7d',"NO",128);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/eHEE5t',"NO",129);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/A7BZ7d',"NO",129);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/DFtgJQ',"NO",130);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/IiPbb4',"NO",130);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/yBrmKH',"NO",131);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/IiPbb4', "NO",131);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/yBrmKH',"NO",132);
+INSERT INTO IMAGE (image,is_delete, product_id)
+VALUES ('https://bom.so/IiPbb4',"NO",132);
 
 ------------------------------------------------------------------
--- PRODUCTIMAGE
-
-
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (1,1,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (1,2,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (2,3,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (2,4,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (3,5,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (3,6,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (4,7,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (4,8,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (5,9,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (5,10,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (6,11,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (6,12,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (7,13,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (7,14,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (8,15,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (8,16,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (9,17,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (9,18,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (10,19,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (10,20,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (11,21,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (11,22,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (12,23,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (12,24,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (13,25,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (13,26,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (14,27,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (14,28,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (15,29,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (15,30,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (16,31,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (16,32,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (17,33,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (17,34,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (18,35,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (18,36,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (19,37,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (19,38,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (20,39,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (20,40,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (21,41,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (21,42,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (22,43,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (22,44,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (23,45,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (23,46,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (24,47,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (24,48,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (25,49,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (25,50,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (26,51,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (26,52,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (27,53,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (27,54,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (28,55,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (28,56,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (29,57,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (29,58,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (30,59,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (30,60,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (31,61,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (31,62,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (32,63,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (32,64,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (33,65,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (33,66,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (34,67,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (34,68,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (35,69,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (35,70,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (36,71,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (36,72,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (37,73,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (37,74,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (38,75,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (38,76,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (39,77,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (39,78,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (40,79,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (40,80,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (41,81,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (41,82,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (42,83,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (42,84,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (43,85,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (43,86,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (44,87,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (44,88,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (45,89,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (45,90,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (46,91,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (46,92,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (47,93,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (47,94,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (48,95,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (48,96,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (49,97,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (49,98,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (50,99,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (50,100,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (51,101,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (51,102,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (52,103,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (52,104,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (53,105,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (53,106,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (54,107,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (54,108,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (55,109,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (55,110,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (56,111,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (56,112,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (57,113,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (57,114,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (58,115,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (58,116,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (59,117,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (59,118,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (60,119,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (60,120,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (61,121,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (61,122,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (62,123,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (62,124,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (63,125,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (63,126,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (64,127,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (64,128,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (65,129,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (65,130,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (66,131,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (66,132,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (67,133,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (67,134,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (68,135,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (68,136,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (69,137,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (69,138,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (70,139,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (70,140,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (71,141,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (71,142,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (72,143,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (72,144,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (73,145,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (73,146,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (74,147,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (74,148,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (75,149,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (75,150,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (76,151,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (76,152,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (77,153,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (77,154,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (78,155,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (78,156,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (79,157,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (79,158,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (80,159,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (80,160,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (81,161,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (81,162,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (82,163,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (82,164,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (83,165,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (83,166,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (84,167,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (84,168,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (85,169,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (85,170,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (86,171,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (86,172,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (87,173,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (87,174,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (88,175,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (88,176,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (89,177,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (89,178,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (90,179,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (90,180,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (91,181,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (91,182,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (92,183,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (92,184,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (93,185,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (93,186,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (94,187,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (94,188,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (95,189,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (95,190,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (96,191,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (96,192,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (97,193,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (97,194,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (98,195,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (98,196,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (99,197,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (99,198,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (100,199,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (100,200,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (101,201,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (101,202,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (102,203,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (102,204,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (103,205,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (103,206,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (104,207,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (104,208,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (105,209,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (105,210,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (106,211,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (106,212,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (107,213,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (107,214,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (108,215,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (108,216,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (109,217,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (109,218,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (110,219,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (110,220,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (111,221,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (111,222,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (112,223,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (112,224,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (113,225,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (113,226,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (114,227,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (114,228,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (115,229,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (115,230,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (116,231,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (116,232,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (117,233,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (117,234,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (118,235,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (118,236,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (119,237,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (119,238,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (120,239,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (120,240,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (121,241,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (121,242,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (122,243,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (122,244,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (123,245,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (123,246,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (124,247,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (124,248,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (125,249,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (125,250,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (126,251,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (126,252,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (127,253,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (127,254,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (128,255,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (128,256,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (129,257,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (129,258,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (130,259,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (130,260,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (131,261,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (131,262,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (132,263,"NO");
-INSERT INTO PRODUCTIMAGE (product_id,image_id,is_delete) VALUES (132,264,"NO");
-
-
-
-
 
 -- ORDERS
 
