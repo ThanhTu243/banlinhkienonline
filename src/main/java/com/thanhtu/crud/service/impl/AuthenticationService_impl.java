@@ -74,8 +74,7 @@ public class AuthenticationService_impl implements AuthenticationService {
             }
         }
         AccountsEntity accountRegister = new AccountsEntity();
-        String[] listoken=request.getGmail().trim().split("[@]");
-        accountRegister.setUsername(listoken[0]);
+        accountRegister.setUsername(request.getGmail());
         accountRegister.setPasswords(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt(12)));
         accountRegister.setGmail(request.getGmail());
         accountRegister.setActivationCode(UUID.randomUUID().toString());
@@ -86,7 +85,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         accountsRepo.save(accountRegister);
 
         CustomerEntity customerRegister=new CustomerEntity();
-        customerRegister.setUserCustomer(listoken[0]);
+        customerRegister.setUserCustomer(request.getGmail());
         customerRegister.setFirstnameCustomer(request.getFirstname());
         customerRegister.setLastnameCustomer(request.getLastname());
         customerRegister.setAddress(request.getAddress());
@@ -160,8 +159,7 @@ public class AuthenticationService_impl implements AuthenticationService {
     @Override
     public AccountsEntity registerOauth2User(String provider, OAuth2UserInfo oAuth2UserInfo) {
         AccountsEntity account = new AccountsEntity();
-        String[] listoken=oAuth2UserInfo.getEmail().trim().split("[@]");
-        account.setUsername(listoken[0]);
+        account.setUsername(oAuth2UserInfo.getEmail());
         account.setGmail(oAuth2UserInfo.getEmail());
         account.setFirstname(oAuth2UserInfo.getFirstName());
         account.setLastname(oAuth2UserInfo.getLastName());
@@ -171,7 +169,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         accountsRepo.save(account);
 
         CustomerEntity customerRegister=new CustomerEntity();
-        customerRegister.setUserCustomer(listoken[0]);
+        customerRegister.setUserCustomer(oAuth2UserInfo.getEmail());
         customerRegister.setFirstnameCustomer(oAuth2UserInfo.getFirstName());
         customerRegister.setLastnameCustomer(oAuth2UserInfo.getLastName());
         customerRegister.setGmailCustomer(oAuth2UserInfo.getEmail());
@@ -182,9 +180,6 @@ public class AuthenticationService_impl implements AuthenticationService {
 
     @Override
     public AccountsEntity updateOauth2User(AccountsEntity accounts, String provider, OAuth2UserInfo oAuth2UserInfo) {
-        accounts.setFirstname(oAuth2UserInfo.getFirstName());
-        accounts.setLastname(oAuth2UserInfo.getLastName());
-        accounts.setProvider(AuthProvider.valueOf(provider.toUpperCase()).toString());
-        return accountsRepo.save(accounts);
+        return accounts;
     }
 }

@@ -44,8 +44,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String customerId=customer.getCustomerId().toString();
         String Id=account.getAccountId().toString();
         String username=account.getUsername();
+        String provider=account.getProvider();
         String uri = UriComponentsBuilder.fromUriString("http://" + hostname + "/oauth2/redirect")
-                .queryParam("token", token).queryParam("id",Id).queryParam("customerId",customerId).queryParam("image",image).queryParam("username",username).queryParam("userRoles","CUSTOMER")
+                .queryParam("token", token).queryParam("id",Id).queryParam("customerId",customerId).queryParam("image",image).queryParam("username",username).queryParam("userRoles","CUSTOMER").queryParam("provider",provider)
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }

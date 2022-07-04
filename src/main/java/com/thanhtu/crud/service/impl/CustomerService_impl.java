@@ -3,6 +3,7 @@ package com.thanhtu.crud.service.impl;
 import com.thanhtu.crud.entity.*;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.CustomerDto;
+import com.thanhtu.crud.model.dto.ProfileDto;
 import com.thanhtu.crud.model.mapper.CustomerMapper;
 import com.thanhtu.crud.model.request.CustomerRequest;
 import com.thanhtu.crud.model.request.ProfileRequest;
@@ -34,6 +35,17 @@ public class CustomerService_impl implements CustomerService {
         }
 
         return customer;
+    }
+
+    @Override
+    public ProfileDto getCustomerById(int customerId, int accountId) {
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(customerId,"NO");
+        if(customer==null)
+        {
+            throw new NotFoundException("Không tồn tại khách hàng với id: "+customerId);
+        }
+        AccountsEntity accounts=accountsRepo.findAccountsEntitiesByAccountId(accountId);
+        return CustomerMapper.toProfileDto(customer,accounts.getProvider());
     }
 
     @Override

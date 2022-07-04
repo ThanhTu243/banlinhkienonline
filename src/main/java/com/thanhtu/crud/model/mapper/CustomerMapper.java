@@ -2,10 +2,7 @@ package com.thanhtu.crud.model.mapper;
 
 import com.thanhtu.crud.entity.CustomerEntity;
 import com.thanhtu.crud.entity.ProductEntity;
-import com.thanhtu.crud.model.dto.CustomerDto;
-import com.thanhtu.crud.model.dto.CustomerPageDto;
-import com.thanhtu.crud.model.dto.ProductDto;
-import com.thanhtu.crud.model.dto.ProductPageDto;
+import com.thanhtu.crud.model.dto.*;
 import com.thanhtu.crud.model.dto.fk.CustomerFKDto;
 import com.thanhtu.crud.model.request.CustomerRequest;
 import com.thanhtu.crud.model.request.ProfileRequest;
@@ -26,6 +23,21 @@ public class CustomerMapper {
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
         tmp.setImage(customerEntity.getImageCustomer());
+        return tmp;
+    }
+
+    public static ProfileDto toProfileDto(CustomerEntity customerEntity,String provider)
+    {
+        ProfileDto tmp = new ProfileDto();
+        tmp.setUserCustomer(customerEntity.getUserCustomer());
+        tmp.setAddress(customerEntity.getAddress());
+        tmp.setCustomerId(customerEntity.getCustomerId());
+        tmp.setFirstName(customerEntity.getFirstnameCustomer());
+        tmp.setLastName(customerEntity.getLastnameCustomer());
+        tmp.setGmailCustomer(customerEntity.getGmailCustomer());
+        tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
+        tmp.setImage(customerEntity.getImageCustomer());
+        tmp.setProvider(provider);
         return tmp;
     }
     public static CustomerFKDto toCustomerFKDto(CustomerEntity customerEntity)

@@ -24,7 +24,7 @@ CREATE TABLE ACCOUNTS (
 );
 CREATE TABLE CUSTOMER(
                          customer_id INT AUTO_INCREMENT,
-                         user_customer VARCHAR(50) UNIQUE,
+                         user_customer VARCHAR(150) UNIQUE,
                          firstname_customer NVARCHAR(50),
                          lastname_customer NVARCHAR(50),
                          image_customer NVARCHAR(500),

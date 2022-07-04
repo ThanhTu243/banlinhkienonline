@@ -2,6 +2,7 @@ package com.thanhtu.crud.controller.customer;
 
 import com.thanhtu.crud.entity.CustomerEntity;
 import com.thanhtu.crud.exception.InputFieldException;
+import com.thanhtu.crud.model.dto.ProfileDto;
 import com.thanhtu.crud.model.mapper.CustomerMapper;
 import com.thanhtu.crud.model.request.PasswordAccountRequest;
 import com.thanhtu.crud.model.request.ProfileRequest;
@@ -28,8 +29,9 @@ public class AccountController {
 
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(@RequestParam("customerId") String customerId) {
-        return ResponseEntity.ok(CustomerMapper.toCustomerDto(customerService.getCustomerById(Integer.valueOf(customerId))));
+    public ResponseEntity<?> getProfile(@RequestParam("customerId") String customerId,@RequestParam("accountId") String accountId) {
+        ProfileDto profileDto=customerService.getCustomerById(Integer.valueOf(customerId),Integer.valueOf(accountId));
+        return ResponseEntity.ok(profileDto);
     }
 
     @PutMapping("/profile")

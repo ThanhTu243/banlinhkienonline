@@ -33,7 +33,9 @@ public class AuthenticationController {
     private final AuthenticationMapper authenticationMapper;
 
     @GetMapping("/oauth/google")
-    public ResponseEntity<?> loginGoogle(@RequestParam("id") String id,@RequestParam("customerId") String customerId) {
+    public ResponseEntity<?> loginGoogle(@RequestParam("id") String id,@RequestParam("customerId") String customerId,@RequestParam("provider") String provider) {
+        if(provider.equals("LOCAL"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tài khoản đã tồn tại");
         return ResponseEntity.ok("Đăng nhập thành công");
     }
 
