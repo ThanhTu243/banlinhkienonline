@@ -21,7 +21,8 @@ public class CustomerMapper {
         tmp.setUserCustomer(customerEntity.getUserCustomer());
         tmp.setAddress(customerEntity.getAddress());
         tmp.setCustomerId(customerEntity.getCustomerId());
-        tmp.setFullnameCustomer(customerEntity.getFirstnameCustomer()+customerEntity.getLastnameCustomer());
+        tmp.setFirstName(customerEntity.getFirstnameCustomer());
+        tmp.setLastName(customerEntity.getLastnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
         tmp.setImage(customerEntity.getImageCustomer());
@@ -33,7 +34,8 @@ public class CustomerMapper {
         CustomerFKDto tmp=new CustomerFKDto();
         tmp.setCustomerId(customerEntity.getCustomerId());
         tmp.setUserCustomer(customerEntity.getUserCustomer());
-        tmp.setFullnameCustomer(customerEntity.getFirstnameCustomer()+" "+customerEntity.getLastnameCustomer());
+        tmp.setFirstName(customerEntity.getFirstnameCustomer());
+        tmp.setLastName(customerEntity.getLastnameCustomer());
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
         tmp.setImage(customerEntity.getImageCustomer());

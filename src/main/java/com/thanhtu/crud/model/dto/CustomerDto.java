@@ -16,7 +16,8 @@ import java.util.Set;
 public class CustomerDto {
     private Integer customerId;
     private String userCustomer;
-    private String fullnameCustomer;
+    private String firstName;
+    private String lastName;
     private String address;
     private String gmailCustomer;
     private String phoneNumberCustomer;
