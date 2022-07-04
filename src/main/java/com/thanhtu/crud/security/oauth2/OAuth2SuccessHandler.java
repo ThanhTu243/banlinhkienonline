@@ -1,5 +1,7 @@
 package com.thanhtu.crud.security.oauth2;
 
+import com.thanhtu.crud.entity.AccountsEntity;
+import com.thanhtu.crud.entity.CustomerEntity;
 import com.thanhtu.crud.repository.AccountsRepository;
 import com.thanhtu.crud.repository.CustomerRepository;
 import com.thanhtu.crud.security.JwtProvider;
@@ -37,10 +39,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String email = (String) oAuth2User.getAttributes().get("email");
         String image=(String) oAuth2User.getAttributes().get("picture");
         String token = jwtProvider.createToken(email, "CUSTOMER");
-        String customerId=customerRepository.findCustomerEntitiesByGmailCustomerAndIsDelete(email,"NO").getCustomerId().toString();
-        String Id=accountsRepository.findAccountsEntitiesByGmail(email).getAccountId().toString();
+        CustomerEntity customer=customerRepository.findCustomerEntitiesByGmailCustomerAndIsDelete(email,"NO");
+        AccountsEntity account=accountsRepository.findAccountsEntitiesByGmail(email);;
+        String customerId=customer.getCustomerId().toString();
+        String Id=account.getAccountId().toString();
+        String username=account.getUsername();
         String uri = UriComponentsBuilder.fromUriString("http://" + hostname + "/oauth2/redirect")
-                .queryParam("token", token).queryParam("id",Id).queryParam("customerId",customerId).queryParam("image",image).queryParam("userRoles","CUSTOMER")
+                .queryParam("token", token).queryParam("id",Id).queryParam("customerId",customerId).queryParam("image",image).queryParam("username",username).queryParam("userRoles","CUSTOMER")
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }

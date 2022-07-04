@@ -74,7 +74,8 @@ public class AuthenticationService_impl implements AuthenticationService {
             }
         }
         AccountsEntity accountRegister = new AccountsEntity();
-        accountRegister.setUsername(request.getGmail());
+        String[] listoken=request.getGmail().trim().split("[@]");
+        accountRegister.setUsername(listoken[0]);
         accountRegister.setPasswords(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt(12)));
         accountRegister.setGmail(request.getGmail());
         accountRegister.setActivationCode(UUID.randomUUID().toString());
@@ -85,7 +86,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         accountsRepo.save(accountRegister);
 
         CustomerEntity customerRegister=new CustomerEntity();
-        customerRegister.setUserCustomer(request.getGmail());
+        customerRegister.setUserCustomer(listoken[0]);
         customerRegister.setFirstnameCustomer(request.getFirstname());
         customerRegister.setLastnameCustomer(request.getLastname());
         customerRegister.setAddress(request.getAddress());
@@ -159,7 +160,8 @@ public class AuthenticationService_impl implements AuthenticationService {
     @Override
     public AccountsEntity registerOauth2User(String provider, OAuth2UserInfo oAuth2UserInfo) {
         AccountsEntity account = new AccountsEntity();
-        account.setUsername(oAuth2UserInfo.getEmail());
+        String[] listoken=oAuth2UserInfo.getEmail().trim().split("[@]");
+        account.setUsername(listoken[0]);
         account.setGmail(oAuth2UserInfo.getEmail());
         account.setFirstname(oAuth2UserInfo.getFirstName());
         account.setLastname(oAuth2UserInfo.getLastName());
@@ -169,7 +171,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         accountsRepo.save(account);
 
         CustomerEntity customerRegister=new CustomerEntity();
-        customerRegister.setUserCustomer(oAuth2UserInfo.getEmail());
+        customerRegister.setUserCustomer(listoken[0]);
         customerRegister.setFirstnameCustomer(oAuth2UserInfo.getFirstName());
         customerRegister.setLastnameCustomer(oAuth2UserInfo.getLastName());
         customerRegister.setGmailCustomer(oAuth2UserInfo.getEmail());
