@@ -27,7 +27,7 @@ CREATE TABLE CUSTOMER(
                          user_customer VARCHAR(50) UNIQUE,
                          firstname_customer NVARCHAR(50),
                          lastname_customer NVARCHAR(50),
-                         image_customer NVARCHAR(100),
+                         image_customer NVARCHAR(500),
                          address NVARCHAR(50),
                          gmail_customer VARCHAR(50) UNIQUE,
                          phonenumber_customer VARCHAR(50) UNIQUE,

@@ -39,6 +39,7 @@ public class CustomerMapper {
         tmp.setGmailCustomer(customerEntity.getGmailCustomer());
         tmp.setPhoneNumberCustomer(customerEntity.getPhonenumberCustomer());
         tmp.setImage(customerEntity.getImageCustomer());
+        tmp.setAddress(customerEntity.getAddress());
         return tmp;
     }
     public static CustomerPageDto toCustomerPageDto(List<CustomerEntity> customerList, int totalPage, int currentPage)
@@ -67,7 +68,7 @@ public class CustomerMapper {
         customer.setPhonenumberCustomer(request.getPhoneNumber());
         customer.setFirstnameCustomer(request.getFirstName());
         customer.setLastnameCustomer(request.getLastName());
-        customer.setAddress(request.getEmail());
+        customer.setAddress(request.getAddress());
         customer.setImageCustomer(request.getImage());
         customer.setGmailCustomer(request.getEmail());
         return customer;
