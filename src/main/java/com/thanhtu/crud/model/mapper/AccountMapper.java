@@ -16,6 +16,7 @@ public class AccountMapper {
         accounts.setGmail(request.getEmail());
         accounts.setLastname(request.getLastName());
         accounts.setFirstname(request.getFirstName());
+        accounts.setAddress(request.getAddress());
         return accounts;
     }
     public static AccountsDto toAccountsDto(AccountsEntity account)

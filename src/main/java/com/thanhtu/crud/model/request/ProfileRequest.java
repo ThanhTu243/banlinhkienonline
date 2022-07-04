@@ -12,4 +12,5 @@ public class ProfileRequest {
     private String image;
     private String email;
     private String phoneNumber;
+    private String address;
 }
