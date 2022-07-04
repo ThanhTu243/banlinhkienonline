@@ -38,6 +38,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         AccountsEntity account = accountsRepo.findAccountsEntitiesByUsernameAndRoles(username,role);
         String id="";
         String customerId="";
+        String imageLink="";
         if(role.equals("ADMIN"))
         {
             id=account.getAccountId().toString();
@@ -46,6 +47,7 @@ public class AuthenticationService_impl implements AuthenticationService {
             CustomerEntity customer=customerRepo.findCustomerEntityByUserCustomer(username);
             id=account.getAccountId().toString();
             customerId=customer.getCustomerId().toString();
+            imageLink=customer.getImageCustomer();
         }
 
         String userRole = account.getRoles().toString();
@@ -57,6 +59,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         response.put("username", username);
         response.put("token", token);
         response.put("userRole", userRole);
+        response.put("imageLink",imageLink);
         return response;
     }
 

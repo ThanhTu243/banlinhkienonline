@@ -9,4 +9,5 @@ public class AuthenticationResponse {
     private String username;
     private String token;
     private String userRole;
+    private String imageLink;
 }
