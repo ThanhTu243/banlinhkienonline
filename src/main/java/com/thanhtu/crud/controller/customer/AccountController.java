@@ -28,7 +28,7 @@ public class AccountController {
 
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(@RequestParam("customerId") String customerId, BindingResult bindingResult) {
+    public ResponseEntity<?> getProfile(@RequestParam("customerId") String customerId) {
         return ResponseEntity.ok(CustomerMapper.toCustomerDto(customerService.getCustomerById(Integer.valueOf(customerId))));
     }
 
