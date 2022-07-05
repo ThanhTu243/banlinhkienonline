@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -193,6 +194,84 @@ public class ProductManagementController {
             currentPage=list.getNumber()+1;
         }
         List<ProductEntity> listPro=list.toList();
+        return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toProductPageDto(listPro,totalPages,currentPage));
+    }
+    @GetMapping("/search")
+    public ResponseEntity<Object> getListProduct(@RequestParam(value = "page",required = false) Optional<Integer> page,
+                                                 @RequestParam(value = "keyword",required = false) String keyword,
+                                                 @RequestParam(value="supplier",required = false) String supplier,
+                                                 @RequestParam(value = "category",required = false) String category)
+    {
+        if(page.isPresent())
+        {
+            int pageNumber= page.get();
+            page=Optional.of(pageNumber-1);
+
+        }
+        else{
+            page=Optional.of(0);
+        }
+        Pageable pageable= PageRequest.of(page.get(),12);
+        int totalPages=0;
+        int currentPage=0;
+        List<ProductEntity> listPro=new ArrayList<ProductEntity>();
+        if(category!=null && supplier==null && keyword ==null)
+        {
+            Page<ProductEntity> productByCategoryList=productService.getListProductByCategoryName(category,pageable);
+            totalPages=productByCategoryList.getTotalPages();
+            currentPage=productByCategoryList.getNumber()+1;
+            listPro=productByCategoryList.toList();
+        }
+        else if(category ==null && supplier!=null && keyword==null)
+        {
+            Page<ProductEntity> productBySupplierList=productService.getListProductBySupplierName(supplier,pageable);
+            totalPages=productBySupplierList.getTotalPages();
+            currentPage=productBySupplierList.getNumber()+1;
+            listPro=productBySupplierList.toList();
+        }
+        else if(category ==null && supplier==null && keyword != null)
+        {
+            Page<ProductEntity> productByKeyWordList=productService.getListProductByKeyWord1(keyword,pageable);
+            totalPages=productByKeyWordList.getTotalPages();
+            currentPage=productByKeyWordList.getNumber()+1;
+            listPro=productByKeyWordList.toList();
+        }
+        else if(category !=null && supplier==null && keyword != null)
+        {
+            Page<ProductEntity> productByKeyWordAndCategoryList=productService.getListProductByKeyWordAndCategory(keyword,category,pageable);
+            totalPages=productByKeyWordAndCategoryList.getTotalPages();
+            currentPage=productByKeyWordAndCategoryList.getNumber()+1;
+            listPro=productByKeyWordAndCategoryList.toList();
+        }
+        else if(category ==null && supplier!=null && keyword != null)
+        {
+            Page<ProductEntity> productByKeyWordAndSupplierList=productService.getListProductByKeyWordAndSupplier(keyword,supplier,pageable);
+            totalPages=productByKeyWordAndSupplierList.getTotalPages();
+            currentPage=productByKeyWordAndSupplierList.getNumber()+1;
+            listPro=productByKeyWordAndSupplierList.toList();
+        }
+        else if(category !=null && supplier!=null && keyword == null)
+        {
+            Page<ProductEntity> productByCategoryAndSupplierList=productService.getListProductByCategoryAndSupplier(category,supplier,pageable);
+            totalPages=productByCategoryAndSupplierList.getTotalPages();
+            currentPage=productByCategoryAndSupplierList.getNumber()+1;
+            listPro=productByCategoryAndSupplierList.toList();
+        }
+        else if(category ==null && supplier ==null && keyword == null)
+        {
+            Page<ProductEntity> productAllList=productService.getListProduct(pageable);
+            totalPages=productAllList.getTotalPages();
+            currentPage=productAllList.getNumber()+1;
+            listPro=productAllList.toList();
+        }
+        else if(category !=null && supplier !=null && keyword != null)
+        {
+            Page<ProductEntity> productByCategoryAndSupplierAndKeyword=productService.getListProductByCategoryAndSupplierAndKeyword(category,supplier,keyword,pageable);
+            totalPages=productByCategoryAndSupplierAndKeyword.getTotalPages();
+            currentPage=productByCategoryAndSupplierAndKeyword.getNumber()+1;
+            listPro=productByCategoryAndSupplierAndKeyword.toList();
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toProductPageDto(listPro,totalPages,currentPage));
     }
 }
