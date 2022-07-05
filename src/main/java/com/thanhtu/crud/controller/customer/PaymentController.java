@@ -343,6 +343,7 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.OK).body("Thanh toán thành công");
         }
         else{
+            ordersService.cancelOrder(orderId);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thanh toán thất bại");
         }
     }
@@ -355,6 +356,7 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.OK).body("Thanh toán thành công");
         }
         else{
+            ordersService.cancelOrder(orderId);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thanh toán thất bại");
         }
     }
