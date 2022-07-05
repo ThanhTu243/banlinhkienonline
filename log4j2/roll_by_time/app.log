@@ -1,1 +1,1 @@
-2022-07-05 01:50:34.321 [http-nio-8080-exec-9] ERROR SqlExceptionHelper : Duplicate entry 'cuccung181@gmail.com' for key 'customer.user_customer'
+2022-07-05 21:51:42.122 [http-nio-8080-exec-6] ERROR SqlExceptionHelper : Duplicate entry 'cuccung181@gmail.com' for key 'customer.user_customer'

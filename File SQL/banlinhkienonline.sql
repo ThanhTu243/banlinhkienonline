@@ -6,9 +6,9 @@ USE banlinhkienonline;
 
 CREATE TABLE ACCOUNTS (
                           account_id INT AUTO_INCREMENT,
-                          username VARCHAR(50) UNIQUE,
+                          username VARCHAR(250) UNIQUE,
                           passwords VARCHAR(150),
-                          gmail varchar(50) UNIQUE,
+                          gmail varchar(250) UNIQUE,
                           firstname NVARCHAR(50),
                           lastname NVARCHAR(50),
                           address NVARCHAR(50),
@@ -24,7 +24,7 @@ CREATE TABLE ACCOUNTS (
 );
 CREATE TABLE CUSTOMER(
                          customer_id INT AUTO_INCREMENT,
-                         user_customer VARCHAR(150) UNIQUE,
+                         user_customer VARCHAR(250) UNIQUE,
                          firstname_customer NVARCHAR(50),
                          lastname_customer NVARCHAR(50),
                          image_customer NVARCHAR(500),
