@@ -2,6 +2,7 @@ package com.thanhtu.crud.service;
 
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.model.dto.OrderDetailView;
+import com.thanhtu.crud.model.dto.OrderStatistic;
 import com.thanhtu.crud.model.dto.OrdersDto;
 import com.thanhtu.crud.model.dto.ProductToReview;
 import com.thanhtu.crud.model.request.*;
@@ -37,4 +38,6 @@ public interface OrdersService {
     void orderDelivered(OrdersUpdateStatusRequest ordersUpdateStatusRequest);
 
     List<ProductToReview> getOrderDetailByCustomerToReview(int id, String statusOrder);
+
+    OrderStatistic getStasticOrder(int customerId);
 }

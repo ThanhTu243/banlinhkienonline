@@ -51,6 +51,7 @@ public class ProductMapper {
         tmp.setListProduct(list);
         return tmp;
     }
+
     public static ProductDto toProductDto(ProductEntity productEntity)
     {
         ProductDto tmp = new ProductDto();
@@ -66,10 +67,13 @@ public class ProductMapper {
         List<ProductImageDto> productImageDtoList=new ArrayList<>();
         for(ImageEntity imageEntity:productEntity.getImageEntities())
         {
-            ProductImageDto productImageDto=new ProductImageDto();
-            productImageDto.setImageId(imageEntity.getImageId());
-            productImageDto.setImage(imageEntity.getImage());
-            productImageDtoList.add(productImageDto);
+            if(imageEntity.getIsDelete().equals("NO"))
+            {
+                ProductImageDto productImageDto=new ProductImageDto();
+                productImageDto.setImageId(imageEntity.getImageId());
+                productImageDto.setImage(imageEntity.getImage());
+                productImageDtoList.add(productImageDto);
+            }
         }
         tmp.setProductImageSet(productImageDtoList);
         return tmp;

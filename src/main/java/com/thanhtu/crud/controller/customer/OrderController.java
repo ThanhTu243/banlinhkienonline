@@ -4,10 +4,7 @@ import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.thanhtu.crud.entity.OrdersEntity;
-import com.thanhtu.crud.model.dto.OrderDetailView;
-import com.thanhtu.crud.model.dto.OrdersDto;
-import com.thanhtu.crud.model.dto.ProductOrder;
-import com.thanhtu.crud.model.dto.ProductToReview;
+import com.thanhtu.crud.model.dto.*;
 import com.thanhtu.crud.model.mapper.OrdersMapper;
 import com.thanhtu.crud.model.request.OrderCreateRequest;
 import com.thanhtu.crud.model.request.OrdersStatusRequest;
@@ -46,6 +43,7 @@ public class OrderController {
     @Autowired
     PaypalService_impl paypalService;
 
+
     @PostMapping("")
     public ResponseEntity<?> createOrders(@Valid @RequestBody OrderCreateRequest orderCreateRequest, BindingResult bindingResult)
     {
@@ -70,6 +68,15 @@ public class OrderController {
         }
         return ResponseEntity.ok(ordersDto);
     }
+
+    @GetMapping("/statistic/{customerId}")
+    public ResponseEntity<?> getStasticOrder(@PathVariable int customerId)
+    {
+
+        OrderStatistic orderStatistic=ordersService.getStasticOrder(customerId);
+        return ResponseEntity.status(HttpStatus.OK).body(orderStatistic);
+    }
+
     @PostMapping("/delivered/{id}")
     public ResponseEntity<?> getOrderDetailByCustomerToReview(@Valid @RequestBody OrdersStatusRequest ordersStatusRequest,BindingResult bindingResult,@PathVariable int id)
     {

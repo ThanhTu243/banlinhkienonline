@@ -37,7 +37,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                                         Authentication authentication) throws IOException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = (String) oAuth2User.getAttributes().get("email");
-        String image=(String) oAuth2User.getAttributes().get("picture");
         String token = jwtProvider.createToken(email, "CUSTOMER");
         CustomerEntity customer=customerRepository.findCustomerEntitiesByGmailCustomerAndIsDelete(email,"NO");
         AccountsEntity account=accountsRepository.findAccountsEntitiesByGmail(email);;
@@ -46,7 +45,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String username=account.getUsername();
         String provider=account.getProvider();
         String uri = UriComponentsBuilder.fromUriString("http://" + hostname + "/oauth2/redirect")
-                .queryParam("token", token).queryParam("id",Id).queryParam("customerId",customerId).queryParam("image",image).queryParam("username",username).queryParam("userRoles","CUSTOMER").queryParam("provider",provider)
+                .queryParam("token", token).queryParam("id",Id).queryParam("customerId",customerId).queryParam("image",customer.getImageCustomer()).queryParam("username",username).queryParam("userRoles","CUSTOMER").queryParam("provider",provider)
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }

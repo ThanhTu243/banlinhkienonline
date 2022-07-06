@@ -8,4 +8,7 @@ public class GeneralStatiscts {
     private Integer newOrders;
     private Integer totalProduct;
     private Long revenue;
+    private Integer quantityOfApprovedOrder;
+    private Integer quantityOfDeliveredOrder;
+    private Integer quantityOfCancelOrder;
 }

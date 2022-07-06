@@ -201,6 +201,9 @@ public class StatisticService_impl implements StatisticService {
         generalStatiscts.setNumberOfCustomer(customerRepo.countAllByIsDelete("NO"));
         generalStatiscts.setNewOrders(ordersRepo.countAllByStatusOrder("Chưa duyệt"));
         generalStatiscts.setTotalProduct(productRepo.countAllByIsDelete("NO"));
+        generalStatiscts.setQuantityOfApprovedOrder(ordersRepo.countAllByStatusOrder("Đã duyệt"));
+        generalStatiscts.setQuantityOfCancelOrder(ordersRepo.countAllByStatusOrder("Đã hủy"));
+        generalStatiscts.setQuantityOfDeliveredOrder(ordersRepo.countAllByStatusOrder("Đã giao"));
         LocalDateTime dateTimeNow=LocalDateTime.now();
         String monthString="";
         Month month=dateTimeNow.getMonth();

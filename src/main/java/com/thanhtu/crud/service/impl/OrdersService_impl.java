@@ -70,7 +70,7 @@ public class OrdersService_impl implements OrdersService {
 
     @Override
     public List<OrdersEntity> getListOrderByStatus(String status) {
-        List<OrdersEntity> list=orderRepo.findOrdersEntityByStatusOrder(status);
+        List<OrdersEntity> list=orderRepo.findOrdersEntitiesByStatusOrderOrderByCreateDate(status);
         return list;
     }
 
@@ -277,6 +277,17 @@ public class OrdersService_impl implements OrdersService {
             }
         });
         return productToReviewList;
+    }
+
+    @Override
+    public OrderStatistic getStasticOrder(int customerId) {
+        CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(customerId,"NO");
+        OrderStatistic orderStatistic=new OrderStatistic();
+        orderStatistic.setQuantityOfCancelOrder(orderRepo.countAllByCustomerEntityAndStatusOrder(customer,"Đã hủy"));
+        orderStatistic.setQuantityOfApprovedOrder(orderRepo.countAllByCustomerEntityAndStatusOrder(customer,"Đã duyệt"));
+        orderStatistic.setQuantityOfDeliveredOrder(orderRepo.countAllByCustomerEntityAndStatusOrder(customer,"Đã giao"));
+        orderStatistic.setQuantityOfTheOrderBeApprove(orderRepo.countAllByCustomerEntityAndStatusOrder(customer,"Chưa duyệt"));
+        return orderStatistic;
     }
 
 }
