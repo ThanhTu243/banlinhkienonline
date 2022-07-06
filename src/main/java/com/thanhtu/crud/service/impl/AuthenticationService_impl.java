@@ -174,6 +174,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         customerRegister.setLastnameCustomer(oAuth2UserInfo.getLastName());
         customerRegister.setGmailCustomer(oAuth2UserInfo.getEmail());
         customerRegister.setIsDelete("NO");
+        customerRegister.setImageCustomer(oAuth2UserInfo.getImageUrl());
         customerRepo.save(customerRegister);
         return account;
     }

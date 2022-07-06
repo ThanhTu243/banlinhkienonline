@@ -96,8 +96,14 @@ public class ProductService_imp implements ProductService {
         CategoryEntity categoryEntity=categoryRepo.getById(productRequest.getCategoryId());
         SupplierEntity supplierEntity=supplierRepo.getById(productRequest.getSupplierId());
         ProductEntity productEntity1=productRepo.save(ProductMapper.toUpdateProduct(productEntity,productRequest,categoryEntity,supplierEntity));
+        //delete current image
+        for(ImageEntity image:productEntity1.getImageEntities())
+        {
+            image.setIsDelete("YES");
+            imageRepo.save(image);
+        }
         //--save imageEntity
-        List<ImageEntity> imageEntities=new ArrayList<>();
+
         for(ProductImageRequest product:productRequest.getProductImage())
         {
             ImageEntity newImage=new ImageEntity();
@@ -106,6 +112,7 @@ public class ProductService_imp implements ProductService {
             newImage.setProductEntity(productEntity1);
             imageRepo.save(newImage);
         }
+        List<ImageEntity> imageEntities=imageRepo.findImageEntitiesByProductEntityAndIsDelete(productEntity1,"NO");
         return ProductMapper.toProductDto(productEntity1,imageEntities);
     }
 
