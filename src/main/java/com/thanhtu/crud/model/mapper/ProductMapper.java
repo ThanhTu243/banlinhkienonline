@@ -21,6 +21,18 @@ public class ProductMapper {
         tmp.setPriceAfterDiscount(Long.valueOf(orderDetail.getProductEntity().getUnitPrice())*Long.valueOf(100-orderDetail.getProductEntity().getDiscount())/100);
         tmp.setQuantity(orderDetail.getQuantity());
         tmp.setAmount(orderDetail.getAmount());
+        List<ProductImageDto> productImageDtoList=new ArrayList<>();
+        for(ImageEntity imageEntity:orderDetail.getProductEntity().getImageEntities())
+        {
+            if(imageEntity.getIsDelete().equals("NO"))
+            {
+                ProductImageDto productImageDto=new ProductImageDto();
+                productImageDto.setImageId(imageEntity.getImageId());
+                productImageDto.setImage(imageEntity.getImage());
+                productImageDtoList.add(productImageDto);
+            }
+        }
+        tmp.setProductImageSet(productImageDtoList);
         return tmp;
     }
     public static ProductViewByIdDto toProductViewByIdDto(ProductDto productDto, String rating, List<ReviewsDto> list)

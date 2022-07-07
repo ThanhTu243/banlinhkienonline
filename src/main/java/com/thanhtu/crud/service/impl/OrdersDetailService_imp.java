@@ -1,11 +1,13 @@
 package com.thanhtu.crud.service.impl;
 
+import com.thanhtu.crud.entity.ImageEntity;
 import com.thanhtu.crud.entity.OrderDetailEntity;
 import com.thanhtu.crud.entity.OrdersEntity;
 import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.OrderDetailViewDto;
 import com.thanhtu.crud.model.dto.OrdersDetailDto;
+import com.thanhtu.crud.model.dto.ProductImageDto;
 import com.thanhtu.crud.model.dto.ProductOrderDetailDto;
 import com.thanhtu.crud.model.mapper.OrdersDetailMapper;
 import com.thanhtu.crud.model.mapper.ProductMapper;
@@ -44,6 +46,7 @@ public class OrdersDetailService_imp implements OrdersDetailService {
         ordersDetailDtos.setNameCustomer(ordersEntity.getCustomerEntity().getFirstnameCustomer()+" "+ordersEntity.getCustomerEntity().getLastnameCustomer());
         ordersDetailDtos.setTotalAmount(ordersEntity.getTotalAmount());
         ordersDetailDtos.setList(list);
+
         return ordersDetailDtos;
     }
 
