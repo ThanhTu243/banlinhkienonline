@@ -41,6 +41,10 @@ public class CustomerEntity {
 
     @OneToMany(mappedBy = "customerEntity",cascade = CascadeType.ALL)
     @JsonManagedReference
+    private Set<WishListEntity> wishListEntities;
+
+    @OneToMany(mappedBy = "customerEntity",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<ReviewsEntity> reviewsEntities;
 
     @OneToMany(mappedBy = "customerEntity",cascade = CascadeType.ALL)

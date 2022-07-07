@@ -51,5 +51,9 @@ public class ProductEntity {
     @JsonManagedReference
     private Set<ImageEntity> imageEntities;
 
+    @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<WishListEntity> wishListEntities;
+
 
 }

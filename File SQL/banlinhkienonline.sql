@@ -148,6 +148,17 @@ CREATE TABLE REVIEWS(
                         CONSTRAINT RE_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id)
 );
 
+CREATE TABLE WISHLIST(
+                         wishlist_id INT AUTO_INCREMENT,
+                         product_id INT,
+                         customer_id INT,
+                         is_delete VARCHAR(10),
+                         CONSTRAINT WL_isDeleteWishList_CHK CHECK (is_delete IN ('NO','YES')),
+                         CONSTRAINT WL_maWISHLIST_PK PRIMARY KEY(wishlist_id),
+                         CONSTRAINT WL_maPRODUCT_FK FOREIGN KEY(product_id) REFERENCES PRODUCT(product_id),
+                         CONSTRAINT WL_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id)
+);
+
 INSERT INTO ACCOUNTS(username, passwords,firstname,lastname,gmail, active_account,provider, roles,address,phonenumber)
 VALUES("huynhphucadmin","$2y$12$n1Ea46fRM5OHjcldln9FCeDNKGWPlBTon6QSLWFiZQ70Jz7up77d.","Huỳnh", "Ngọc Phúc","huynhphucadmin@gmail.com","ACTIVE","LOCAL","ADMIN","Quận 9","0322000568");
 INSERT INTO ACCOUNTS(username, passwords,firstname,lastname,gmail, active_account,provider, roles,address,phonenumber)
