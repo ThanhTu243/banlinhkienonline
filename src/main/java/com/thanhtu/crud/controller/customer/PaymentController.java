@@ -43,7 +43,7 @@ import static com.mservice.shared.sharedmodels.AbstractProcess.getGson;
 
 @RestController
 //@PreAuthorize("hasAuthority('CUSTOMER')")
-@CrossOrigin(origins = "http://localhost:4006/")
+//@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app/")
 @RequestMapping("/payment/")
 public class PaymentController {
     public static final String URL_SUCCESS = "payment/paypal/success";
@@ -240,8 +240,8 @@ public class PaymentController {
         OrdersDto order=ordersService.createOrdersOnline(orderCreateRequest,"MOMO");
         int requestId=new Random().nextInt(9000000)+1000000;
         int orderMomoId=new Random().nextInt(9000000)+1000000;
-        String returnURL="http://localhost:4006/payment/momo/"+order.getOrderId();
-        String notifyURL="http://localhost:4006/payment/momo/";
+        String returnURL=hostname+"/payment/momo/"+order.getOrderId();
+        String notifyURL=hostname+"/payment/momo/";
         return ResponseEntity.ok(this.process(String.valueOf(orderMomoId),String.valueOf(requestId),
                 String.valueOf(orderCreateRequest.getTotal()), "Thanh toán đơn hàng",
                 returnURL, notifyURL, "1"));

@@ -14,7 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 //@PreAuthorize("hasAuthority('CUSTOMER')")
-@CrossOrigin(origins = "http://localhost:4006/")
+//@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app/")
 @RequestMapping("/reviews")
 public class ReviewsController {
     @Autowired

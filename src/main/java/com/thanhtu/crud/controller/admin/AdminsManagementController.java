@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 //@PreAuthorize("hasAuthority('ADMIN')")
-@CrossOrigin(origins = "http://localhost:4004/")
+//@CrossOrigin(origins = "https://react-admin-eight.vercel.app/")
 @RequestMapping("admin/admin")
 public class AdminsManagementController {
     @Autowired

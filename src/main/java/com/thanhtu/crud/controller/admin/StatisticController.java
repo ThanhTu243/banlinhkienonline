@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 //@PreAuthorize("hasAuthority('ADMIN')")
-@CrossOrigin(origins = "http://localhost:4004/")
+//@CrossOrigin(origins = "https://react-admin-eight.vercel.app/")
 @RequestMapping("admin/statistic")
 public class StatisticController {
     @Autowired

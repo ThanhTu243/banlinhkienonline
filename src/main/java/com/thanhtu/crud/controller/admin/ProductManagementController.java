@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @RestController
 //@PreAuthorize("hasAuthority('ADMIN')")
-@CrossOrigin(origins = "http://localhost:4004/")
+//@CrossOrigin(origins = "https://react-admin-eight.vercel.app/")
 @RequestMapping("admin/product")
 public class ProductManagementController {
 

@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4006/")
+//@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app/")
 @RequestMapping("/registration")
 public class RegistrationController {
     private final AuthenticationMapper authenticationMapper;
