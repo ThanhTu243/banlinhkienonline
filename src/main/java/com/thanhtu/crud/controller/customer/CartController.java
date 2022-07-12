@@ -28,7 +28,7 @@ import java.util.List;
 
 @RestController
 //@PreAuthorize("hasAuthority('CUSTOMER')")
-//@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app/")
+@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app")
 @RequestMapping("/cart")
 public class CartController {
     @Autowired CartService cartService;

@@ -29,7 +29,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Value("${hostname}")
     private String hostname;
-    String hostname1="localhost:8080";
+//    String hostname1="localhost:8080";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -44,7 +44,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String Id=account.getAccountId().toString();
         String username=account.getUsername();
         String provider=account.getProvider();
-        String uri = UriComponentsBuilder.fromUriString("http://" + hostname + "/oauth2/redirect")
+        String uri = UriComponentsBuilder.fromUriString(hostname + "/oauth2/redirect")
                 .queryParam("token", token).queryParam("id",Id).queryParam("customerId",customerId).queryParam("image",customer.getImageCustomer()).queryParam("username",username).queryParam("userRoles","CUSTOMER").queryParam("provider",provider)
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, uri);

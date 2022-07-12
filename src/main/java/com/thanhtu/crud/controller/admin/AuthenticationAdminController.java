@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-//@CrossOrigin(origins = "https://react-admin-eight.vercel.app/")
+@CrossOrigin(origins = "https://react-admin-eight.vercel.app")
 @RequestMapping("/admin/auth")
 @RequiredArgsConstructor
 public class AuthenticationAdminController {

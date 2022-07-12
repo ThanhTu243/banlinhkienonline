@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-//@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app/")
+@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app")
 @RequestMapping("view/product")
 public class ProductController {
     @Autowired

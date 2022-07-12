@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @RestController
 //@PreAuthorize("hasAuthority('ADMIN')")
-//@CrossOrigin(origins = "https://react-admin-eight.vercel.app/")
+@CrossOrigin(origins = "https://react-admin-eight.vercel.app")
 @RequestMapping("/admin/orders")
 public class OrdersManagementController {
     @Autowired

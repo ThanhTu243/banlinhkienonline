@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-//@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app/")
+@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {

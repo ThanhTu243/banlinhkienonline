@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 //@PreAuthorize("hasAuthority('CUSTOMER')")
-//@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app/")
+@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app")
 @RequestMapping("/wishlist")
 public class WishListController {
     @Autowired

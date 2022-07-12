@@ -58,6 +58,14 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 
+    @ExceptionHandler(MomoErrorException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handerMomoErrorException(Exception ex, WebRequest req) {
+        // Log err
+
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
     // Xử lý tất cả các exception chưa được khai báo
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

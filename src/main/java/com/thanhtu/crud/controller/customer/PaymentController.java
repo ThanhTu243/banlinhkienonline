@@ -6,15 +6,14 @@ import com.mservice.shared.constants.Parameter;
 import com.mservice.shared.sharedmodels.HttpResponse;
 import com.mservice.shared.utils.Encoder;
 import com.mservice.shared.utils.Execute;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.PayPalRESTException;
 import com.thanhtu.crud.entity.CustomerEntity;
 import com.thanhtu.crud.exception.InputFieldException;
+import com.thanhtu.crud.exception.MomoErrorException;
 import com.thanhtu.crud.exception.NotFoundException;
-import com.thanhtu.crud.model.dto.PaypalDto;
-import com.thanhtu.crud.model.dto.OrderDetailViewDto;
-import com.thanhtu.crud.model.dto.OrdersDto;
-import com.thanhtu.crud.model.dto.ProductOrderDetailDto;
+import com.thanhtu.crud.model.dto.*;
 import com.thanhtu.crud.model.request.OrderCreateRequest;
 import com.thanhtu.crud.service.CustomerService;
 import com.thanhtu.crud.service.OrdersDetailService;
@@ -30,7 +29,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URLEncoder;
@@ -43,7 +41,7 @@ import static com.mservice.shared.sharedmodels.AbstractProcess.getGson;
 
 @RestController
 //@PreAuthorize("hasAuthority('CUSTOMER')")
-//@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app/")
+@CrossOrigin(origins = "https://shoppt-reactapp.vercel.app")
 @RequestMapping("/payment/")
 public class PaymentController {
     public static final String URL_SUCCESS = "payment/paypal/success";
@@ -237,14 +235,19 @@ public class PaymentController {
         {
             throw new InputFieldException(bindingResult);
         }
-        OrdersDto order=ordersService.createOrdersOnline(orderCreateRequest,"MOMO");
         int requestId=new Random().nextInt(9000000)+1000000;
         int orderMomoId=new Random().nextInt(9000000)+1000000;
-        String returnURL=hostname+"/payment/momo/"+order.getOrderId();
+        String returnURL=hostname+"/payment/momo/1";
         String notifyURL=hostname+"/payment/momo/";
-        return ResponseEntity.ok(this.process(String.valueOf(orderMomoId),String.valueOf(requestId),
+        CaptureMoMoResponse response=this.process(String.valueOf(orderMomoId),String.valueOf(requestId),
                 String.valueOf(orderCreateRequest.getTotal()), "Thanh toán đơn hàng",
-                returnURL, notifyURL, "1"));
+                returnURL, notifyURL, "1");
+        if(response.getErrorCode()!=0)
+        {
+            throw new MomoErrorException(response.getLocalMessage());
+        }
+        OrdersDto order=ordersService.createOrdersOnline(orderCreateRequest,"MOMO");
+        return ResponseEntity.ok(response);
     }
     public CaptureMoMoResponse process(String orderId, String requestId, String amount, String orderInfo, String returnURL, String notifyURL, String extraData) throws Exception {
         try {
@@ -276,7 +279,6 @@ public class PaymentController {
             json.put("signature", request.getSignature());
             Execute execute = new Execute();
             HttpResponse response = execute.sendToMoMo("https://test-payment.momo.vn/gw_payment/transactionProcessor", json.toString());
-
             if (response.getStatus() != 200) {
                 System.out.println("execute error");
             }

@@ -19,7 +19,7 @@ public class VnPayUtils {
     @Value("${hostname.paypalreturn}")
     private static String hostname;
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_Returnurl = "http://localhost:4006"+"/payment/vnpay";
+    public static String vnp_Returnurl = hostname+"/payment/vnpay";
     public static String vnp_HashSecret = "NYDPAAUGMDLRBNIIDZRLVOORAXQHVRIV";
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
 

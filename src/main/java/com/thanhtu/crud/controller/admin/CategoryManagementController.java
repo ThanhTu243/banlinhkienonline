@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 //@PreAuthorize("hasAuthority('ADMIN')")
-//@CrossOrigin(origins = "https://react-admin-eight.vercel.app/")
+@CrossOrigin(origins = "https://react-admin-eight.vercel.app")
 @RequestMapping("/admin/category")
 public class CategoryManagementController {
 
