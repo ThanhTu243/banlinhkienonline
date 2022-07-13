@@ -117,7 +117,7 @@ CREATE TABLE orders
     payment_status NVARCHAR(20),
     status_order NVARCHAR(10),
     customer_id INT,
-    CONSTRAINT OR_activeORDER_CHK CHECK (status_order IN ('Chưa duyệt','Đã duyệt', 'Đã giao','Đã hủy')),
+    CONSTRAINT OR_activeORDER_CHK CHECK (status_order IN ('Chưa duyệt','Đã duyệt', 'Đã giao','Đã hủy','Đã xóa')),
     CONSTRAINT OR_maOR_PK PRIMARY KEY(order_id),
     CONSTRAINT OR_maCUSTOMER_FK FOREIGN KEY(customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE
 );

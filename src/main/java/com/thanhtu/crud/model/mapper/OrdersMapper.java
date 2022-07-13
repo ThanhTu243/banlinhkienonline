@@ -60,6 +60,21 @@ public class OrdersMapper {
         tmp.setCustomerEntity(customer);
         return tmp;
     }
+
+    public static OrdersEntity toCreateOrders(OrderCreateRequest orderCreateRequest, CustomerEntity customer,String paymentMethod,String paymentStatus)
+    {
+        OrdersEntity tmp=new OrdersEntity();
+        tmp.setAddress(orderCreateRequest.getAddress());
+        tmp.setPhoneNumber(orderCreateRequest.getPhoneNumber());
+        tmp.setCreateDate(Timestamp.valueOf(LocalDateTime.now()));
+        tmp.setTotalAmount(orderCreateRequest.getTotal());
+        tmp.setStatusOrder("Chưa duyệt");
+        tmp.setNote("");
+        tmp.setPaymentMethod(paymentMethod);
+        tmp.setPaymentStatus(paymentStatus);
+        tmp.setCustomerEntity(customer);
+        return tmp;
+    }
     public static OrdersPageDto toOrdersPageDto(List<OrdersEntity> ordersList, int totalPage, int currentPage)
     {
         OrdersPageDto tmp=new OrdersPageDto();

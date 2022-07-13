@@ -175,6 +175,53 @@ public class OrdersService_impl implements OrdersService {
     }
 
     @Override
+    public void callBackOrder(int orderId, List<Integer> listCartId) {
+        for(Integer cartId:listCartId)
+        {
+            CartEntity cart=cartRepo.findCartEntitiesByCartIdAndIsDelete(cartId,"YES");
+            cart.setIsDelete("NO");
+            cartRepo.save(cart);
+        }
+        OrdersEntity ordersEntity=orderRepo.findOrdersEntityByOrderId(orderId);
+        ordersEntity.setStatusOrder("Đã xóa");
+    }
+
+    @Override
+    public OrdersDto createOrdersOnline(OrderCreateRequest orderCreateRequest, String paymentMethod, String paymentStatus) {
+        List<Integer> cartIdList=orderCreateRequest.getCartItemList();
+        List<CartEntity> listCartItem=new ArrayList<>();
+        for(Integer cartIdItem:cartIdList)
+        {
+            listCartItem.add(cartRepo.findCartEntitiesByCartIdAndIsDelete(cartIdItem,"NO"));
+        }
+        for(CartEntity cartEntity:listCartItem)
+        {
+            ProductEntity product=cartEntity.getProductEntity();
+            if(cartEntity.getProductEntity().getIsDelete().equals("YES"))
+            {
+                throw new NotFoundException(""+product.getProductName()+" không còn bán nữa");
+            }
+            if(cartEntity.getQuantity()>cartEntity.getProductEntity().getQuantity())
+            {
+                throw new NotFoundException(""+product.getProductName()+" không đủ số lượng. Chỉ còn "+product.getQuantity());
+            }
+        }
+        CustomerEntity customer=listCartItem.get(0).getCustomerEntity();
+        OrdersEntity orderCreate=orderRepo.save(OrdersMapper.toCreateOrders(orderCreateRequest,customer,paymentMethod,paymentStatus));
+        for(CartEntity cartEntity:listCartItem)
+        {
+            cartEntity.setIsDelete("YES");
+            cartRepo.save(cartEntity);
+            ordersDetailRepo.save(OrdersDetailMapper.toOrderDetailEntity(cartEntity,orderCreate));
+            ProductEntity product=cartEntity.getProductEntity();
+            int quantityUpdate=product.getQuantity()-cartEntity.getQuantity();
+            product.setQuantity(quantityUpdate);
+            productRepo.save(product);
+        }
+        return OrdersMapper.toOrdersDto(orderCreate);
+    }
+
+    @Override
     public void confirmPaymentAndSendMail(int orderId) {
         OrdersEntity ordersEntity=orderRepo.findOrdersEntityByOrderId(orderId);
         ordersEntity.setPaymentStatus("Đã thanh toán");
@@ -187,10 +234,8 @@ public class OrdersService_impl implements OrdersService {
         mailSender.sendMessageHtml(ordersEntity.getCustomerEntity().getGmailCustomer(), subject, template, attributes);
     }
 
-    @Override
-    public void sendEmailOrder() {
 
-    }
+
 
     @Override
     public List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest) {
@@ -289,5 +334,7 @@ public class OrdersService_impl implements OrdersService {
         orderStatistic.setQuantityOfTheOrderBeApprove(orderRepo.countAllByCustomerEntityAndStatusOrder(customer,"Chưa duyệt"));
         return orderStatistic;
     }
+
+
 
 }

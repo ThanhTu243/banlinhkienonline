@@ -28,10 +28,10 @@ public interface OrdersService {
 
     OrdersDto createOrdersOnline(OrderCreateRequest orderCreateRequest,String paymentMethod);
 
+    OrdersDto createOrdersOnline(OrderCreateRequest orderCreateRequest,String paymentMethod,String paymentStatus);
 
     void confirmPaymentAndSendMail(int OrderId);
 
-    void sendEmailOrder();
 
     List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest);
 
@@ -40,4 +40,6 @@ public interface OrdersService {
     List<ProductToReview> getOrderDetailByCustomerToReview(int id, String statusOrder);
 
     OrderStatistic getStasticOrder(int customerId);
+
+    void callBackOrder(int orderId,List<Integer> listCartId);
 }
