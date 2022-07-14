@@ -126,12 +126,6 @@ public class PaymentController {
 
         OrdersDto order=ordersService.createOrdersOnline(orderCreateRequest,"VNPAY");
         CustomerEntity customer=customerService.getCustomerById(orderCreateRequest.getCustomerId());
-//        String vnp_OrderInfo = paymentRequest.getDecription();
-//        String orderType = req.getParameter("ordertype");
-//        String vnp_TxnRef = PaymentUtils.getRandomNumber(8);
-//        String vnp_IpAddr = PaymentUtils.getIpAddress(req);
-//        String vnp_TmnCode = PaymentUtils.vnp_TmnCode;
-
         int amount = orderCreateRequest.getTotal().intValue()*100;
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", VnPayUtils.vnp_versionVNPay);
@@ -224,8 +218,6 @@ public class PaymentController {
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = VnPayUtils.vnp_PayUrl + "?" + queryUrl;
         return ResponseEntity.status(HttpStatus.OK).body(paymentUrl);
-//        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(paymentUrl)).build();
-
     }
 
     @PostMapping("/momo")

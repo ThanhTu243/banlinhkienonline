@@ -19,14 +19,14 @@ public class VnPayUtils {
     @Value("${hostname.paypalreturn}")
     private static String hostname;
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_Returnurl = hostname+"/payment/vnpay";
-    public static String vnp_HashSecret = "NYDPAAUGMDLRBNIIDZRLVOORAXQHVRIV";
+    public static String vnp_Returnurl = "https://shoppt-reactapp.vercel.app"+"/payment/vnpay";
+    public static String vnp_HashSecret = "UPXLLPXBXOJIQKIQGMPJUHKKWKQMGEWU";
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
 
     public static String vnp_versionVNPay="2.1.0";
     public static String vnp_command= "pay";
     public static String vnp_orderType ="130000";
-    public static String vnp_tmnCode="816P7MRB";
+    public static String vnp_tmnCode="B4OZ0STW";
     public static String vnp_currCode="VND";
 
     public static String location = "vn";
