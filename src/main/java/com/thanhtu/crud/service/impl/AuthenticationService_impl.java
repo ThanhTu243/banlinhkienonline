@@ -98,7 +98,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         String template = "registration-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("fullname", request.getFirstname()+" "+request.getLastname());
-        attributes.put("registrationUrl", "http://" + hostname + "/activate/" + accountRegister.getActivationCode());
+        attributes.put("registrationUrl", "https://shoppt-reactapp.vercel.app" + hostname + "/activate/" + accountRegister.getActivationCode());
         mailSender.sendMessageHtml(request.getGmail(), subject, template, attributes);
     }
 
@@ -136,7 +136,7 @@ public class AuthenticationService_impl implements AuthenticationService {
         String template = "password-reset-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("fullname", customer.getFirstnameCustomer()+" "+customer.getLastnameCustomer());
-        attributes.put("resetUrl", "http://" + hostname + "/reset/" + account.getPasswordresetCode());
+        attributes.put("resetUrl", "https://shoppt-reactapp.vercel.app" + hostname + "/reset/" + account.getPasswordresetCode());
         mailSender.sendMessageHtml(account.getGmail(), subject, template, attributes);
         return true;
     }
