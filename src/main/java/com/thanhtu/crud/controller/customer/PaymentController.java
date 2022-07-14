@@ -339,7 +339,7 @@ public class PaymentController {
         }
         else{
             ordersService.cancelOrder(orderId);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thanh toán thất bại");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Thanh toán thất bại");
         }
     }
     @GetMapping("/momo/{orderId}")
@@ -352,7 +352,7 @@ public class PaymentController {
         }
         else{
             ordersService.cancelOrder(orderId);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thanh toán thất bại");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Thanh toán thất bại");
         }
     }
     @GetMapping("/paypal/cancel")
