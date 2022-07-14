@@ -238,7 +238,6 @@ public class PaymentController {
         if(response.getErrorCode()!=0)
         {
             ordersService.callBackOrder(order.getOrderId(),orderCreateRequest.getCartItemList());
-            throw new MomoErrorException(response.getLocalMessage());
         }
         return ResponseEntity.ok(response);
     }
