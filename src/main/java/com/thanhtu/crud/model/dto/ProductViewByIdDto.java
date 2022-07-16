@@ -13,6 +13,7 @@ public class ProductViewByIdDto {
     private Integer productId;
     private String productName;
     private Integer quantity;
+    private String isDelete;
     private List<ProductImageDto> productImageList;
     private Integer discount;
     private Integer unitPrice;

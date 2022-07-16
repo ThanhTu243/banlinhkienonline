@@ -42,11 +42,7 @@ public class ReviewsService_impl implements ReviewsService {
 
     @Override
     public String getRating(int productId) {
-        ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(productId,"NO");
-        if(product==null)
-        {
-            throw new NotFoundException("Không tìm được sản phẫm này");
-        }
+        ProductEntity product=productRepo.findProductEntityByProductId(productId);
         List<ReviewsEntity> list=reviewsRepo.findReviewsEntityByProductEntity(product);
         double sumRating=0;
         double avgRating=0;
@@ -61,11 +57,7 @@ public class ReviewsService_impl implements ReviewsService {
 
     @Override
     public List<ReviewsDto> getAllCommentsByProductId(int id) {
-        ProductEntity product=productRepo.findProductEntityByProductIdAndIsDelete(id,"NO");
-        if(product==null)
-        {
-            throw new NotFoundException("Không tìm được sản phẫm này");
-        }
+        ProductEntity product=productRepo.findProductEntityByProductId(id);
         List<ReviewsEntity> list=reviewsRepo.findReviewsEntityByProductEntity(product);
         List<ReviewsDto> listReview=new ArrayList<ReviewsDto>();
         for(ReviewsEntity reviews:list)

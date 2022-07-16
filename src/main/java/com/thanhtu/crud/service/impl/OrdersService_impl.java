@@ -19,9 +19,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 
 @Service
@@ -241,7 +243,7 @@ public class OrdersService_impl implements OrdersService {
     public List<OrderDetailView> getOrderDetailByCustomerIdAndStatus(int id,OrdersStatusRequest ordersStatusRequest) {
         List<OrderDetailView> orderDetailViewList=new ArrayList<OrderDetailView>();
         CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(id,"NO");
-        List<OrdersEntity> ordersEntities=orderRepo.findOrdersEntityByCustomerEntityAndStatusOrder(customer,ordersStatusRequest.getStatusOrder());
+        List<OrdersEntity> ordersEntities=orderRepo.findOrdersEntityByCustomerEntityAndStatusOrderOrderByCreateDateDesc(customer,ordersStatusRequest.getStatusOrder());
         for(OrdersEntity ordersEntity:ordersEntities)
         {
             OrderDetailView orderDetailView= new OrderDetailView();
@@ -258,6 +260,13 @@ public class OrdersService_impl implements OrdersService {
                 productOrder.setOrderId(orderDetailEntity.getId().getOrderId());
                 productOrder.setProducId(orderDetailEntity.getId().getProductId());
                 productOrder.setProductName(orderDetailEntity.getProductEntity().getProductName());
+                Set<ImageEntity> listimage=orderDetailEntity.getProductEntity().getImageEntities();
+                String productImage="";
+                for(ImageEntity imageEntity:listimage)
+                {
+                    productImage=imageEntity.getImage();
+                }
+                productOrder.setProductImage(productImage);
                 productOrder.setQuantity(orderDetailEntity.getQuantity());
                 listProductOrder.add(productOrder);
             }
@@ -282,7 +291,7 @@ public class OrdersService_impl implements OrdersService {
     public List<ProductToReview> getOrderDetailByCustomerToReview(int id, String statusOrder) {
         List<ProductToReview> productToReviewList=new ArrayList<ProductToReview>();
         CustomerEntity customer=customerRepo.findCustomerEntityByCustomerIdAndIsDelete(id,"NO");
-        List<OrdersEntity> ordersEntities=orderRepo.findOrdersEntityByCustomerEntityAndStatusOrder(customer,statusOrder);
+        List<OrdersEntity> ordersEntities=orderRepo.findOrdersEntityByCustomerEntityAndStatusOrderOrderByCreateDateDesc(customer,statusOrder);
         for(OrdersEntity ordersEntity:ordersEntities)
         {
             List<OrderDetailEntity> listOrderDetail=ordersDetailRepo.findOrderDetailEntityByOrdersEntity(ordersEntity);
@@ -294,6 +303,13 @@ public class OrdersService_impl implements OrdersService {
                 String formattedDate = ordersEntity.getCreateDate().toLocalDateTime().format(myFormatObj);
                 productToReview.setCreateOrders(formattedDate);
                 productToReview.setProductId(orderDetailEntity.getId().getProductId());
+                Set<ImageEntity> listimage=orderDetailEntity.getProductEntity().getImageEntities();
+                String productImage="";
+                for(ImageEntity imageEntity:listimage)
+                {
+                    productImage=imageEntity.getImage();
+                }
+                productToReview.setProductImage(productImage);
                 productToReview.setProductName(orderDetailEntity.getProductEntity().getProductName());
                 productToReview.setQuantity(orderDetailEntity.getQuantity());
                 productToReview.setIsReview(orderDetailEntity.getIsReview());

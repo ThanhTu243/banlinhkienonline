@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<OrdersEntity,Integer>{
-    List<OrdersEntity> findOrdersEntityByCustomerEntityAndStatusOrder(CustomerEntity customer,String status);
+    List<OrdersEntity> findOrdersEntityByCustomerEntityAndStatusOrderOrderByCreateDateDesc(CustomerEntity customer,String status);
     Page<OrdersEntity> findOrdersEntityByStatusOrderOrderByCreateDateDesc(String status,Pageable page);
     List<OrdersEntity> findOrdersEntitiesByStatusOrderOrderByCreateDate(String status);
     OrdersEntity findOrdersEntityByOrderId(int id);

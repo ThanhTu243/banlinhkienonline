@@ -43,6 +43,7 @@ public class ProductMapper {
         tmp.setQuantity(productDto.getQuantity());
         tmp.setProductImageList(productDto.getProductImageSet());
         tmp.setDiscount(productDto.getDiscount());
+        tmp.setIsDelete(productDto.getIsDelete());
         tmp.setUnitPrice(productDto.getUnitPrice());
         tmp.setPriceAfterDiscount(Long.valueOf(productDto.getPriceAfterDiscount()));
         tmp.setDescriptionProduct(productDto.getDescriptionProduct());

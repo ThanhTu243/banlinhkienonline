@@ -40,11 +40,7 @@ public class ProductService_imp implements ProductService {
 
     @Override
     public ProductDto getProductById(int id) {
-        ProductEntity productEntity=productRepo.findProductEntityByProductIdAndIsDelete(id,"NO");
-        if(productEntity==null)
-        {
-            throw new NotFoundException("Sản phẫm không tồn tại với id: "+id);
-        }
+        ProductEntity productEntity=productRepo.findProductEntityByProductId(id);
         return ProductMapper.toProductDto(productEntity);
     }
 
