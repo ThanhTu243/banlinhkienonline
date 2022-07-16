@@ -19,6 +19,7 @@ public class ProductDto {
     private Integer unitPrice;
     private Long priceAfterDiscount;
     private String descriptionProduct;
+    private String isDelete;
     private CategoryFKDto categoryFKDto;
     private SupplierFKDto supplierFKDto;
     private List<ProductImageDto> productImageSet;

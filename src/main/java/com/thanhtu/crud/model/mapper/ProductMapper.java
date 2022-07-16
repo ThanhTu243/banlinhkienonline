@@ -74,6 +74,7 @@ public class ProductMapper {
         tmp.setUnitPrice(productEntity.getUnitPrice());
         tmp.setPriceAfterDiscount(Long.valueOf(productEntity.getUnitPrice())*Long.valueOf(100-productEntity.getDiscount())/100);
         tmp.setDescriptionProduct(productEntity.getDescriptionProduct());
+        tmp.setIsDelete(productEntity.getIsDelete());
         tmp.setCategoryFKDto(CategoryMapper.toCategoryViewDto(productEntity.getCategoryEntity()));
         tmp.setSupplierFKDto(SupplierMapper.toSupplierViewDto(productEntity.getSupplierEntity()));
         List<ProductImageDto> productImageDtoList=new ArrayList<>();

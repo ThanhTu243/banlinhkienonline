@@ -2,6 +2,7 @@ package com.thanhtu.crud.service;
 
 import com.thanhtu.crud.entity.ProductEntity;
 import com.thanhtu.crud.model.dto.ProductDto;
+import com.thanhtu.crud.model.request.ChangeIsDeleteRequest;
 import com.thanhtu.crud.model.request.product.ProductByCategoryRequest;
 import com.thanhtu.crud.model.request.product.ProductByNameRequest;
 import com.thanhtu.crud.model.request.product.ProductBySupplierRequest;
@@ -16,6 +17,7 @@ public interface ProductService {
     Page<ProductEntity> getListProduct(Pageable pageable);
 
     ProductDto getProductById(int id);
+    ProductDto getProductByIdAdmin(int id);
 
     ProductDto createProduct(ProductRequest productRequest);
 
@@ -34,6 +36,7 @@ public interface ProductService {
     Page<ProductEntity> getListProductByKeyWord(String keyword,Pageable page);
 
     Page<ProductEntity> getListProductByKeyWord1(String keyword,Pageable page);
+    Page<ProductEntity> getListProductByKeyWord1Admin(String keyword, Pageable pageable);
 
     Page<ProductEntity> getListProductByKeyWordAndCategory(String keyword, String categoryName, Pageable pageable);
 
@@ -44,4 +47,7 @@ public interface ProductService {
     Page<ProductEntity> getListProductByCategoryAndSupplierAndKeyword(String category, String supplier, String keyword, Pageable pageable);
 
     List<ProductDto> getTop10DiscountProduct();
+
+    void changeIsDelete(Integer id, ChangeIsDeleteRequest changeIsDeleteRequest);
+
 }

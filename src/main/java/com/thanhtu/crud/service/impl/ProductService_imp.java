@@ -5,6 +5,7 @@ import com.thanhtu.crud.exception.DuplicateRecoredException;
 import com.thanhtu.crud.exception.NotFoundException;
 import com.thanhtu.crud.model.dto.ProductDto;
 import com.thanhtu.crud.model.mapper.ProductMapper;
+import com.thanhtu.crud.model.request.ChangeIsDeleteRequest;
 import com.thanhtu.crud.model.request.product.*;
 import com.thanhtu.crud.repository.*;
 import com.thanhtu.crud.service.ProductService;
@@ -44,6 +45,12 @@ public class ProductService_imp implements ProductService {
         {
             throw new NotFoundException("Sản phẫm không tồn tại với id: "+id);
         }
+        return ProductMapper.toProductDto(productEntity);
+    }
+
+    @Override
+    public ProductDto getProductByIdAdmin(int id) {
+        ProductEntity productEntity=productRepo.findProductEntityByProductId(id);
         return ProductMapper.toProductDto(productEntity);
     }
 
@@ -167,6 +174,11 @@ public class ProductService_imp implements ProductService {
     }
 
     @Override
+    public Page<ProductEntity> getListProductByKeyWord1Admin(String keyword, Pageable pageable) {
+        return productRepo.findAllByProductNameContains(keyword,pageable);
+    }
+
+    @Override
     public Page<ProductEntity> getListProductByKeyWordAndCategory(String keyword, String categoryName, Pageable pageable) {
         CategoryEntity category=categoryRepo.findCategoryEntityByCategoryNameAndIsDelete(categoryName,"NO");
         return productRepo.findAllByProductNameContainsAndCategoryEntityAndIsDelete(keyword,category,"NO",pageable);
@@ -201,6 +213,13 @@ public class ProductService_imp implements ProductService {
             listTop10DiscountProduct.add(ProductMapper.toProductDto(list.get(i)));
         }
         return listTop10DiscountProduct;
+    }
+
+    @Override
+    public void changeIsDelete(Integer id, ChangeIsDeleteRequest changeIsDeleteRequest) {
+        ProductEntity product=productRepo.findProductEntityByProductId(id);
+        product.setIsDelete(changeIsDeleteRequest.getIsDelete());
+        productRepo.save(product);
     }
 
 

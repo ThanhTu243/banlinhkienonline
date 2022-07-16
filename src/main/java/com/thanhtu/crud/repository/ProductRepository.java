@@ -12,6 +12,8 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<ProductEntity,Integer> {
     Page<ProductEntity> findProductEntityByIsDelete(String status, Pageable page);
     ProductEntity findProductEntityByProductIdAndIsDelete(int id,String status);
+
+    ProductEntity findProductEntityByProductId(int id);
     List<ProductEntity> findProductEntityByIsDelete(String status);
     Page<ProductEntity> findProductEntityByProductNameContainsAndIsDelete(String name,String status,Pageable pageable);
     Page<ProductEntity> findProductEntityByCategoryEntityAndIsDelete(CategoryEntity categoryEntity,String status,Pageable pageable);
@@ -20,6 +22,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
     Page<ProductEntity> findProductEntityByProductNameLike(String keyword,Pageable pageable);
 
     Page<ProductEntity> findAllByProductNameContainsAndIsDelete(String keyword,String status,Pageable page);
+
+    Page<ProductEntity> findAllByProductNameContains(String keyword,Pageable page);
     Page<ProductEntity> findAllByProductNameContainsAndCategoryEntityAndIsDelete(String keyword,CategoryEntity categoryEntity,String status,Pageable page);
     Page<ProductEntity> findAllByProductNameContainsAndSupplierEntityAndIsDelete(String keyword,SupplierEntity supplierEntity,String status,Pageable page);
     Page<ProductEntity> findAllByCategoryEntityAndSupplierEntityAndIsDelete(CategoryEntity categoryEntity,SupplierEntity supplierEntity,String status,Pageable page);
