@@ -36,6 +36,26 @@ public class ProductController {
     @Autowired
     StatisticService statisticService;
 
+    @GetMapping("/all")
+    public ResponseEntity<Object> getListProduct(@RequestParam(value = "page",required = false) Optional<Integer> page)
+    {
+        if(page.isPresent())
+        {
+            int pageNumber= page.get();
+            page=Optional.of(pageNumber-1);
+
+        }
+        else{
+            page=Optional.of(0);
+        }
+        Pageable pageable= PageRequest.of(page.get(),12);
+        Page<ProductEntity> list=productService.getListProductCustomer(pageable);
+        int totalPages=list.getTotalPages();
+        int currentPage=list.getNumber()+1;
+        List<ProductEntity> listPro=list.toList();
+        return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toProductPageDto(listPro,totalPages,currentPage));
+    }
+
     @GetMapping("/10discount")
     public ResponseEntity <?> getTop10DiscountProduct()
     {

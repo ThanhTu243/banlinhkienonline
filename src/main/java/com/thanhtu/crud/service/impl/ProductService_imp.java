@@ -222,5 +222,10 @@ public class ProductService_imp implements ProductService {
         productRepo.save(product);
     }
 
+    @Override
+    public Page<ProductEntity> getListProductCustomer(Pageable pageable) {
+        return productRepo.findProductEntityByIsDelete("NO",pageable);
+    }
+
 
 }
