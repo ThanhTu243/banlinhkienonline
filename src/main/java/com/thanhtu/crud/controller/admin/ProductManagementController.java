@@ -45,7 +45,7 @@ public class ProductManagementController {
             page=Optional.of(0);
         }
         Pageable pageable= PageRequest.of(page.get(),10);
-        Page<ProductEntity> list=productService.getListProduct(pageable);
+        Page<ProductEntity> list=productService.getListProductAdmin(pageable);
         int totalPages=list.getTotalPages();
         int currentPage=list.getNumber()+1;
         List<ProductEntity> listPro=list.toList();
@@ -94,7 +94,7 @@ public class ProductManagementController {
             page=Optional.of(0);
         }
         Pageable pageable= PageRequest.of(page.get(),10);
-        Page<ProductEntity> list=productService.getListProduct(pageable);
+        Page<ProductEntity> list=productService.getListProductAdmin(pageable);
         int totalPages=0;
         int currentPage=0;
         if(list.getNumberOfElements()==0 && list.getTotalPages()==0)

@@ -51,4 +51,6 @@ public interface ProductService {
     void changeIsDelete(Integer id, ChangeIsDeleteRequest changeIsDeleteRequest);
 
     Page<ProductEntity> getListProductCustomer(Pageable pageable);
+
+    Page<ProductEntity> getListProductAdmin(Pageable pageable);
 }

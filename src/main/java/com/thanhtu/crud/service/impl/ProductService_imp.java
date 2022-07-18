@@ -37,6 +37,10 @@ public class ProductService_imp implements ProductService {
     public Page<ProductEntity> getListProduct(Pageable pageable) {
         return productRepo.findProductEntityByIsDelete("NO",pageable);
     }
+    @Override
+    public Page<ProductEntity> getListProductAdmin(Pageable pageable) {
+        return productRepo.findAll(pageable);
+    }
 
     @Override
     public ProductDto getProductById(int id) {
@@ -52,7 +56,7 @@ public class ProductService_imp implements ProductService {
 
     @Override
     public ProductDto createProduct(ProductRequest productRequest) {
-        List<ProductEntity> list=productRepo.findProductEntityByIsDelete("NO");
+        List<ProductEntity> list=productRepo.findAll();
         for(ProductEntity productEntity:list)
         {
             if(productEntity.getProductName().equals(productRequest.getProductName()))
@@ -87,10 +91,10 @@ public class ProductService_imp implements ProductService {
         }
         if(!productEntity.getProductName().equals(productRequest.getProductName()))
         {
-            List<ProductEntity> list=productRepo.findProductEntityByIsDelete("NO");
+            List<ProductEntity> list=productRepo.findAll();
             for(ProductEntity productEntity1:list)
             {
-                if(productEntity1.getProductName().equals(productRequest.getProductName()))
+                if(id!=productEntity1.getProductId() && productEntity1.getProductName().equals(productRequest.getProductName()))
                 {
                     throw new DuplicateRecoredException("Trùng tên sản phẫm rồi");
                 }
